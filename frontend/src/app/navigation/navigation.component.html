@@ -1,11 +1,19 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
+
+      <a mat-list-item *ngIf="authService.isAuthenticated$ | async; else loggedOut" (click)="authService.logout({logoutParams: {
+      returnTo: document.location.origin
+      }})">Logout</a>
+
+      <ng-template #loggedOut>
+        <a mat-list-item (click)="authService.loginWithRedirect()">Login</a>
+      </ng-template>
+
       <a mat-list-item href="#">Link 2</a>
       <a mat-list-item href="#">Link 3</a>
     </mat-nav-list>
@@ -23,5 +31,10 @@
       <span>City Break Planner</span>
     </mat-toolbar>
     <h2 style="text-align: center">Author: <b>Sebastian Fijałkowski</b></h2>
+    <div *ngIf="authService.user$ | async as user">
+      <h4>Logged User:</h4>
+      <div>{{user.name}}</div>
+      <div><img src="{{user.picture}}" alt="user profile picture"></div>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
