@@ -1,0 +1,5 @@
+    <div *ngIf="authService.user$ | async as user">
+      <h4>Logged User:</h4>
+      <div>{{user.name}}</div>
+      <div><img src="{{user.picture}}" alt="user profile picture"></div>
+    </div>

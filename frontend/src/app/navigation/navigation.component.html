@@ -14,8 +14,8 @@
         <a mat-list-item (click)="authService.loginWithRedirect()">Login</a>
       </ng-template>
 
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+      <a mat-list-item routerLink="map">Map</a>
+      <a mat-list-item routerLink="profile">Profile</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -31,10 +31,6 @@
       <span>City Break Planner</span>
     </mat-toolbar>
     <h2 style="text-align: center">Author: <b>Sebastian Fijałkowski</b></h2>
-    <div *ngIf="authService.user$ | async as user">
-      <h4>Logged User:</h4>
-      <div>{{user.name}}</div>
-      <div><img src="{{user.picture}}" alt="user profile picture"></div>
-    </div>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

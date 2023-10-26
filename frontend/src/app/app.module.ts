@@ -11,10 +11,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import {AuthModule} from "@auth0/auth0-angular";
+import { MapComponent } from './map/map.component';
+import { ProfileComponent } from './profile/profile.component';
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationComponent
+    NavigationComponent,
+    MapComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +37,6 @@ import {AuthModule} from "@auth0/auth0-angular";
         redirect_uri: window.location.origin
       }
     }),
-
   ],
   providers: [],
   bootstrap: [AppComponent]
