@@ -13,12 +13,18 @@ import { MatListModule } from '@angular/material/list';
 import {AuthModule} from "@auth0/auth0-angular";
 import { MapComponent } from './map/map.component';
 import { ProfileComponent } from './profile/profile.component';
+import { MapTabComponent } from './map-tab/map-tab.component';
+import { SearchPlaceColumnComponent } from './map-tab/search-place-column/search-place-column.component';
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     MapComponent,
-    ProfileComponent
+    ProfileComponent,
+    MapTabComponent,
+    SearchPlaceColumnComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +43,8 @@ import { ProfileComponent } from './profile/profile.component';
         redirect_uri: window.location.origin
       }
     }),
+    MatInputModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

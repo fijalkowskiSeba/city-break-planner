@@ -1,0 +1,31 @@
+/* search-place-column.component.css */
+.input-container {
+  display: flex;
+  align-items: stretch;
+}
+
+.input-field {
+  flex: 3;
+  margin-right: 10px; /* Adjust as needed */
+}
+
+.search-button {
+  flex: 1;
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+/* Media Query for small screens */
+@media only screen and (max-width: 768px) {
+  .input-container {
+    width: 100%; /* Set the width to 100% on small screens */
+  }
+}
+
+button.search-button {
+  border: none; /* Remove the border */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+  width: 100%; /* Set the width to 100% */
+}

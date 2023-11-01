@@ -1,0 +1,11 @@
+<!-- search-place-column.component.html -->
+<div class="input-container">
+  <mat-form-field  class="input-field">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="inputData"/>
+  </mat-form-field>
+  <button mat-raised-button color="primary" class="search-button" (click)="fetchData()">Search</button>
+  <div *ngIf="serverData">
+    <!-- Display your server data here -->
+  </div>
+</div>

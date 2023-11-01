@@ -1,0 +1,47 @@
+.container {
+  height: 80vh; /* You can adjust the height as needed */
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping of columns */
+  overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.column {
+  display: inline-block;
+  height: 99%;
+  text-align: center;
+  vertical-align: top;
+}
+
+.leftColumn {
+  width: 30%;
+  overflow: auto;
+}
+
+.centerColumn {
+  width: 40%;
+}
+
+.rightColumn {
+  width: 30%;
+  overflow: auto;
+}
+
+/* Media Query for small screens */
+@media only screen and (max-width: 768px) {
+  .container {
+    flex-wrap: wrap; /* Allow columns to wrap on small screens */
+    overflow-x: hidden; /* Disable horizontal scrolling on small screens */
+  }
+  .column {
+    width: 80%; /* Set columns to full width on small screens */
+    margin: 0 10%;
+  }
+
+  .centerColumn {
+    height: 400px;
+  }
+
+  .rightColumn, .leftColumn {
+    height: auto; /* Set columns to auto height on small screens */
+  }
+}
