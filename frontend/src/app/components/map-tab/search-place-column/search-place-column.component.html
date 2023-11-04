@@ -1,4 +1,3 @@
-<!-- search-place-column.component.html -->
 <div class="input-container">
   <mat-form-field  class="input-field" >
     <mat-label>Search</mat-label>
@@ -8,12 +7,9 @@
 
 </div>
 <div *ngIf="serverData">
-  <div *ngFor="let location of serverData">
-    <ul>
-      <li>{{location.display_name}}</li>
-      <li>{{location.lat}}</li>
-      <li>{{location.lon}}</li>
-    </ul>
-    <br>
-  </div>
+  <mat-selection-list  [multiple]="false">
+    <mat-list-option  *ngFor="let location of serverData" [value]="location" (click)="onLocationChange(location)">
+      {{location.display_name}}
+    </mat-list-option>
+  </mat-selection-list>
 </div>

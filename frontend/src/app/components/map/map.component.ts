@@ -1,5 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import * as Leaflet from 'leaflet';
+import {LocationPickingService} from "../../services/location-picking.service";
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -7,6 +8,9 @@ import * as Leaflet from 'leaflet';
 })
 export class MapComponent implements AfterViewInit{
   private map: any ;
+
+  constructor(private locationPickingService: LocationPickingService) {
+  }
 
   private initMap(): void {
     this.map = Leaflet.map('map', {
@@ -21,11 +25,17 @@ export class MapComponent implements AfterViewInit{
 
     tiles.addTo(this.map);
   }
-  constructor() {
-  }
 
   ngAfterViewInit(){
     this.initMap();
+    this.locationPickingService.locationChanged$.subscribe((newLocation) => {
+      console.log("MAP subscription");
+      this.showLocation(newLocation.lat,newLocation.lon);
+    });
+  }
+
+  private showLocation(latitude: number, longitude: number){
+    this.map.setView([latitude,longitude],10);
   }
 
 }

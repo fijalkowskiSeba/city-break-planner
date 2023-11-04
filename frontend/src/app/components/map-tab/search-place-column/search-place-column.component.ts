@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {GeocodingAPIService} from "../../../services/geocoding-api.service";
 import {GeocodingResponse} from "../../../models/geocoding-response";
+import {LocationPickingService} from "../../../services/location-picking.service";
 
 @Component({
   selector: 'app-search-place-column',
@@ -11,7 +12,7 @@ export class SearchPlaceColumnComponent {
   inputData: string = '';
   serverData: GeocodingResponse[] = [];
 
-  constructor(private geocodingApiService : GeocodingAPIService) {
+  constructor(private geocodingApiService : GeocodingAPIService, private locationPickingService: LocationPickingService) {
   }
   fetchData() {
     if(this.inputData.trim() == "" ) return;
@@ -19,5 +20,9 @@ export class SearchPlaceColumnComponent {
     this.geocodingApiService.getLocations(this.inputData).subscribe(data => {
       this.serverData = data;
     });
+  }
+
+  onLocationChange(location: GeocodingResponse) {
+    this.locationPickingService.onLocationChanged(location);
   }
 }

@@ -1,8 +1,8 @@
 .container {
-  height: 80vh; /* You can adjust the height as needed */
+  height: 80vh;
   display: flex;
-  flex-wrap: nowrap; /* Prevent wrapping of columns */
-  overflow-x: auto; /* Enable horizontal scrolling */
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
 
 .column {
@@ -26,14 +26,13 @@
   overflow: auto;
 }
 
-/* Media Query for small screens */
 @media only screen and (max-width: 768px) {
   .container {
-    flex-wrap: wrap; /* Allow columns to wrap on small screens */
-    overflow-x: hidden; /* Disable horizontal scrolling on small screens */
+    flex-wrap: wrap;
+    overflow-x: hidden;
   }
   .column {
-    width: 80%; /* Set columns to full width on small screens */
+    width: 80%;
     margin: 0 10%;
   }
 
@@ -42,6 +41,6 @@
   }
 
   .rightColumn, .leftColumn {
-    height: auto; /* Set columns to auto height on small screens */
+    height: auto;
   }
 }
