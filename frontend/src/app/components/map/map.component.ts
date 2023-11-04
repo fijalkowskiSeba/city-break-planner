@@ -29,13 +29,12 @@ export class MapComponent implements AfterViewInit{
   ngAfterViewInit(){
     this.initMap();
     this.locationPickingService.locationChanged$.subscribe((newLocation) => {
-      console.log("MAP subscription");
       this.showLocation(newLocation.lat,newLocation.lon);
     });
   }
 
   private showLocation(latitude: number, longitude: number){
-    this.map.setView([latitude,longitude],10);
+    this.map.setView([latitude,longitude],40);
   }
 
 }
