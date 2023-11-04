@@ -11,7 +11,7 @@ export class GeocodingAPIService {
   constructor(private http: HttpClient) { }
 
   getLocations(locationName: string) :Observable<GeocodingResponse[]> {
-    let query = locationName.replace(/\W+/g, '+');
+    let query = locationName.replace(/\s+/g, '+');
     return this.http.get<GeocodingResponse[]>(this.geocodingURL + "{" + query + "}")
   }
 
