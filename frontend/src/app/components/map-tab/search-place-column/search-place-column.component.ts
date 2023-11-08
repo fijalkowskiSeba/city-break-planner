@@ -11,6 +11,7 @@ import {LocationPickingService} from "../../../services/location-picking.service
 export class SearchPlaceColumnComponent {
   inputData: string = '';
   serverData: GeocodingResponse[] = [];
+  selectedLocation: GeocodingResponse | undefined;
 
   constructor(private geocodingApiService : GeocodingAPIService, private locationPickingService: LocationPickingService) {
   }
@@ -22,7 +23,8 @@ export class SearchPlaceColumnComponent {
     });
   }
 
-  onLocationChange(location: GeocodingResponse) {
+  onLocationChange(location: GeocodingResponse | undefined) {
+    if(location === undefined){return;}
     this.locationPickingService.onLocationChanged(location);
   }
 }

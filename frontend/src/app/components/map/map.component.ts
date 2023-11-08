@@ -1,6 +1,7 @@
 import {AfterViewInit, Component} from '@angular/core';
 import * as Leaflet from 'leaflet';
 import {LocationPickingService} from "../../services/location-picking.service";
+import {MarkerService} from "../../services/marker.service";
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -9,7 +10,8 @@ import {LocationPickingService} from "../../services/location-picking.service";
 export class MapComponent implements AfterViewInit{
   private map: any ;
 
-  constructor(private locationPickingService: LocationPickingService) {
+  constructor(private locationPickingService: LocationPickingService,
+              private markerService: MarkerService) {
   }
 
   private initMap(): void {
@@ -34,7 +36,8 @@ export class MapComponent implements AfterViewInit{
   }
 
   private showLocation(latitude: number, longitude: number){
-    this.map.setView([latitude,longitude],40);
+    this.map.setView([latitude,longitude],15);
+    this.markerService.addMarkerToMap(this.map,latitude,longitude);
   }
 
 }

@@ -18,6 +18,7 @@ import { SearchPlaceColumnComponent } from './components/map-tab/search-place-co
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import {MatRadioModule} from "@angular/material/radio";
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +48,7 @@ import {HttpClientModule} from "@angular/common/http";
     }),
     MatInputModule,
     FormsModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

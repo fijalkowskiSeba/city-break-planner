@@ -7,9 +7,10 @@
 
 </div>
 <div *ngIf="serverData">
-  <mat-selection-list  [multiple]="false">
-    <mat-list-option  *ngFor="let location of serverData" [value]="location" (click)="onLocationChange(location)">
+  <mat-radio-group [(ngModel)]="selectedLocation" (change)="onLocationChange(selectedLocation)">
+    <mat-radio-button *ngFor="let location of serverData" [value]="location">
       {{location.display_name}}
-    </mat-list-option>
-  </mat-selection-list>
+    </mat-radio-button>
+  </mat-radio-group>
+
 </div>
