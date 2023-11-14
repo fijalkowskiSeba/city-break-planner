@@ -31,9 +31,11 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>City Break Planner</span>
+      <div class="header">
+        <span>City Break Planner</span>
+        <span id="author">Author: Sebastian Fijałkowski</span>
+      </div>
     </mat-toolbar>
-    <h2 style="text-align: center">Author: <b>Sebastian Fijałkowski</b></h2>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

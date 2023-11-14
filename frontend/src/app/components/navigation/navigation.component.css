@@ -15,3 +15,14 @@
   top: 0;
   z-index: 1000;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#author {
+  font-size: 16px;
+}
