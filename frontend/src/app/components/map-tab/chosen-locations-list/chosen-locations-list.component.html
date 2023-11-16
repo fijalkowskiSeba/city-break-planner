@@ -1,0 +1,9 @@
+<h2>Chosen locations</h2>
+<mat-card *ngFor="let location of locations">
+  <mat-card-content style="padding: 5px" (click)="locationClicked(location)">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span>{{location.display_name | stringToFirstComma}}</span>
+      <button mat-button (click)="removeLocation($event, location)">X</button>
+    </div>
+  </mat-card-content>
+</mat-card>

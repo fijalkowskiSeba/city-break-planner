@@ -2,6 +2,8 @@ import {AfterViewInit, Component} from '@angular/core';
 import * as Leaflet from 'leaflet';
 import {LocationPickingService} from "../../services/location-picking.service";
 import {MarkerService} from "../../services/marker.service";
+import {GeocodingResponse} from "../../models/geocoding-response";
+import {AddLocationToListService} from "../../services/add-location-to-list.service";
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -10,9 +12,10 @@ import {MarkerService} from "../../services/marker.service";
 export class MapComponent implements AfterViewInit{
   private map: any ;
   addChosenLocationButtonVisible = false;
+  currentLocation: GeocodingResponse | undefined;
 
-   constructor(private locationPickingService: LocationPickingService,
-              private markerService: MarkerService) {
+  constructor(private locationPickingService: LocationPickingService, private markerService: MarkerService,
+              private addLocationToListService: AddLocationToListService) {
   }
 
   private initMap(): void {
@@ -32,6 +35,7 @@ export class MapComponent implements AfterViewInit{
   ngAfterViewInit(){
     this.initMap();
     this.locationPickingService.locationChanged$.subscribe((newLocation) => {
+      this.currentLocation = newLocation;
       this.showLocation(newLocation.lat,newLocation.lon);
       this.addChosenLocationButtonVisible = true;
     });
@@ -42,8 +46,12 @@ export class MapComponent implements AfterViewInit{
     this.markerService.addMarkerToMap(this.map,latitude,longitude);
   }
 
-  addChosenLocation(){
-     console.log(this.markerService.getCurrentLatLng());
+  addChosenLocation() {
+    const lat = this.markerService.getCurrentLatLng().lat;
+    const lng = this.markerService.getCurrentLatLng().lng;
+    if (this.currentLocation != undefined) {
+      this.addLocationToListService.addLocation(this.currentLocation, lat, lng);
+    }
   }
 
 }

@@ -19,6 +19,9 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatRadioModule} from "@angular/material/radio";
+import { ChosenLocationsListComponent } from './components/map-tab/chosen-locations-list/chosen-locations-list.component';
+import {MatCardModule} from "@angular/material/card";
+import { StringToFirstCommaPipe } from './pipes/string-to-first-comma.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +29,9 @@ import {MatRadioModule} from "@angular/material/radio";
     MapComponent,
     ProfileComponent,
     MapTabComponent,
-    SearchPlaceColumnComponent
+    SearchPlaceColumnComponent,
+    ChosenLocationsListComponent,
+    StringToFirstCommaPipe
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,7 @@ import {MatRadioModule} from "@angular/material/radio";
     MatInputModule,
     FormsModule,
     MatRadioModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

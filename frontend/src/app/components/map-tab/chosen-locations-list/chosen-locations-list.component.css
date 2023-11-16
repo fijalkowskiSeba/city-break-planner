@@ -1,0 +1,9 @@
+mat-card-content:hover {
+  background-color: #4d4d4d;
+  cursor: pointer;
+}
+
+mat-card {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
