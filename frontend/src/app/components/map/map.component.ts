@@ -9,8 +9,9 @@ import {MarkerService} from "../../services/marker.service";
 })
 export class MapComponent implements AfterViewInit{
   private map: any ;
+  addChosenLocationButtonVisible = false;
 
-  constructor(private locationPickingService: LocationPickingService,
+   constructor(private locationPickingService: LocationPickingService,
               private markerService: MarkerService) {
   }
 
@@ -32,12 +33,17 @@ export class MapComponent implements AfterViewInit{
     this.initMap();
     this.locationPickingService.locationChanged$.subscribe((newLocation) => {
       this.showLocation(newLocation.lat,newLocation.lon);
+      this.addChosenLocationButtonVisible = true;
     });
   }
 
   private showLocation(latitude: number, longitude: number){
     this.map.setView([latitude,longitude],15);
     this.markerService.addMarkerToMap(this.map,latitude,longitude);
+  }
+
+  addChosenLocation(){
+     console.log(this.markerService.getCurrentLatLng());
   }
 
 }

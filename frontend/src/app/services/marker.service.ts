@@ -25,8 +25,11 @@ export class MarkerService {
 
   addMarkerToMap(map: Leaflet.Map,lat :number, lon: number) {
     map.removeLayer(this.marker);
-    this.marker = Leaflet.marker([lat, lon]);
-    // const marker = Leaflet.marker([lat, lon], {draggable:true});
+    this.marker = Leaflet.marker([lat, lon], {draggable:true});
     map.addLayer(this.marker);
+  }
+
+  getCurrentLatLng(){
+    return this.marker.getLatLng();
   }
 }

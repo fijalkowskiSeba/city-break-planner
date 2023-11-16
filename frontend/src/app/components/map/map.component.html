@@ -1,5 +1,5 @@
   <div class="map-frame">
     <div id="map"></div>
   </div>
-<button id="add-button" mat-raised-button color="primary">Add chosen location</button>
+<button *ngIf="addChosenLocationButtonVisible" id="add-button" mat-raised-button color="primary" (click)="addChosenLocation()">Add chosen location</button>
 
