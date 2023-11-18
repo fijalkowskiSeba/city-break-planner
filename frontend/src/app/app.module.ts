@@ -11,7 +11,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import {AuthModule} from "@auth0/auth0-angular";
-import { MapComponent } from './components/map/map.component';
+import { MapComponent } from './components/map-tab/map/map.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { MapTabComponent } from './components/map-tab/map-tab.component';
 import { SearchPlaceColumnComponent } from './components/map-tab/search-place-column/search-place-column.component';

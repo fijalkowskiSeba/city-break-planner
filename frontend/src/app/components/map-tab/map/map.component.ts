@@ -1,9 +1,9 @@
 import {AfterViewInit, Component} from '@angular/core';
 import * as Leaflet from 'leaflet';
-import {LocationPickingService} from "../../services/location-picking.service";
-import {MarkerService} from "../../services/marker.service";
-import {GeocodingResponse} from "../../models/geocoding-response";
-import {AddLocationToListService} from "../../services/add-location-to-list.service";
+import {LocationPickingService} from "../../../services/location-picking.service";
+import {MarkerService} from "../../../services/marker.service";
+import {GeocodingResponse} from "../../../models/geocoding-response";
+import {AddLocationToListService} from "../../../services/add-location-to-list.service";
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
