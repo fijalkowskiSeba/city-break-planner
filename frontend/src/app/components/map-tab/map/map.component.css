@@ -1,6 +1,15 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .map-frame {
   border: 2px solid black;
-  height: 90%;
+  width: 100%;
+  flex: 9;
+  height: 80%;
 }
 
 #map {
@@ -8,5 +17,8 @@
 }
 
 #add-button {
+  flex: 1;
   margin: 5px;
+  width: 40%;
+  height: 90%;
 }
