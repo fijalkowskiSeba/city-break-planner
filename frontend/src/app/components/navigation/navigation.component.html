@@ -7,12 +7,13 @@
     <mat-nav-list>
       <!--should use some app-wide authService instead-->
       <div *ngIf="authService.isAuthenticated$ | async; else loggedOut">
+        <a mat-list-item routerLink="map">New Trip</a>
+        <a mat-list-item routerLink="my-trips">My Trips</a>
+        <a mat-list-item routerLink="profile">Profile</a>
         <a mat-list-item (click)="authService.logout({logoutParams: {
       returnTo: document.location.origin}})">
           Logout
         </a>
-        <a mat-list-item routerLink="map">Map</a>
-        <a mat-list-item routerLink="profile">Profile</a>
       </div>
       <ng-template #loggedOut>
         <a mat-list-item (click)="authService.loginWithRedirect()">Login</a>
@@ -32,7 +33,7 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <div class="header">
-        <span>City Break Planner</span>
+        <span id="page-title">City Break Planner</span>
         <span id="author">Author: Sebastian Fijałkowski</span>
       </div>
     </mat-toolbar>
