@@ -4,7 +4,7 @@ import {ProfileComponent} from "./components/profile/profile.component";
 import {MapTabComponent} from "./components/map-tab/map-tab.component";
 
 const routes: Routes = [
-  {path: "map", component: MapTabComponent},
+  {path: "new-trip", component: MapTabComponent},
   {path: "profile", component: ProfileComponent},
 ];
 

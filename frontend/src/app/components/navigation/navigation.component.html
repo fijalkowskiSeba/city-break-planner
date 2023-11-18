@@ -7,7 +7,7 @@
     <mat-nav-list>
       <!--should use some app-wide authService instead-->
       <div *ngIf="authService.isAuthenticated$ | async; else loggedOut">
-        <a mat-list-item routerLink="map">New Trip</a>
+        <a mat-list-item routerLink="new-trip">New Trip</a>
         <a mat-list-item routerLink="my-trips">My Trips</a>
         <a mat-list-item routerLink="profile">Profile</a>
         <a mat-list-item (click)="authService.logout({logoutParams: {
