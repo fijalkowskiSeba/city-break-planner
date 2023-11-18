@@ -21,7 +21,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatRadioModule} from "@angular/material/radio";
 import { ChosenLocationsListComponent } from './components/map-tab/chosen-locations-list/chosen-locations-list.component';
 import {MatCardModule} from "@angular/material/card";
-import { StringToFirstCommaPipe } from './pipes/string-to-first-comma.pipe';
+import { StringToXCommaPipe } from './pipes/string-to-x-comma.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +31,7 @@ import { StringToFirstCommaPipe } from './pipes/string-to-first-comma.pipe';
     MapTabComponent,
     SearchPlaceColumnComponent,
     ChosenLocationsListComponent,
-    StringToFirstCommaPipe
+    StringToXCommaPipe
   ],
   imports: [
     BrowserModule,
