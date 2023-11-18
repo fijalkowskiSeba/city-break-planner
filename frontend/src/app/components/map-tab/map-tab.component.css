@@ -17,16 +17,17 @@
 
 .leftColumn {
   width: 30%;
-  overflow: auto;
+  height: 99%;
 }
 
 .centerColumn {
   width: 40%;
+  height: 99%;
 }
 
 .rightColumn {
   width: 30%;
-  overflow: auto;
+  height: 99%;
 }
 
 @media only screen and (max-width: 768px) {

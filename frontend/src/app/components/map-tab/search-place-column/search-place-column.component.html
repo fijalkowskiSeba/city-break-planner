@@ -1,3 +1,4 @@
+<div class="container">
 <div class="input-container">
   <mat-form-field  class="input-field" >
     <mat-label>Search</mat-label>
@@ -6,11 +7,11 @@
   <button mat-raised-button color="primary" class="search-button" (click)="fetchData()">Search</button>
 
 </div>
-<div *ngIf="serverData">
+<div class="locations-list" *ngIf="serverData">
   <mat-radio-group [(ngModel)]="selectedLocation" (change)="onLocationChange(selectedLocation)">
     <mat-radio-button *ngFor="let location of serverData" [value]="location">
       {{location.display_name}}
     </mat-radio-button>
   </mat-radio-group>
-
+</div>
 </div>

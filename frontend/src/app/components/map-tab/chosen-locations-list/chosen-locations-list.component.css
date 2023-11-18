@@ -1,3 +1,15 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.locations-container {
+  flex: 9;
+  overflow-y: auto;
+  height: 80%;
+}
+
 mat-card-content:hover {
   background-color: #4d4d4d;
   cursor: pointer;
@@ -6,4 +18,11 @@ mat-card-content:hover {
 mat-card {
   margin-top: 6px;
   margin-bottom: 6px;
+}
+
+.option-button {
+  margin: 6px;
+  display: inline-block;
+  width: 45%;
+  height: 90%;
 }

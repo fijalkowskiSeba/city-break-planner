@@ -30,4 +30,8 @@ export class ChosenLocationsListComponent {
   locationClicked(location: GeocodingResponse) {
     this.locationPickingService.onLocationChanged(location)
   }
+
+  removeAllLocations() {
+    this.locations = [];
+  }
 }
