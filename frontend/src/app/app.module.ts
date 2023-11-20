@@ -22,6 +22,7 @@ import {MatRadioModule} from "@angular/material/radio";
 import { ChosenLocationsListComponent } from './components/map-tab/chosen-locations-list/chosen-locations-list.component';
 import {MatCardModule} from "@angular/material/card";
 import { StringToXCommaPipe } from './pipes/string-to-x-comma.pipe';
+import { MyTripsComponent } from './components/my-trips/my-trips.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import { StringToXCommaPipe } from './pipes/string-to-x-comma.pipe';
     MapTabComponent,
     SearchPlaceColumnComponent,
     ChosenLocationsListComponent,
-    StringToXCommaPipe
+    StringToXCommaPipe,
+    MyTripsComponent
   ],
   imports: [
     BrowserModule,
