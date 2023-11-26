@@ -38,6 +38,6 @@ export class ChosenLocationsListComponent {
   }
 
   createTravelPlan() {
-    this.createTravelPlanService.newTrip(this.locations);
+    this.createTravelPlanService.newTrip(this.locations).subscribe();
   }
 }

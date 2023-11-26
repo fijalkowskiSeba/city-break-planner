@@ -6,17 +6,16 @@
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <!--should use some app-wide authService instead-->
-      <div *ngIf="authService.isAuthenticated$ | async; else loggedOut">
+      <div *ngIf="user; else loggedOut">
         <a mat-list-item routerLink="new-trip">New Trip</a>
         <a mat-list-item routerLink="my-trips">My Trips</a>
         <a mat-list-item routerLink="profile">Profile</a>
-        <a mat-list-item (click)="authService.logout({logoutParams: {
-      returnTo: document.location.origin}})">
+        <a mat-list-item (click)="auth.logout()">
           Logout
         </a>
       </div>
       <ng-template #loggedOut>
-        <a mat-list-item (click)="authService.loginWithRedirect()">Login</a>
+        <a mat-list-item (click)="auth.login()">Login</a>
       </ng-template>
 
 

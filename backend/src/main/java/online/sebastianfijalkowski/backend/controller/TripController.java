@@ -1,9 +1,9 @@
 package online.sebastianfijalkowski.backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import online.sebastianfijalkowski.backend.dto.TripPointDTO;
 import online.sebastianfijalkowski.backend.service.TripService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,5 +17,10 @@ public class TripController {
     @GetMapping()
     ResponseEntity<Void> allTrips(){
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/new")
+    TripPointDTO[] newTrip(@RequestBody TripPointDTO[] body){
+        return body;
     }
 }

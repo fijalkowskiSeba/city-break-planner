@@ -1,9 +1,9 @@
-import {Component, Inject, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import {AuthService} from "@auth0/auth0-angular";
-import {DOCUMENT} from "@angular/common";
+import {User} from "../../models/user";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-navigation',
@@ -12,12 +12,18 @@ import {DOCUMENT} from "@angular/common";
 })
 export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
-
-  constructor(@Inject(DOCUMENT) public document: Document, public authService: AuthService) {}
+  isAuthenticated!: boolean;
+  user!: User;
+  constructor(public auth: AuthService) {}
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),
       shareReplay()
     );
+
+  async ngOnInit() {
+    this.isAuthenticated = await this.auth.isAuthenticated();
+    await this.auth.getUser().subscribe(data => this.user = data);
+  }
 }

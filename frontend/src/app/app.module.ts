@@ -45,14 +45,6 @@ import { MyTripsComponent } from './components/my-trips/my-trips.component';
     MatIconModule,
     MatListModule,
     HttpClientModule,
-    // Import the module into the application, with configuration
-    AuthModule.forRoot({
-      domain: 'dev-g8q3i4mwcb82sak7.us.auth0.com',
-      clientId: 'EY84B3NU6KpYkdlNjK8nyn8zweYFSOei',
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    }),
     MatInputModule,
     FormsModule,
     MatRadioModule,
