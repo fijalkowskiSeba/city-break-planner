@@ -1,6 +1,6 @@
 version: '3'
 services:
-  webserver:
+  frontend:
     container_name: angular-frontend
     build:
       context: frontend
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
-  my-spring-app:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
