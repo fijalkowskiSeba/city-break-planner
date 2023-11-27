@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import {User} from "../models/user";
+import {User} from "./user";
 
 const headers = new HttpHeaders().set('Accept', 'application/json');
 @Injectable({
@@ -14,9 +14,6 @@ export class AuthService {
 
   constructor(private http: HttpClient, private location: Location) {
   }
-
-  private apiPath = "http:localhost:8080";
-
   getUser(): Observable<User> {
     return this.http.get<User>('/api/user', { headers },)
       .pipe(map((response: User) => {
