@@ -5,8 +5,7 @@
                [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <!--should use some app-wide authService instead-->
-      <div *ngIf="user; else loggedOut">
+      <div *ngIf="isAuthenticated; else loggedOut">
         <a mat-list-item routerLink="new-trip">New Trip</a>
         <a mat-list-item routerLink="my-trips">My Trips</a>
         <a mat-list-item routerLink="profile">Profile</a>

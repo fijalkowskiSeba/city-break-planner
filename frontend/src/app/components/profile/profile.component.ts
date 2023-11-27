@@ -1,6 +1,7 @@
-import {Component, Inject} from '@angular/core';
-import {DOCUMENT} from "@angular/common";
-import {AuthService} from "@auth0/auth0-angular";
+import {Component} from '@angular/core';
+import {AuthService} from "../../services/auth.service";
+import {User} from "../../models/user";
+
 
 @Component({
   selector: 'app-profile',
@@ -8,5 +9,12 @@ import {AuthService} from "@auth0/auth0-angular";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  constructor(@Inject(DOCUMENT) public document: Document, public authService: AuthService) {}
+  user!: User;
+  constructor(public auth: AuthService) {
+  }
+
+  async ngOnInit() {
+    this.auth.getUser().subscribe(data => this.user = data);
+  }
+
 }

@@ -1,5 +1,17 @@
-    <div *ngIf="authService.user$ | async as user">
-      <h4>Logged User:</h4>
-      <div>{{user.name}}</div>
-      <div><img src="{{user.picture}}" alt="user profile picture"></div>
-    </div>
+<h3>Logged as:</h3>
+<div>
+  <img [src]="user.picture" alt="user profile picture">
+</div>
+<div>
+  <h1>
+<!--    <span>Name:</span>-->
+    <span>{{user.name}}</span>
+  </h1>
+</div>
+<div>
+  <h1>
+<!--    <span>Email:</span>-->
+    <span>{{user.email}}</span>
+  </h1>
+
+</div>

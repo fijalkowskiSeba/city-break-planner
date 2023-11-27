@@ -13,7 +13,6 @@ import {AuthService} from "../../services/auth.service";
 export class NavigationComponent {
   private breakpointObserver = inject(BreakpointObserver);
   isAuthenticated!: boolean;
-  user!: User;
   constructor(public auth: AuthService) {}
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -24,6 +23,5 @@ export class NavigationComponent {
 
   async ngOnInit() {
     this.isAuthenticated = await this.auth.isAuthenticated();
-    await this.auth.getUser().subscribe(data => this.user = data);
   }
 }

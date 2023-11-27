@@ -16,5 +16,6 @@ public class User {
     private String uuid;
     private String name;
     private String email;
+    private String picture;
 
 }
