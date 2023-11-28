@@ -2,8 +2,6 @@
 FROM maven:3.8.4-openjdk-17-slim AS builder
 WORKDIR /app
 COPY . .
-WORKDIR /etc/nginx/ssl/live/city-break-planner.sebastian-fijalkowski.online
-RUN openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out /app/src/main/resources/keystore.p12 -name tomcat -CAfile chain.pem -caname root -passout pass:1111
 WORKDIR /app
 RUN . /app/.okta.env && mvn install
 
