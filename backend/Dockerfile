@@ -2,7 +2,6 @@
 FROM maven:3.8.4-openjdk-17-slim AS builder
 WORKDIR /app
 COPY . .
-WORKDIR /app
 RUN . /app/.okta.env && mvn install
 
 # Run spring-boot app
