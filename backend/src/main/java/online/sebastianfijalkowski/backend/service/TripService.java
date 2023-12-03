@@ -8,6 +8,8 @@ import online.sebastianfijalkowski.backend.repository.TripRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class TripService {
@@ -29,5 +31,10 @@ public class TripService {
         trip.setName(tripName);
 
         return tripRepository.save(trip);
+    }
+
+    public ArrayList<Trip> getAllTrips(OAuth2User user) {
+        User userFromDB = userService.addUserIfNotExist(user);
+        return tripRepository.findAllByUser(userFromDB);
     }
 }
