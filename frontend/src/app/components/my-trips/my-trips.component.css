@@ -1,0 +1,12 @@
+.container{
+  margin: 16px;
+}
+
+mat-card {
+  margin: 6px 0;
+}
+
+mat-card:hover {
+  background-color: #4d4d4d;
+  cursor: pointer;
+}

@@ -28,6 +28,8 @@ import {
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import { TripInfoComponent } from './components/my-trips/trip-info/trip-info.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -40,26 +42,28 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     ChosenLocationsListComponent,
     StringToXCommaPipe,
     MyTripsComponent,
-    AskForNameModalComponent
+    AskForNameModalComponent,
+    TripInfoComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatListModule,
-        HttpClientModule,
-        MatInputModule,
-        FormsModule,
-        MatRadioModule,
-        MatCardModule,
-        MatDialogModule,
-        MatButtonToggleModule,
-        MatTooltipModule,
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    HttpClientModule,
+    MatInputModule,
+    FormsModule,
+    MatRadioModule,
+    MatCardModule,
+    MatDialogModule,
+    MatButtonToggleModule,
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

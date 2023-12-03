@@ -3,11 +3,12 @@ import {GeocodingResponse} from "../models/geocoding-response";
 import {HttpClient} from "@angular/common/http";
 import {TripPointDto} from "../models/trip-point-dto";
 import {TripCreationDto} from "../models/trip-creation-dto";
+import {Trip} from "../models/Trip";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CreateTravelPlanService {
+export class TripService {
 
   private apiPath = "/api/trip";
 
@@ -33,5 +34,13 @@ export class CreateTravelPlanService {
     }
 
     return this.http.post<TripCreationDto>(url, bodyToSend)
+  }
+
+  getAllTrips() {
+    return this.http.get<Trip[]>(this.apiPath + "/all");
+  }
+
+  getTripById(tripId: string) {
+    return this.http.get<Trip>(this.apiPath + "/" + tripId);
   }
 }

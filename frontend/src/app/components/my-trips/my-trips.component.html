@@ -1,1 +1,20 @@
-<p>my-trips works!</p>
+<div class="container">
+  <h1>Planned</h1>
+  <mat-card *ngFor="let trip of allTrips">
+    <mat-card-content routerLink="{{trip.id}}">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="text-align: start">{{trip.name}}</span>
+        <div style="display: flex; align-items: center;">
+          <button mat-button [disabled]="true">
+            Set as completed
+          </button>
+          <button mat-button [disabled]="true">
+            Remove
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <h1>Completed</h1>
+</div>

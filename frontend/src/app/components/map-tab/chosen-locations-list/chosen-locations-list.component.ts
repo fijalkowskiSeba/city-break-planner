@@ -2,9 +2,10 @@ import {Component} from '@angular/core';
 import {GeocodingResponse} from "../../../models/geocoding-response";
 import {LocationPickingService} from "../../../services/location-picking.service";
 import {AddLocationToListService} from "../../../services/add-location-to-list.service";
-import {CreateTravelPlanService} from "../../../services/create-travel-plan.service";
+import {TripService} from "../../../services/trip.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AskForNameModalComponent} from "./ask-for-name-modal/ask-for-name-modal.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-chosen-locations-list',
@@ -19,8 +20,9 @@ export class ChosenLocationsListComponent {
 
   constructor(private locationPickingService: LocationPickingService,
               private addLocationToListService: AddLocationToListService,
-              private createTravelPlanService: CreateTravelPlanService,
-              private matDialog: MatDialog) {
+              private createTravelPlanService: TripService,
+              private matDialog: MatDialog,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -60,7 +62,11 @@ export class ChosenLocationsListComponent {
         this.tripName = result;
         this.createTravelPlanService
           .newTrip(this.locations, this.tripName, this.firstLocation, this.lastLocation)
-          .subscribe();
+          .subscribe(
+            () => {
+              this.router.navigate(["/my-trips"]);
+            }
+          );
       }
     });
   }
