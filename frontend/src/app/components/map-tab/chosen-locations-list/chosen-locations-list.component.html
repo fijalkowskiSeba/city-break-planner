@@ -1,17 +1,35 @@
 <div class="container">
-<h2>Chosen locations</h2>
-<div class="locations-container">
-<mat-card *ngFor="let location of locations">
-  <mat-card-content style="padding: 5px" (click)="locationClicked(location)">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <span style="text-align: start">{{location.display_name | stringToXComma : 2}}</span>
-      <button mat-button (click)="removeLocation($event, location)">X</button>
-    </div>
-  </mat-card-content>
-</mat-card>
-</div>
-<div class="buttons-container">
-  <button class="option-button" mat-raised-button color="primary" [disabled]="this.locations.length ==0" (click)="createTravelPlan()">Create<br>travel plan</button>
-  <button class="option-button" mat-stroked-button color="primary" [disabled]="this.locations.length ==0" (click)="removeAllLocations()">Remove<br>all locations</button>
-</div>
+  <h2>Chosen locations</h2>
+  <div class="locations-container">
+
+    <mat-card *ngFor="let location of locations">
+      <mat-card-content style="padding: 5px" (click)="locationClicked(location)">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="text-align: start">{{location.display_name | stringToXComma : 2}}</span>
+          <div style="display: flex; align-items: center;">
+            <button mat-button matTooltip="Trip will start from this point"
+                    (click)="setFirstLocation(location)"
+                    [ngStyle]="{'background-color': location === firstLocation ? 'gray' : ''}">
+              First
+            </button>
+            <button mat-button matTooltip="Trip will finish at this point"
+              (click)="setLastLocation(location)"
+              [ngStyle]="{'background-color': location === lastLocation ? 'grey' : ''}">
+              Last
+            </button>
+            <button mat-button (click)="removeLocation($event, location)">X</button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+  <div class="buttons-container">
+    <button class="option-button" mat-raised-button color="primary" [disabled]="this.locations.length ==0"
+            (click)="askForTripName()">Create<br>travel plan
+    </button>
+    <button class="option-button" mat-stroked-button color="primary" [disabled]="this.locations.length ==0"
+            (click)="removeAllLocations()">Remove<br>all locations
+    </button>
+  </div>
 </div>

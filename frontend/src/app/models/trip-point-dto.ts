@@ -1,5 +1,5 @@
 export interface TripPointDto {
-  id: string;
+  id?: string;
 
   name: string;
 
@@ -9,5 +9,5 @@ export interface TripPointDto {
 
   orderInTrip: number;
 
-  //Trip trip;
+  //trip: {};
 }

@@ -1,7 +1,7 @@
 package online.sebastianfijalkowski.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import online.sebastianfijalkowski.backend.dto.TripPointDTO;
+import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.model.User;
 import online.sebastianfijalkowski.backend.repository.TripRepository;
@@ -15,19 +15,18 @@ public class TripService {
     private final UserService userService;
     private final TripPointService tripPointService;
 
-    public Trip saveTripAndTripPointsAndUserIfNotExist(OAuth2User user, TripPointDTO[] tripPoints) {
+    public Trip saveTripAndTripPointsAndUserIfNotExist(OAuth2User user, TripCreationDTO tripData) {
         User userFromDB = userService.addUserIfNotExist(user);
-        Trip trip = this.newTrip(new Trip(), userFromDB);
+        Trip trip = this.newTrip(new Trip(), userFromDB, tripData.getTripName());
 
-        tripPointService.newTripPoints(tripPoints, trip);
+        tripPointService.newTripPoints(tripData.getLocations(), trip);
 
         return trip;
     }
 
-    public Trip newTrip(Trip trip, User user) {
+    public Trip newTrip(Trip trip, User user, String tripName) {
         trip.setUser(user);
-        final String temporaryName = "New Trip";
-        trip.setName(temporaryName);
+        trip.setName(tripName);
 
         return tripRepository.save(trip);
     }

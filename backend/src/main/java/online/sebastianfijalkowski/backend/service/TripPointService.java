@@ -17,15 +17,30 @@ public class TripPointService {
 
     public List<TripPoint> newTripPoints(TripPointDTO[] tripPoints, Trip trip) {
         List<TripPoint> tripPointList = new ArrayList<>();
-        int orderInTrip = 0;
+
+        if(tripPoints == null) {
+            System.out.println("tripPoints is null");
+            return tripPointList;
+        }
+
+        // -1 is first location, -2 is last location, 0 is every other location
+        TripPointDTO firstLocation = null;
+
+        for (var tripPoint : tripPoints) {
+            if (tripPoint.getOrderInTrip() == -1) {
+                firstLocation = tripPoint;
+                break;
+            }
+        }
+
+        int orderInTrip = firstLocation == null ? 0 : 1;
 
         for (var tripPoint : tripPoints) {
             TripPoint tripPointEntity = new TripPoint();
             tripPointEntity.setName(tripPoint.getName());
             tripPointEntity.setLatitude(tripPoint.getLatitude());
             tripPointEntity.setLongitude(tripPoint.getLongitude());
-            orderInTrip++;
-            tripPointEntity.setOrderInTrip(orderInTrip);
+            tripPointEntity.setOrderInTrip(tripPoint == firstLocation ? 0 : tripPoint.getOrderInTrip() == -2 ? tripPoints.length -1 : orderInTrip++);
             tripPointEntity.setTrip(trip);
             tripPointList.add(tripPointRepository.save(tripPointEntity));
         }

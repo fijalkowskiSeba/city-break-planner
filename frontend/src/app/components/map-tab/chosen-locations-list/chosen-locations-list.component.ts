@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {GeocodingResponse} from "../../../models/geocoding-response";
 import {LocationPickingService} from "../../../services/location-picking.service";
 import {AddLocationToListService} from "../../../services/add-location-to-list.service";
 import {CreateTravelPlanService} from "../../../services/create-travel-plan.service";
+import {MatDialog} from "@angular/material/dialog";
+import {AskForNameModalComponent} from "./ask-for-name-modal/ask-for-name-modal.component";
 
 @Component({
   selector: 'app-chosen-locations-list',
@@ -11,15 +13,18 @@ import {CreateTravelPlanService} from "../../../services/create-travel-plan.serv
 })
 export class ChosenLocationsListComponent {
   locations: GeocodingResponse[] = [];
+  firstLocation?: GeocodingResponse;
+  lastLocation?: GeocodingResponse;
+  tripName = "";
 
   constructor(private locationPickingService: LocationPickingService,
               private addLocationToListService: AddLocationToListService,
-              private createTravelPlanService: CreateTravelPlanService) {
+              private createTravelPlanService: CreateTravelPlanService,
+              private matDialog: MatDialog) {
   }
 
-  ngOnInit(){
-    this.addLocationToListService.newLocationAppeared.subscribe((newLocation) =>
-    {
+  ngOnInit() {
+    this.addLocationToListService.newLocationAppeared.subscribe((newLocation) => {
       this.locations.push(newLocation);
     })
   }
@@ -27,6 +32,12 @@ export class ChosenLocationsListComponent {
   removeLocation(event: Event, location: GeocodingResponse) {
     event.stopPropagation();
     this.locations = this.locations.filter(l => l !== location);
+    if (this.firstLocation === location) {
+      this.firstLocation = undefined;
+    }
+    if (this.lastLocation === location) {
+      this.lastLocation = undefined;
+    }
   }
 
   locationClicked(location: GeocodingResponse) {
@@ -35,9 +46,30 @@ export class ChosenLocationsListComponent {
 
   removeAllLocations() {
     this.locations = [];
+    this.firstLocation = undefined;
+    this.lastLocation = undefined;
   }
 
-  createTravelPlan() {
-    this.createTravelPlanService.newTrip(this.locations).subscribe();
+  askForTripName() {
+    const dialogRef = this.matDialog.open(AskForNameModalComponent, {
+      data: {tripName: this.tripName}
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.tripName = result;
+        this.createTravelPlanService
+          .newTrip(this.locations, this.tripName, this.firstLocation, this.lastLocation)
+          .subscribe();
+      }
+    });
+  }
+
+  setFirstLocation(location: GeocodingResponse) {
+    this.firstLocation === location ? this.firstLocation = undefined : this.firstLocation = location;
+  }
+
+  setLastLocation(location: GeocodingResponse) {
+    this.lastLocation === location ? this.lastLocation = undefined : this.lastLocation = location;
   }
 }

@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Name your trip</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput [(ngModel)]="inputData" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onCreateClick()">Create plan</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

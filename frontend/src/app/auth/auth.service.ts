@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import {User} from "./user";
+import {User} from "../models/user";
 
 const headers = new HttpHeaders().set('Accept', 'application/json');
 @Injectable({

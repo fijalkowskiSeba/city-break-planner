@@ -1,7 +1,7 @@
 package online.sebastianfijalkowski.backend.controller;
 
 import lombok.RequiredArgsConstructor;
-import online.sebastianfijalkowski.backend.dto.TripPointDTO;
+import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.service.TripService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class TripController {
     }
 
     @PostMapping("/new")
-    Trip newTrip(@AuthenticationPrincipal OAuth2User user, @RequestBody TripPointDTO[] body) {
+    Trip newTrip(@AuthenticationPrincipal OAuth2User user, @RequestBody TripCreationDTO body) {
         return tripService.saveTripAndTripPointsAndUserIfNotExist(user, body);
     }
 }
