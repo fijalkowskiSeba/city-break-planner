@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {Trip} from "../../models/Trip";
 import {TripService} from "../../services/trip.service";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmationModalComponent} from "../modals/confirmation-modal/confirmation-modal.component";
 
 @Component({
   selector: 'app-my-trips',
@@ -17,8 +19,8 @@ export class MyTripsComponent {
   allPlannedTrips: Trip[] = [];
   allCompletedTrips: Trip[] = [];
 
-  constructor(private tripService: TripService) {
-  }
+  constructor(private tripService: TripService, private dialog: MatDialog)
+  {  }
 
   ngOnInit() {
     this.tripService.getAllTrips().subscribe((trips) => {
@@ -51,10 +53,21 @@ export class MyTripsComponent {
 
   onRemoveClicked(event: Event, trip: Trip) {
     event.stopPropagation();
-    // TODO: add confirmation dialog
-    this.allPlannedTrips = this.allPlannedTrips.filter(listTrip => listTrip !== trip);
-    this.allCompletedTrips = this.allCompletedTrips.filter(listTrip => listTrip !== trip);
 
-    this.tripService.deleteTrip(trip.id).subscribe();
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      data: {
+        title: 'Confirmation',
+        message: 'Are you sure you want to delete this trip?',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.allPlannedTrips = this.allPlannedTrips.filter(listTrip => listTrip !== trip);
+        this.allCompletedTrips = this.allCompletedTrips.filter(listTrip => listTrip !== trip);
+
+        this.tripService.deleteTrip(trip.id).subscribe();
+      }
+    });
   }
 }
