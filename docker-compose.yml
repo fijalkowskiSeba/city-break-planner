@@ -1,5 +1,6 @@
 version: '3'
 services:
+
   frontend:
     container_name: angular-frontend
     build:
@@ -13,11 +14,40 @@ services:
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
+
   certbot:
     image: certbot/certbot:latest
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
+
+  db:
+    image: postgres:latest
+    container_name: db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: docker.io/dpage/pgadmin4:latest
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
+
   backend:
     build:
       context: ./backend
@@ -25,7 +55,11 @@ services:
     ports:
       - "8080:8080"
       - "8443:8443"
-    volumes:
-      - ./certbot/conf/:/etc/nginx/ssl/:ro
     depends_on:
-      - certbot
+      - db
+
+volumes:
+  db:
+    driver: local
+  pgadmin-data:
+    driver: local
