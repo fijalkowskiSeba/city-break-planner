@@ -1,20 +1,38 @@
 <div class="container">
+  <div *ngIf="allPlannedTrips.length > 0">
   <h1>Planned</h1>
-  <mat-card *ngFor="let trip of allTrips">
+  <mat-card *ngFor="let trip of allPlannedTrips">
     <mat-card-content routerLink="{{trip.id}}">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <span style="text-align: start">{{trip.name}}</span>
         <div style="display: flex; align-items: center;">
-          <button mat-button [disabled]="true">
+          <button mat-button (click)="setAsCompeted($event,trip)">
             Set as completed
           </button>
-          <button mat-button [disabled]="true">
+          <button mat-button (click)="onRemoveClicked($event, trip)">
             Remove
           </button>
         </div>
       </div>
     </mat-card-content>
   </mat-card>
-
+  </div>
+  <div *ngIf="allCompletedTrips.length > 0">
   <h1>Completed</h1>
+  <mat-card *ngFor="let trip of allCompletedTrips">
+    <mat-card-content routerLink="{{trip.id}}">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="text-align: start">{{trip.name}}</span>
+        <div style="display: flex; align-items: center;">
+          <button mat-button (click)="setAsPlanned($event,trip)">
+            Set as planned
+          </button>
+          <button mat-button (click)="onRemoveClicked($event, trip)">
+            Remove
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
 </div>

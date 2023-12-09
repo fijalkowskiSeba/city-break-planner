@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.model.User;
+import online.sebastianfijalkowski.backend.repository.TripPointRepository;
 import online.sebastianfijalkowski.backend.repository.TripRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TripService {
     private final TripRepository tripRepository;
+    private final TripPointRepository tripPointRepository;
     private final UserService userService;
     private final TripPointService tripPointService;
 
@@ -53,6 +55,65 @@ public class TripService {
         var optionalTrip = tripRepository.findById(uuid);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
+            return new ResponseEntity<>(trip, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> setTripCompleted(String id) {
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(id);
+        } catch (IllegalArgumentException exception) {
+            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
+        }
+
+        var optionalTrip = tripRepository.findById(uuid);
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            trip.setIsCompleted(true);
+            tripRepository.save(trip);
+            return new ResponseEntity<>(trip, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+    public ResponseEntity<?> setTripPlanned(String id) {
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(id);
+        } catch (IllegalArgumentException exception) {
+            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
+        }
+
+        var optionalTrip = tripRepository.findById(uuid);
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            trip.setIsCompleted(false);
+            tripRepository.save(trip);
+            return new ResponseEntity<>(trip, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public ResponseEntity<?> deleteTrip(String id) {
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(id);
+        } catch (IllegalArgumentException exception) {
+            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
+        }
+
+        var optionalTrip = tripRepository.findById(uuid);
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            tripPointRepository.deleteByTrip(trip);
+
+            tripRepository.delete(trip);
             return new ResponseEntity<>(trip, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);

@@ -1,5 +1,6 @@
 package online.sebastianfijalkowski.backend.controller;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
@@ -23,13 +24,32 @@ public class TripController {
         return tripService.getAllTrips(user);
     }
 
+    @Transactional
     @PostMapping("/new")
-    Trip newTrip(@AuthenticationPrincipal OAuth2User user, @RequestBody TripCreationDTO body) {
+    public Trip newTrip(@AuthenticationPrincipal OAuth2User user, @RequestBody TripCreationDTO body) {
         return tripService.saveTripAndTripPointsAndUserIfNotExist(user, body);
     }
 
     @GetMapping("/{id}")
     ResponseEntity<?> getTripById(@PathVariable String id) {
         return tripService.getTripById(id);
+    }
+
+    @Transactional
+    @PatchMapping("/{id}/setCompleted")
+    public ResponseEntity<?> setTripCompleted(@PathVariable String id) {
+        return tripService.setTripCompleted(id);
+    }
+
+    @Transactional
+    @PatchMapping("/{id}/setPlanned")
+    public ResponseEntity<?> setTripPlanned(@PathVariable String id) {
+        return tripService.setTripPlanned(id);
+    }
+
+    @Transactional
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTrip(@PathVariable String id) {
+        return tripService.deleteTrip(id);
     }
 }

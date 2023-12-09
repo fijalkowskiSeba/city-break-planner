@@ -9,4 +9,6 @@ import java.util.UUID;
 
 public interface TripPointRepository extends JpaRepository<TripPoint, UUID> {
     List<TripPoint> findAllByTrip(Trip trip);
+
+    void deleteByTrip(Trip trip);
 }

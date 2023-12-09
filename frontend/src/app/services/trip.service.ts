@@ -43,4 +43,16 @@ export class TripService {
   getTripById(tripId: string) {
     return this.http.get<Trip>(this.apiPath + "/" + tripId);
   }
+
+  setAsCompleted(id: string) {
+    return this.http.patch(this.apiPath + "/" + id + "/setCompleted", null);
+  }
+
+  setAsPlanned(id: string) {
+    return this.http.patch(this.apiPath + "/" + id + "/setPlanned", null);
+  }
+
+  deleteTrip(id: string) {
+    return this.http.delete(this.apiPath + "/" + id);
+  }
 }
