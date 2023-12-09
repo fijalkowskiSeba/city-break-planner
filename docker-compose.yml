@@ -25,13 +25,15 @@ services:
     image: postgres:latest
     container_name: db
     restart: always
-    ports:
-      - "5432:5432"
+    expose:
+      - 5432
     environment:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
     volumes:
       - db:/var/lib/postgresql/data
+    networks:
+      - backend
 
   pgadmin:
     container_name: pgadmin4_container
@@ -47,6 +49,8 @@ services:
       PGADMIN_LISTEN_PORT: 5050
     ports:
       - "5050:5050"
+    networks:
+      - backend
 
   backend:
     build:
@@ -57,6 +61,11 @@ services:
       - "8443:8443"
     depends_on:
       - db
+    networks:
+      - backend
+
+networks:
+  backend: {}
 
 volumes:
   db:
