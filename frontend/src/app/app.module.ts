@@ -30,6 +30,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { TripInfoComponent } from './components/my-trips/trip-info/trip-info.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { ErrorModalComponent } from './components/error-modal/error-modal.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
     StringToXCommaPipe,
     MyTripsComponent,
     AskForNameModalComponent,
-    TripInfoComponent
+    TripInfoComponent,
+    ErrorModalComponent
   ],
   imports: [
     BrowserModule,
