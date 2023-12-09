@@ -15,6 +15,12 @@ export class ErrorModalComponent {
     private router: Router
   ) {}
 
+  ngOnInit() {
+    this.dialogRef.backdropClick().subscribe(() => {
+      this.onRedirect(this.data.redirectPath);
+    });
+  }
+
   onRedirect(redirectPath: string): void {
     if (redirectPath) {
       this.router.navigate([redirectPath]);

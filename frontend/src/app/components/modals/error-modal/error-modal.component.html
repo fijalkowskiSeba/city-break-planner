@@ -1,7 +1,5 @@
-<h1 mat-dialog-title>{{ data.title }}</h1>
-<div mat-dialog-content>
-  <p>{{ data.message }}</p>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onRedirect(data.redirectPath)">{{ data.buttonLabel }}</button>
-</div>
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>{{ data.message }}</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onRedirect(data.redirectPath)">{{ data.buttonLabel }}</button>
+</mat-dialog-actions>
