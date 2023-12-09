@@ -1,11 +1,17 @@
 import {Component} from '@angular/core';
 import {Trip} from "../../models/Trip";
 import {TripService} from "../../services/trip.service";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-my-trips',
   templateUrl: './my-trips.component.html',
-  styleUrls: ['./my-trips.component.css']
+  styleUrls: ['./my-trips.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [style({ opacity: 0 }), animate('300ms', style({ opacity: 1 }))]),
+      transition(':leave', [animate('300ms', style({ opacity: 0 }))]),
+    ])]
 })
 export class MyTripsComponent {
   allPlannedTrips: Trip[] = [];

@@ -1,7 +1,7 @@
 <div class="container">
-  <div *ngIf="allPlannedTrips.length > 0">
-  <h1>Planned</h1>
-  <mat-card *ngFor="let trip of allPlannedTrips">
+  <div>
+  <h1>Planned:</h1>
+  <mat-card *ngFor="let trip of allPlannedTrips" [@fadeInOut]>
     <mat-card-content routerLink="{{trip.id}}">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <span style="text-align: start">{{trip.name}}</span>
@@ -17,9 +17,9 @@
     </mat-card-content>
   </mat-card>
   </div>
-  <div *ngIf="allCompletedTrips.length > 0">
-  <h1>Completed</h1>
-  <mat-card *ngFor="let trip of allCompletedTrips">
+  <div>
+  <h1>Completed:</h1>
+  <mat-card *ngFor="let trip of allCompletedTrips" [@fadeInOut]>
     <mat-card-content routerLink="{{trip.id}}">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <span style="text-align: start">{{trip.name}}</span>
