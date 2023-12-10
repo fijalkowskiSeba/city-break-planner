@@ -21,6 +21,16 @@ export class TripService {
           firstLocation: GeocodingResponse | undefined, lastLocation: GeocodingResponse | undefined) {
     const url = this.apiPath + "/new"
 
+    if (firstLocation === lastLocation) {
+      locations.push(
+        {
+          lat: lastLocation!.lat,
+          lon: lastLocation!.lon,
+          display_name: lastLocation!.display_name
+        }
+      )
+    }
+
     const locationList: TripPointDto[] = locations.map((location, index) => ({
       name: location.display_name,
       latitude: location.lat,
