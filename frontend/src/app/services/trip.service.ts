@@ -21,7 +21,7 @@ export class TripService {
           firstLocation: GeocodingResponse | undefined, lastLocation: GeocodingResponse | undefined) {
     const url = this.apiPath + "/new"
 
-    if (firstLocation === lastLocation) {
+    if (firstLocation && lastLocation && firstLocation === lastLocation) {
       locations.push(
         {
           lat: lastLocation!.lat,
