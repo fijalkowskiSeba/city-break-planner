@@ -4,7 +4,7 @@
     <div *ngIf="trip">
       <h1>{{trip.name}}</h1>
     </div>
-    <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+    <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)" class="locations-list">
       <mat-expansion-panel *ngFor="let location of trip?.tripPoints" cdkDrag>
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -19,11 +19,13 @@
       </mat-expansion-panel>
     </mat-accordion>
     <div class="action-buttons-container" style="margin-top:16px">
-      <button mat-raised-button color="primary" class="action-button">Save new order</button>
-      <button mat-raised-button class="action-button">Revert to original order</button>
+      <button mat-raised-button color="primary" class="action-button" [disabled]="!orderChanged">Save new order</button>
+      <button mat-raised-button class="action-button" [disabled]="!orderChanged">Revert to original order</button>
     </div>
   </div>
   <div class="right-column column">
-    Map here
+    <div class="map-frame">
+      <div id="map"></div>
+    </div>
   </div>
 </div>

@@ -1,10 +1,14 @@
 .column {
   width: 50%;
   margin: 8px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
   display: flex;
+  height: 90%;
 }
 
 .action-button {
@@ -12,8 +16,23 @@
   margin: 8px;
 }
 
-action-buttons-container {
+.action-buttons-container {
   display: flex;
   justify-content: space-between;
   margin: 0 16px;
+}
+
+.map-frame {
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  padding: 6px;
+}
+
+#map {
+  height: 100%;
+}
+
+.locations-list{
+  height: 80%;
+  overflow-y: auto;
 }

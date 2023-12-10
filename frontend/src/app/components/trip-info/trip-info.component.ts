@@ -1,19 +1,23 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {Trip} from "../../models/db models/Trip";
 import {TripService} from "../../services/trip.service";
 import {ActivatedRoute} from "@angular/router";
 import {ErrorModalComponent} from "../modals/error-modal/error-modal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import * as Leaflet from "leaflet";
 
 @Component({
   selector: 'app-trip-info',
   templateUrl: './trip-info.component.html',
   styleUrls: ['./trip-info.component.css']
 })
-export class TripInfoComponent {
+export class TripInfoComponent implements AfterViewInit{
   waitingForData: boolean = true;
   trip?: Trip;
+  private map: any ;
+  orderChanged: boolean = false;
+
   constructor(private tripService: TripService,
               private route: ActivatedRoute,
               private dialog: MatDialog) { }
@@ -26,6 +30,23 @@ export class TripInfoComponent {
     })
   }
 
+  private initMap(): void {
+    this.map = Leaflet.map('map', {
+      center: [ 50.2045, 19.0118 ],
+      zoom: 10
+    });
+    const tiles = Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+
+    tiles.addTo(this.map);
+  }
+
+  ngAfterViewInit(){
+    this.initMap();
+  }
   private whenTripIsFetched(trip: Trip): void {
     this.trip = trip;
     this.trip.tripPoints.sort((a, b) => a.orderInTrip - b.orderInTrip);
@@ -53,7 +74,9 @@ export class TripInfoComponent {
 }
 
   drop(event: CdkDragDrop<any, any>) {
-    if(this.trip?.tripPoints)
-    moveItemInArray(this.trip.tripPoints, event.previousIndex, event.currentIndex);
+    if(this.trip?.tripPoints) {
+      moveItemInArray(this.trip.tripPoints, event.previousIndex, event.currentIndex);
+      this.orderChanged = true;
+    }
   }
 }
