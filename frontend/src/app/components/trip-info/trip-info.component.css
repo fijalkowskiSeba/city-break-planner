@@ -36,3 +36,29 @@
   height: 80%;
   overflow-y: auto;
 }
+
+@media screen and (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    width: 95%;
+  }
+
+  .action-buttons-container {
+    flex-direction: column;
+  }
+
+  .action-button {
+    margin: 8px 0;
+  }
+
+  .locations-list{
+    overflow-y: auto;
+  }
+
+  .column {
+    width: 100%;
+  }
+  .map-frame{
+    height: 50vh;
+  }
+}
