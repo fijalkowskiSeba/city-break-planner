@@ -3,7 +3,7 @@ import {GeocodingResponse} from "../models/geocoding-response";
 import {HttpClient} from "@angular/common/http";
 import {TripPointDto} from "../models/trip-point-dto";
 import {TripCreationDto} from "../models/trip-creation-dto";
-import {Trip} from "../models/Trip";
+import {Trip} from "../models/db models/Trip";
 
 @Injectable({
   providedIn: 'root'

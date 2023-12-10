@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Trip} from "../../models/Trip";
+import {Trip} from "../../models/db models/Trip";
 import {TripService} from "../../services/trip.service";
 import {animate, style, transition, trigger} from "@angular/animations";
 import {MatDialog} from "@angular/material/dialog";
