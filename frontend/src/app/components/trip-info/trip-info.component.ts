@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {Trip} from "../../models/db models/Trip";
 import {TripService} from "../../services/trip.service";
 import {ActivatedRoute} from "@angular/router";
@@ -12,7 +12,7 @@ import * as Leaflet from "leaflet";
   templateUrl: './trip-info.component.html',
   styleUrls: ['./trip-info.component.css']
 })
-export class TripInfoComponent implements AfterViewInit{
+export class TripInfoComponent{
   waitingForData: boolean = true;
   trip?: Trip;
   private map: any ;
@@ -31,10 +31,18 @@ export class TripInfoComponent implements AfterViewInit{
   }
 
   private initMap(): void {
-    this.map = Leaflet.map('map', {
-      center: [ 50.2045, 19.0118 ],
-      zoom: 10
-    });
+    if(this.trip?.tripPoints[0]){
+      const firstPoint = this.trip.tripPoints[0];
+      this.map = Leaflet.map('info-map', {
+        center: [ firstPoint.latitude, firstPoint.longitude ],
+        zoom: 15
+      });
+    }else{
+      this.map = Leaflet.map('info-map', {
+        center: [ 50.2045, 19.0118 ],
+        zoom: 15
+      });
+    }
     const tiles = Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
@@ -44,13 +52,11 @@ export class TripInfoComponent implements AfterViewInit{
     tiles.addTo(this.map);
   }
 
-  ngAfterViewInit(){
-    this.initMap();
-  }
   private whenTripIsFetched(trip: Trip): void {
     this.trip = trip;
     this.trip.tripPoints.sort((a, b) => a.orderInTrip - b.orderInTrip);
     this.waitingForData = false;
+    this.initMap();
   }
 
   private handleFetchError(error: any) {
