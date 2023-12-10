@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {Trip} from "../../../models/Trip";
-import {TripService} from "../../../services/trip.service";
+import {Trip} from "../../models/Trip";
+import {TripService} from "../../services/trip.service";
 import {ActivatedRoute} from "@angular/router";
-import {ErrorModalComponent} from "../../modals/error-modal/error-modal.component";
+import {ErrorModalComponent} from "../modals/error-modal/error-modal.component";
 import {MatDialog} from "@angular/material/dialog";
 
 @Component({

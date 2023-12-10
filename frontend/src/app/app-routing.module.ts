@@ -4,7 +4,7 @@ import {ProfileComponent} from "./components/profile/profile.component";
 import {MapTabComponent} from "./components/map-tab/map-tab.component";
 import {MyTripsComponent} from "./components/my-trips/my-trips.component";
 import {AuthGuard} from "./auth/auth.guard";
-import {TripInfoComponent} from "./components/my-trips/trip-info/trip-info.component";
+import {TripInfoComponent} from "./components/trip-info/trip-info.component";
 
 const routes: Routes = [
   {path: "new-trip", component: MapTabComponent, canActivate: [AuthGuard]},

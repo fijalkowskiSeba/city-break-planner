@@ -28,7 +28,7 @@ import {
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import { TripInfoComponent } from './components/my-trips/trip-info/trip-info.component';
+import { TripInfoComponent } from './components/trip-info/trip-info.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ErrorModalComponent } from './components/modals/error-modal/error-modal.component';
 import { ConfirmationModalComponent } from './components/modals/confirmation-modal/confirmation-modal.component';
