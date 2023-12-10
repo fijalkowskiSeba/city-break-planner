@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import * as Leaflet from "leaflet";
 import {TripPoint} from "../../models/db models/TripPoint";
+import {MarkerService} from "../../services/marker.service";
 
 @Component({
   selector: 'app-trip-info',
@@ -21,7 +22,8 @@ export class TripInfoComponent{
 
   constructor(private tripService: TripService,
               private route: ActivatedRoute,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog,
+              private markerService: MarkerService) { }
 
   ngOnInit() {
     const id = String( this.route.snapshot.paramMap.get('id'));
@@ -38,6 +40,9 @@ export class TripInfoComponent{
         center: [ firstPoint.latitude, firstPoint.longitude ],
         zoom: 15
       });
+      for (let point of this.trip.tripPoints) {
+        this.markerService.addMarkerToMap(this.map, point.latitude, point.longitude)
+      }
     }else{
       this.map = Leaflet.map('info-map', {
         center: [ 50.2045, 19.0118 ],
