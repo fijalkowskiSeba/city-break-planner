@@ -19,15 +19,23 @@ export class TripInfoComponent {
 
   ngOnInit() {
     const id = String( this.route.snapshot.paramMap.get('id'));
-    this.tripService.getTripById(id).subscribe((trip) => {
-      this.trip = trip;
-      this.waitingForData = false;
-    },
-      (error) => {
-      if (error.status === 404) {
-        this.openErrorModal(error.error)
-      }
-      });
+    this.tripService.getTripById(id).subscribe({
+      next: trip => this.whenTripIsFetched(trip),
+      error: error => this.handleFetchError(error)
+    })
+  }
+
+  private whenTripIsFetched(trip: Trip): void {
+    this.trip = trip;
+    this.waitingForData = false;
+  }
+
+  private handleFetchError(error: any) {
+    if (error.status === 404) {
+      this.openErrorModal(error.error);
+    } else {
+      console.error('Error:', error);
+    }
   }
 
   openErrorModal(errorMessage: string): void {
