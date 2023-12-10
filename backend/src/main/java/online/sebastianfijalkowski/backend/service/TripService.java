@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,6 +25,36 @@ public class TripService {
     private final TripPointRepository tripPointRepository;
     private final UserService userService;
     private final TripPointService tripPointService;
+
+
+    private ResponseEntity<?> handleInvalidUUID(String id) {
+        return new ResponseEntity<>("Invalid UUID string: " + id, HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<?> handleTripNotFound() {
+        return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<?> handleTripBelongsToOtherUser() {
+        return new ResponseEntity<>("Trip belongs to another user", HttpStatus.NOT_FOUND);
+    }
+
+    private UUID parseUUID(String id) {
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException exception) {
+            return null;
+        }
+    }
+
+    private Optional<Trip> getTripById(UUID uuid) {
+        return tripRepository.findById(uuid);
+    }
+
+    private boolean isTripBelongsToUser(Trip trip, OAuth2User user) {
+        User userFromDB = userService.getUserById(user.getAttribute("sub"));
+        return trip.getUser().equals(userFromDB);
+    }
 
     @Transactional
     public ResponseEntity<?> saveTripAndTripPointsAndUserIfNotExist(OAuth2User user, TripCreationDTO tripData) {
@@ -45,99 +76,83 @@ public class TripService {
         return tripRepository.findAllByUser(userFromDB);
     }
 
-    public ResponseEntity<?> getTripById(String id) {
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(id);
-        } catch (IllegalArgumentException exception) {
-            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> getTripById(OAuth2User user, String id) {
+        UUID uuid = parseUUID(id);
+        if (uuid == null) {
+            return handleInvalidUUID(id);
         }
 
-        var optionalTrip = tripRepository.findById(uuid);
+        Optional<Trip> optionalTrip = getTripById(uuid);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
-            return new ResponseEntity<>(trip, HttpStatus.OK);
+            if (isTripBelongsToUser(trip, user)) {
+                return new ResponseEntity<>(trip, HttpStatus.OK);
+            } else {
+                return handleTripBelongsToOtherUser();
+            }
         } else {
-            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+            return handleTripNotFound();
         }
     }
 
-    public ResponseEntity<?> setTripCompleted(String id) {
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(id);
-        } catch (IllegalArgumentException exception) {
-            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> setTripCompleted(OAuth2User user, String id) {
+        UUID uuid = parseUUID(id);
+        if (uuid == null) {
+            return handleInvalidUUID(id);
         }
 
-        var optionalTrip = tripRepository.findById(uuid);
+        Optional<Trip> optionalTrip = getTripById(uuid);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
+            if (!isTripBelongsToUser(trip, user)) {
+                return handleTripBelongsToOtherUser();
+            }
             trip.setIsCompleted(true);
             tripRepository.save(trip);
             return new ResponseEntity<>(trip, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+            return handleTripNotFound();
         }
     }
 
 
-    public ResponseEntity<?> setTripPlanned(String id) {
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(id);
-        } catch (IllegalArgumentException exception) {
-            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> setTripPlanned(OAuth2User user, String id) {
+        UUID uuid = parseUUID(id);
+        if (uuid == null) {
+            return handleInvalidUUID(id);
         }
 
-        var optionalTrip = tripRepository.findById(uuid);
+        Optional<Trip> optionalTrip = getTripById(uuid);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
+            if (!isTripBelongsToUser(trip, user)) {
+                return handleTripBelongsToOtherUser();
+            }
             trip.setIsCompleted(false);
             tripRepository.save(trip);
             return new ResponseEntity<>(trip, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+            return handleTripNotFound();
         }
     }
 
-    public ResponseEntity<?> deleteTrip(String id) {
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(id);
-        } catch (IllegalArgumentException exception) {
-            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteTrip(OAuth2User user, String id) {
+        UUID uuid = parseUUID(id);
+        if (uuid == null) {
+            return handleInvalidUUID(id);
         }
 
-        var optionalTrip = tripRepository.findById(uuid);
+        Optional<Trip> optionalTrip = getTripById(uuid);
         if (optionalTrip.isPresent()) {
             Trip trip = optionalTrip.get();
+            if (!isTripBelongsToUser(trip, user)) {
+                return handleTripBelongsToOtherUser();
+            }
             tripPointRepository.deleteByTrip(trip);
-
             tripRepository.delete(trip);
             return new ResponseEntity<>(trip, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
+            return handleTripNotFound();
         }
     }
-
-//    public ResponseEntity<?> getTripWithAllData(String id) {
-//        UUID uuid;
-//        try {
-//            uuid = UUID.fromString(id);
-//        } catch (IllegalArgumentException exception) {
-//            return new ResponseEntity<>("Invalid UUID string", HttpStatus.NOT_FOUND);
-//        }
-//
-//        var optionalTrip = tripRepository.findById(uuid);
-//        Trip trip;
-//        if (optionalTrip.isPresent()) {
-//            trip = optionalTrip.get();
-//        } else {
-//            return new ResponseEntity<>("Trip not found", HttpStatus.NOT_FOUND);
-//        }
-//
-//        List<TripPoint> tripPoints = tripPointRepository.findAllByTrip(trip);
-//
-//    }
 }

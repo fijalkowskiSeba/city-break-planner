@@ -31,30 +31,26 @@ public class TripController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getTripById(@PathVariable String id) {
-        return tripService.getTripById(id);
+    ResponseEntity<?> getTripById(@AuthenticationPrincipal OAuth2User user, @PathVariable String id) {
+        return tripService.getTripById(user, id);
     }
 
     @Transactional
     @PatchMapping("/{id}/setCompleted")
-    public ResponseEntity<?> setTripCompleted(@PathVariable String id) {
-        return tripService.setTripCompleted(id);
+    public ResponseEntity<?> setTripCompleted(@AuthenticationPrincipal OAuth2User user, @PathVariable String id) {
+        return tripService.setTripCompleted(user, id);
     }
 
     @Transactional
     @PatchMapping("/{id}/setPlanned")
-    public ResponseEntity<?> setTripPlanned(@PathVariable String id) {
-        return tripService.setTripPlanned(id);
+    public ResponseEntity<?> setTripPlanned(@AuthenticationPrincipal OAuth2User user, @PathVariable String id) {
+        return tripService.setTripPlanned(user, id);
     }
 
     @Transactional
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTrip(@PathVariable String id) {
-        return tripService.deleteTrip(id);
+    public ResponseEntity<?> deleteTrip(@AuthenticationPrincipal OAuth2User user, @PathVariable String id) {
+        return tripService.deleteTrip(user, id);
     }
 
-//    @GetMapping("/{id}/allData")
-//    public ResponseEntity<?> getTripWithAllData(@PathVariable String id) {
-//        return tripService.getTripWithAllData(id);
-//    }
 }
