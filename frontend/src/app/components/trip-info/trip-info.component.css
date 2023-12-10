@@ -1,0 +1,18 @@
+.column {
+  width: 50%;
+}
+
+.container {
+  display: flex;
+}
+
+.action-button {
+  flex-grow: 1;
+  margin: 0 8px;
+}
+
+action-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 16px;
+}

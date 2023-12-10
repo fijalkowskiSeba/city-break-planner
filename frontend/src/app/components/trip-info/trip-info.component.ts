@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Trip} from "../../models/Trip";
+import {Trip} from "../../models/db models/Trip";
 import {TripService} from "../../services/trip.service";
 import {ActivatedRoute} from "@angular/router";
 import {ErrorModalComponent} from "../modals/error-modal/error-modal.component";
@@ -27,6 +27,7 @@ export class TripInfoComponent {
 
   private whenTripIsFetched(trip: Trip): void {
     this.trip = trip;
+    this.trip.tripPoints.sort((a, b) => a.orderInTrip - b.orderInTrip);
     this.waitingForData = false;
   }
 

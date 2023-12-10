@@ -1,4 +1,25 @@
 <mat-spinner *ngIf="waitingForData"></mat-spinner>
-<div *ngIf="trip">
-  <h1>{{trip.name}}</h1>
+<div class="container">
+  <div class="left-column column">
+    <div *ngIf="trip">
+      <h1>{{trip.name}}</h1>
+    </div>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let location of trip?.tripPoints">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{location.orderInTrip + 1}}&nbsp;{{location.name | stringToXComma : 2}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div class="action-buttons-container">
+          <button mat-raised-button color="primary" class="action-button">Add Photo</button>
+          <button mat-raised-button class="action-button">Add Comment</button>
+          <button mat-raised-button color="accent" class="action-button">Add Bill</button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="right-column column">
+    Map here
+  </div>
 </div>

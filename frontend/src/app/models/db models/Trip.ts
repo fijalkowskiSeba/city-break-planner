@@ -1,4 +1,5 @@
 import {User} from "../user";
+import {TripPoint} from "./TripPoint";
 
 export interface Trip {
   id: string;
