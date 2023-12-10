@@ -1,5 +1,6 @@
 .column {
   width: 50%;
+  margin: 8px;
 }
 
 .container {
@@ -8,7 +9,7 @@
 
 .action-button {
   flex-grow: 1;
-  margin: 0 8px;
+  margin: 8px;
 }
 
 action-buttons-container {

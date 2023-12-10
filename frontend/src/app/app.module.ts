@@ -33,6 +33,7 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { ErrorModalComponent } from './components/modals/error-modal/error-modal.component';
 import { ConfirmationModalComponent } from './components/modals/confirmation-modal/confirmation-modal.component';
 import {MatExpansionModule} from "@angular/material/expansion";
+import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -69,6 +70,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MatTooltipModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
+    CdkDropList,
+    CdkDrag,
   ],
   providers: [],
   bootstrap: [AppComponent]

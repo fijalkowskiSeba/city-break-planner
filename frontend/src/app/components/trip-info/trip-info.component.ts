@@ -4,6 +4,7 @@ import {TripService} from "../../services/trip.service";
 import {ActivatedRoute} from "@angular/router";
 import {ErrorModalComponent} from "../modals/error-modal/error-modal.component";
 import {MatDialog} from "@angular/material/dialog";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-trip-info',
@@ -50,4 +51,9 @@ export class TripInfoComponent {
       }
     });
 }
+
+  drop(event: CdkDragDrop<any, any>) {
+    if(this.trip?.tripPoints)
+    moveItemInArray(this.trip.tripPoints, event.previousIndex, event.currentIndex);
+  }
 }
