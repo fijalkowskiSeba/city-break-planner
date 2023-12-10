@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -30,6 +28,6 @@ public class Trip {
     private User user;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
-    private Set<TripPoint> tripPoints = new HashSet<>();
+    private List<TripPoint> tripPoints = new ArrayList<>();
 
 }
