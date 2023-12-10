@@ -1,5 +1,6 @@
 package online.sebastianfijalkowski.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class TripBill {
 
     private Double price;
 
+    @JsonBackReference
     @JsonIgnore
     @ManyToOne
     private TripPoint tripPoint;

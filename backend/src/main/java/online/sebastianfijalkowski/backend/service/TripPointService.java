@@ -42,7 +42,10 @@ public class TripPointService {
             tripPointEntity.setLongitude(tripPoint.getLongitude());
             tripPointEntity.setOrderInTrip(tripPoint == firstLocation ? 0 : tripPoint.getOrderInTrip() == -2 ? tripPoints.length -1 : orderInTrip++);
             tripPointEntity.setTrip(trip);
-            tripPointList.add(tripPointRepository.save(tripPointEntity));
+            tripPointEntity.setTripBills(new ArrayList<>());
+            tripPointEntity.setTripComments(new ArrayList<>());
+            tripPointEntity.setTripPhotos(new ArrayList<>());
+            tripPointList.add(tripPointEntity);
         }
 
         return tripPointList;

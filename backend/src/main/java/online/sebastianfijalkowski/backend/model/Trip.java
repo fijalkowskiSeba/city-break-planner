@@ -1,5 +1,6 @@
 package online.sebastianfijalkowski.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Trip {
     @Column(nullable = false)
     private Boolean isCompleted;
 
+    @JsonBackReference
     @JsonIgnore
     @ManyToOne
     private User user;

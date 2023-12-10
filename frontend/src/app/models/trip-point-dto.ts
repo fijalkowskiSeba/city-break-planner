@@ -8,6 +8,4 @@ export interface TripPointDto {
   longitude: number;
 
   orderInTrip: number;
-
-  //trip: {};
 }

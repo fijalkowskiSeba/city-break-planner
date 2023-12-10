@@ -6,6 +6,8 @@ import online.sebastianfijalkowski.backend.repository.UserRepository;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -19,7 +21,7 @@ public class UserService {
 
         var userFromDB = userRepository.findById(uuid).orElse(null);
         if (userFromDB == null) {
-            userFromDB = userRepository.save(new User(uuid, name, email, picture));
+            userFromDB = userRepository.save(new User(uuid, name, email, picture , new ArrayList<>()));
         }
         return userFromDB;
     }

@@ -26,7 +26,7 @@ public class TripController {
 
     @Transactional
     @PostMapping("/new")
-    public Trip newTrip(@AuthenticationPrincipal OAuth2User user, @RequestBody TripCreationDTO body) {
+    public ResponseEntity<?> newTrip(@AuthenticationPrincipal OAuth2User user, @RequestBody TripCreationDTO body) {
         return tripService.saveTripAndTripPointsAndUserIfNotExist(user, body);
     }
 
@@ -52,4 +52,9 @@ public class TripController {
     public ResponseEntity<?> deleteTrip(@PathVariable String id) {
         return tripService.deleteTrip(id);
     }
+
+//    @GetMapping("/{id}/allData")
+//    public ResponseEntity<?> getTripWithAllData(@PathVariable String id) {
+//        return tripService.getTripWithAllData(id);
+//    }
 }
