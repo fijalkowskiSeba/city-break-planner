@@ -1,9 +1,12 @@
 package online.sebastianfijalkowski.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -22,7 +25,11 @@ public class Trip {
     @Column(nullable = false)
     private Boolean isCompleted;
 
+    @JsonIgnore
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL)
+    private Set<TripPoint> tripPoints = new HashSet<>();
 
 }

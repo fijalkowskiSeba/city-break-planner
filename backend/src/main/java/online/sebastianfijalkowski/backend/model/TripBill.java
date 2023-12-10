@@ -10,18 +10,17 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "TRIP_PHOTOS")
-public class TripPhoto {
+@Table(name = "TRIP_BILLS")
+public class TripBill {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    private String name;
+    private String item;
 
-    private String pathToFile;
+    private Double price;
 
     @JsonIgnore
     @ManyToOne
     private TripPoint tripPoint;
-
 }

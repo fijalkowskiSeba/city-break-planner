@@ -1,5 +1,6 @@
 package online.sebastianfijalkowski.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,8 @@ public class TripComment {
 
     private String content;
 
+    @JsonIgnore
     @ManyToOne
-    private Trip trip;
+    private TripPoint tripPoint;
 
 }
