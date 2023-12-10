@@ -6,6 +6,7 @@ import {ErrorModalComponent} from "../modals/error-modal/error-modal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import * as Leaflet from "leaflet";
+import {TripPoint} from "../../models/db models/TripPoint";
 
 @Component({
   selector: 'app-trip-info',
@@ -84,5 +85,9 @@ export class TripInfoComponent{
       moveItemInArray(this.trip.tripPoints, event.previousIndex, event.currentIndex);
       this.orderChanged = true;
     }
+  }
+
+  locationClicked(location: TripPoint) {
+    this.map.setView([location.latitude,location.longitude],15);
   }
 }
