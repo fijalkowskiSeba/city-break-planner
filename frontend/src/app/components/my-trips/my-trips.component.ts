@@ -55,6 +55,7 @@ export class MyTripsComponent {
     event.stopPropagation();
 
     const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      width: '400px',
       data: {
         title: 'Confirmation',
         message: 'Are you sure you want to delete this trip?',
