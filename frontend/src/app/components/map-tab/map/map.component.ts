@@ -43,7 +43,7 @@ export class MapComponent implements AfterViewInit{
 
   private showLocation(latitude: number, longitude: number){
     this.map.setView([latitude,longitude],15);
-    this.markerService.addMarkerToMap(this.map,latitude,longitude);
+    this.markerService.addMarkerToMapAndRemoveOthers(this.map,latitude,longitude);
   }
 
   addChosenLocation() {
