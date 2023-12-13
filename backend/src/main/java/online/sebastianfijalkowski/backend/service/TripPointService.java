@@ -4,7 +4,11 @@ import lombok.RequiredArgsConstructor;
 import online.sebastianfijalkowski.backend.dto.TripPointDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.model.TripPoint;
+import online.sebastianfijalkowski.backend.model.User;
 import online.sebastianfijalkowski.backend.repository.TripPointRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TripPointService {
     private final TripPointRepository tripPointRepository;
+    private final UserService userService;
 
     public List<TripPoint> newTripPoints(TripPointDTO[] tripPoints, Trip trip) {
         List<TripPoint> tripPointList = new ArrayList<>();
@@ -50,5 +55,37 @@ public class TripPointService {
         }
 
         return tripPointList;
+    }
+
+    public ResponseEntity<?> setTripPointVisited(OAuth2User user, TripPoint tripPoint) {
+        ResponseEntity<?> response = isTripPointBelongsToUser(tripPoint, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        TripPoint tripPointFromDB = tripPointRepository.findById(tripPoint.getId()).orElse(null);
+        if (tripPointFromDB == null) {
+            return new ResponseEntity<>("TripPoint not found", HttpStatus.NOT_FOUND);
+        }
+
+        tripPointFromDB.setVisited(tripPoint.getVisited());
+
+        return new ResponseEntity<>(tripPointRepository.save(tripPointFromDB), HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> isTripPointBelongsToUser(TripPoint tripPoint, OAuth2User user) {
+        User userFromDB = userService.getUserById(user.getAttribute("sub"));
+        if (userFromDB == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        TripPoint tripPointFromDB = tripPointRepository.findById(tripPoint.getId()).orElse(null);
+        if (tripPointFromDB == null) {
+            return new ResponseEntity<>("TripPoint not found", HttpStatus.NOT_FOUND);
+        }
+        if (!tripPointFromDB.getTrip().getUser().equals(userFromDB)) {
+            return new ResponseEntity<>("TripPoint belongs to another user", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().build();
     }
 }
