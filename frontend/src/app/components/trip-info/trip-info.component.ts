@@ -4,7 +4,6 @@ import {TripService} from "../../services/trip.service";
 import {ActivatedRoute} from "@angular/router";
 import {ErrorModalComponent} from "../modals/error-modal/error-modal.component";
 import {MatDialog} from "@angular/material/dialog";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import * as Leaflet from "leaflet";
 import {TripPoint} from "../../models/db models/TripPoint";
 import {MarkerService} from "../../services/marker.service";
@@ -18,7 +17,6 @@ export class TripInfoComponent{
   waitingForData: boolean = true;
   trip?: Trip;
   private map: any ;
-  orderChanged: boolean = false;
 
   constructor(private tripService: TripService,
               private route: ActivatedRoute,
@@ -84,13 +82,6 @@ export class TripInfoComponent{
       }
     });
 }
-
-  drop(event: CdkDragDrop<any, any>) {
-    if(this.trip?.tripPoints) {
-      moveItemInArray(this.trip.tripPoints, event.previousIndex, event.currentIndex);
-      this.orderChanged = true;
-    }
-  }
 
   locationClicked(location: TripPoint) {
     this.map.setView([location.latitude,location.longitude],15);

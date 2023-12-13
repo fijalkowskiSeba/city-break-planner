@@ -33,8 +33,17 @@
 }
 
 .locations-list{
-  height: 80%;
+  height: 90%;
   overflow-y: auto;
+}
+
+.location-item {
+  background-color: #424242;
+}
+
+.location-item:hover {
+  background-color: #4d4d4d;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 600px) {

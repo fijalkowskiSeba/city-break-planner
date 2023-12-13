@@ -8,6 +8,7 @@ export interface TripPoint {
   latitude: number;
   longitude: number;
   orderInTrip: number;
+  visited: boolean;
   tripBills: TripBill[];
   tripPhotos: TripPhoto[];
   tripComments: TripComment[];

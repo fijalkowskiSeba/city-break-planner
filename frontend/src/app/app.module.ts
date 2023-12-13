@@ -28,12 +28,13 @@ import {
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import { TripInfoComponent } from './components/trip-info/trip-info.component';
+import {TripInfoComponent} from './components/trip-info/trip-info.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import { ErrorModalComponent } from './components/modals/error-modal/error-modal.component';
-import { ConfirmationModalComponent } from './components/modals/confirmation-modal/confirmation-modal.component';
+import {ErrorModalComponent} from './components/modals/error-modal/error-modal.component';
+import {ConfirmationModalComponent} from './components/modals/confirmation-modal/confirmation-modal.component';
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
     MatExpansionModule,
     CdkDropList,
     CdkDrag,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
