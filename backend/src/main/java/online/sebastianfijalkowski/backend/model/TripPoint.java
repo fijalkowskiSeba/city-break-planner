@@ -29,6 +29,8 @@ public class TripPoint {
 
     private Integer orderInTrip;
 
+    private Boolean visited;
+
     @JsonBackReference
     @ManyToOne
     private Trip trip;

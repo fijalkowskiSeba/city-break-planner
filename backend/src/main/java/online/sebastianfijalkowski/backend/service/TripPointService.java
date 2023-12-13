@@ -41,6 +41,7 @@ public class TripPointService {
             tripPointEntity.setLatitude(tripPoint.getLatitude());
             tripPointEntity.setLongitude(tripPoint.getLongitude());
             tripPointEntity.setOrderInTrip(tripPoint == firstLocation ? 0 : tripPoint.getOrderInTrip() == -2 ? tripPoints.length -1 : orderInTrip++);
+            tripPointEntity.setVisited(false);
             tripPointEntity.setTrip(trip);
             tripPointEntity.setTripBills(new ArrayList<>());
             tripPointEntity.setTripComments(new ArrayList<>());
