@@ -6,9 +6,9 @@
     </div>
     <mat-list class="locations-list">
       <mat-list-item *ngFor="let location of trip?.tripPoints">
-        <div class="location-item" (click)="locationClicked(location)">
-          <mat-checkbox [(ngModel)]="location.visited"></mat-checkbox>
-          <span>{{location.orderInTrip + 1}}&nbsp;{{location.name | stringToXComma : 2}}</span>
+        <div class="location-item" (click)="locationClicked($event, location)">
+          <mat-checkbox [(ngModel)]="location.visited" (click)="checkboxClicked(location)"></mat-checkbox>
+          <span>{{location.orderInTrip + 1}}.&nbsp;{{location.name | stringToXComma : 2}}</span>
         </div>
       </mat-list-item>
     </mat-list>

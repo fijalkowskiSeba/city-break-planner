@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -57,35 +58,63 @@ public class TripPointService {
         return tripPointList;
     }
 
-    public ResponseEntity<?> setTripPointVisited(OAuth2User user, TripPoint tripPoint) {
-        ResponseEntity<?> response = isTripPointBelongsToUser(tripPoint, user);
+    public ResponseEntity<?> setTripPointVisited(OAuth2User user, String id, Boolean isVisited) {
+
+        ResponseEntity<?> response = isTripPointBelongsToUser(id, user);
         if (response.getStatusCode() != HttpStatus.OK) {
             return response;
         }
 
-        TripPoint tripPointFromDB = tripPointRepository.findById(tripPoint.getId()).orElse(null);
+        UUID uuid = parseUUID(id);
+        if (uuid == null) {
+            return handleInvalidUUID(id);
+        }
+
+        TripPoint tripPointFromDB = findTripPointById(uuid);
         if (tripPointFromDB == null) {
             return new ResponseEntity<>("TripPoint not found", HttpStatus.NOT_FOUND);
         }
 
-        tripPointFromDB.setVisited(tripPoint.getVisited());
+        tripPointFromDB.setVisited(isVisited);
 
         return new ResponseEntity<>(tripPointRepository.save(tripPointFromDB), HttpStatus.OK);
     }
 
-    private ResponseEntity<?> isTripPointBelongsToUser(TripPoint tripPoint, OAuth2User user) {
+    private ResponseEntity<?> isTripPointBelongsToUser(String tripID, OAuth2User user) {
         User userFromDB = userService.getUserById(user.getAttribute("sub"));
+
         if (userFromDB == null) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        TripPoint tripPointFromDB = tripPointRepository.findById(tripPoint.getId()).orElse(null);
+        UUID uuid = parseUUID(tripID);
+        if (uuid == null) {
+            return handleInvalidUUID(tripID);
+        }
+
+        TripPoint tripPointFromDB = findTripPointById(uuid);
         if (tripPointFromDB == null) {
             return new ResponseEntity<>("TripPoint not found", HttpStatus.NOT_FOUND);
         }
+
         if (!tripPointFromDB.getTrip().getUser().equals(userFromDB)) {
             return new ResponseEntity<>("TripPoint belongs to another user", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok().build();
+    }
+
+    private TripPoint findTripPointById(UUID id) {
+        return tripPointRepository.findById(id).orElse(null);
+    }
+    private UUID parseUUID(String id) {
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException exception) {
+            return null;
+        }
+    }
+
+    private ResponseEntity<?> handleInvalidUUID(String id) {
+        return new ResponseEntity<>("Invalid UUID string: " + id, HttpStatus.NOT_FOUND);
     }
 }

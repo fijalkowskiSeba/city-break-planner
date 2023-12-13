@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import * as Leaflet from "leaflet";
 import {TripPoint} from "../../models/db models/TripPoint";
 import {MarkerService} from "../../services/marker.service";
+import {TripPointService} from "../../services/trip-point.service";
 
 @Component({
   selector: 'app-trip-info',
@@ -21,7 +22,8 @@ export class TripInfoComponent{
   constructor(private tripService: TripService,
               private route: ActivatedRoute,
               private dialog: MatDialog,
-              private markerService: MarkerService) { }
+              private markerService: MarkerService,
+              private tripPointService: TripPointService) { }
 
   ngOnInit() {
     const id = String( this.route.snapshot.paramMap.get('id'));
@@ -83,7 +85,11 @@ export class TripInfoComponent{
     });
 }
 
-  locationClicked(location: TripPoint) {
+  locationClicked(event: Event, location: TripPoint) {
     this.map.setView([location.latitude,location.longitude],15);
+  }
+
+  checkboxClicked(location: TripPoint) {
+    this.tripPointService.setVisited(location).subscribe();
   }
 }
