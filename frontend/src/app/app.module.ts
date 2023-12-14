@@ -35,6 +35,7 @@ import {ConfirmationModalComponent} from './components/modals/confirmation-modal
 import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { LeafletModule } from "@asymmetrik/ngx-leaflet";
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     CdkDropList,
     CdkDrag,
     MatCheckboxModule,
+    LeafletModule
   ],
   providers: [],
   bootstrap: [AppComponent]
