@@ -14,6 +14,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background: #c2185b;
 }
 
+@media (max-width: 767px) {
+  ::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+}
+
 .leaflet-routing-collapsible{
   display: none;
 }
