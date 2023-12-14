@@ -10,9 +10,9 @@
         </div>
         <mat-list cdkDropList class="locations-list" (cdkDropListDropped)="drop($event)">
             <mat-list-item class=location-item *ngFor="let location of trip?.tripPoints"
-                           cdkDrag>
+                           cdkDrag (click)="onLocationClicked(location)">
                 <div class=location-item-content>
-                    <span>{{location.orderInTrip + 1}}.&nbsp;{{location.name | stringToXComma : 2}}</span>
+                    <span style="width: 80%; overflow-x: hidden">{{location.orderInTrip + 1}}.&nbsp;{{location.name | stringToXComma : 2}}</span>
                     <div class="location-item-content-buttons">
                         <button mat-raised-button color="primary" class="location-item-content-button"
                                 (click)="onLocationEdit(location)">Edit
@@ -38,6 +38,12 @@
             </mat-form-field>
             <button mat-raised-button color="primary" style="flex-grow: 1; margin: 0 6px; height: 56px">Search</button>
         </div>
-
+        <div class="map-frame" >
+            <div id="edit-map"
+                 leaflet
+                 [leafletOptions]="options"
+                 (leafletMapReady)="onMapReady($event)"
+            ></div>
+        </div>
     </div>
 </div>

@@ -29,6 +29,12 @@ export class MarkerService {
     map.addLayer(this.marker);
   }
 
+  addNotDraggableMarkerToMap(map: Leaflet.Map, lat :number, lon: number) {
+    map.removeLayer(this.marker);
+    this.marker = Leaflet.marker([lat, lon], {draggable:false});
+    map.addLayer(this.marker);
+  }
+
   private markers: Leaflet.Marker[] = [];
   addMarkerToMap(map: Leaflet.Map, lat: number, lon: number) {
     const newMarker = Leaflet.marker([lat, lon], { draggable: false });

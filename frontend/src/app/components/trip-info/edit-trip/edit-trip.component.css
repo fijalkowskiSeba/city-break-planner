@@ -88,3 +88,14 @@ trip-name-row {
     flex-direction: row;
     justify-content: space-between;
 }
+
+.map-frame {
+    border: 2px solid black;
+    width: 99%;
+    height: 99%;
+    margin: 8px;
+}
+
+#edit-map {
+    height: 100%;
+}
