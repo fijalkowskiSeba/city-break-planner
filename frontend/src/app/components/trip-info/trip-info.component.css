@@ -19,7 +19,7 @@
 .action-buttons-container {
   display: flex;
   justify-content: space-between;
-  margin: 0 16px;
+  margin: 16px 16px 0;
 }
 
 .map-frame {

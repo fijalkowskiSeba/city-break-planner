@@ -65,4 +65,9 @@ export class TripService {
   deleteTrip(id: string) {
     return this.http.delete(this.apiPath + "/" + id);
   }
+
+  //TODO: implement backend
+  updateTrip(trip: Trip) {
+    return this.http.put(this.apiPath + "/" + trip.id, trip);
+  }
 }

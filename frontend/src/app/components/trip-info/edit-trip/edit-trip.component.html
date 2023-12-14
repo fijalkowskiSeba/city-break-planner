@@ -1,1 +1,43 @@
-<p>edit-trip works!</p>
+<mat-spinner *ngIf="waitingForData"></mat-spinner>
+<div class="container" *ngIf="trip">
+    <div class="column">
+        <div class="trip-name-row">
+            <mat-form-field>
+                <mat-label>Trip name</mat-label>
+                <input matInput [(ngModel)]="trip.name"/>
+            </mat-form-field>
+            <mat-checkbox [(ngModel)]="trip.isCompleted" style="margin-left: auto">Trip Completed</mat-checkbox>
+        </div>
+        <mat-list cdkDropList class="locations-list" (cdkDropListDropped)="drop($event)">
+            <mat-list-item class=location-item *ngFor="let location of trip?.tripPoints"
+                           cdkDrag>
+                <div class=location-item-content>
+                    <span>{{location.orderInTrip + 1}}.&nbsp;{{location.name | stringToXComma : 2}}</span>
+                    <div class="location-item-content-buttons">
+                        <button mat-raised-button color="primary" class="location-item-content-button"
+                                (click)="onLocationEdit(location)">Edit
+                        </button>
+                        <button mat-raised-button class="location-item-content-button"
+                                (click)="onLocationRemove(location)">X
+                        </button>
+                    </div>
+                </div>
+            </mat-list-item>
+        </mat-list>
+        <div class="action-buttons-container">
+            <button mat-raised-button color="primary" class="action-button" (click)="onSaveChanges()">Save changes
+            </button>
+            <button mat-raised-button class="action-button" (click)="onCancel()">Cancel</button>
+        </div>
+    </div>
+    <div class="column">
+        <div class="search-row">
+            <mat-form-field style="flex-grow: 5">
+                <mat-label>Search for more location</mat-label>
+                <input matInput/>
+            </mat-form-field>
+            <button mat-raised-button color="primary" style="flex-grow: 1; margin: 0 6px; height: 56px">Search</button>
+        </div>
+
+    </div>
+</div>
