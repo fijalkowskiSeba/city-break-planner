@@ -14,8 +14,8 @@
     </mat-list>
 
     <div class="action-buttons-container" style="margin-top:16px">
-      <button mat-raised-button color="primary" class="action-button" >See your data</button>
-      <button mat-raised-button class="action-button" >Edit Trip</button>
+      <button mat-raised-button color="primary" class="action-button" (click)="onTripHistoryClick()" >Trip History</button>
+      <button mat-raised-button class="action-button" (click)="onEditTripClick()">Edit Trip</button>
     </div>
   </div>
   <div class="right-column column">

@@ -36,6 +36,8 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {CdkDrag, CdkDropList} from "@angular/cdk/drag-drop";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import { LeafletModule } from "@asymmetrik/ngx-leaflet";
+import { TripHistoryComponent } from './components/trip-info/trip-history/trip-history.component';
+import { EditTripComponent } from './components/trip-info/edit-trip/edit-trip.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { LeafletModule } from "@asymmetrik/ngx-leaflet";
     AskForNameModalComponent,
     TripInfoComponent,
     ErrorModalComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    TripHistoryComponent,
+    EditTripComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Trip} from "../../models/db models/Trip";
 import {TripService} from "../../services/trip.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ErrorModalComponent} from "../modals/error-modal/error-modal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {TripPoint} from "../../models/db models/TripPoint";
@@ -35,7 +35,8 @@ export class TripInfoComponent {
     constructor(private tripService: TripService,
                 private route: ActivatedRoute,
                 private dialog: MatDialog,
-                private tripPointService: TripPointService) {
+                private tripPointService: TripPointService,
+                private router: Router) {
     }
 
     ngOnInit() {
@@ -99,4 +100,13 @@ export class TripInfoComponent {
         }).addTo(this.map);
     }
 
+    onTripHistoryClick() {
+        if(!this.trip?.id) return;
+        this.router.navigate(['/my-trips', this.trip.id, 'history']);
+    }
+
+    onEditTripClick() {
+        if(!this.trip?.id) return;
+        this.router.navigate(['/my-trips', this.trip.id, 'edit']);
+    }
 }
