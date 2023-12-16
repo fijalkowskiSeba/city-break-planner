@@ -75,6 +75,7 @@ export class EditTripComponent{
   drop(event: CdkDragDrop<string[]>) {
     if(this.trip?.tripPoints === undefined) return;
     moveItemInArray(this.trip?.tripPoints, event.previousIndex, event.currentIndex);
+    this.markerService.drawMapRoute(this.map, this.trip.tripPoints);
   }
 
   onLocationEdit(location: TripPoint) {
