@@ -9,6 +9,7 @@ import {TripPointService} from "../../services/trip-point.service";
 import {latLng, tileLayer} from "leaflet";
 import "leaflet";
 import "leaflet-routing-machine";
+import {MarkerService} from "../../services/marker.service";
 // @ts-ignore
 declare let L;
 
@@ -36,7 +37,8 @@ export class TripInfoComponent {
                 private route: ActivatedRoute,
                 private dialog: MatDialog,
                 private tripPointService: TripPointService,
-                private router: Router) {
+                private router: Router,
+                private makerService: MarkerService) {
     }
 
     ngOnInit() {
@@ -51,7 +53,7 @@ export class TripInfoComponent {
         this.trip = trip;
         this.trip.tripPoints.sort((a, b) => a.orderInTrip - b.orderInTrip);
         this.waitingForData = false;
-        this.drawMapRoute();
+        this.makerService.drawMapRoute(this.map, this.trip.tripPoints);
     }
 
     private handleFetchError(error: any) {
@@ -84,20 +86,6 @@ export class TripInfoComponent {
 
     onMapReady(map: L.Map) {
         this.map = map;
-    }
-
-    drawMapRoute() {
-        const waypoints = this.trip?.tripPoints.map(point => L.latLng(point.latitude, point.longitude));
-        const osrmUrl =  'https://routing.openstreetmap.de/routed-foot/route/v1/';
-        L.Routing.control({
-            waypoints: waypoints,
-            routeWhileDragging: false,
-            show: false,
-            draggableWaypoints: false,
-            router: L.Routing.osrmv1({
-                serviceUrl: osrmUrl,
-            }),
-        }).addTo(this.map);
     }
 
     onTripHistoryClick() {

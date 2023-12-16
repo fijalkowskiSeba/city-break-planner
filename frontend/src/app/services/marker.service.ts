@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as Leaflet from 'leaflet';
 import { icon, Marker } from 'leaflet';
+import {TripPoint} from "../models/db models/TripPoint";
+import "leaflet";
+import "leaflet-routing-machine";
+// @ts-ignore
+declare let L;
 const iconRetinaUrl = 'assets/marker-icon-2x.png';
 const iconUrl = 'assets/marker-icon.png';
 const shadowUrl = 'assets/marker-shadow.png';
@@ -35,14 +40,22 @@ export class MarkerService {
     map.addLayer(this.marker);
   }
 
-  private markers: Leaflet.Marker[] = [];
-  addMarkerToMap(map: Leaflet.Map, lat: number, lon: number) {
-    const newMarker = Leaflet.marker([lat, lon], { draggable: false });
-    map.addLayer(newMarker);
-    this.markers.push(newMarker);
-  }
-
   getCurrentLatLng(){
     return this.marker.getLatLng();
   }
+
+  drawMapRoute(map: any, tripPoints: TripPoint[]) {
+    const waypoints = tripPoints.map(point => L.latLng(point.latitude, point.longitude));
+    const osrmUrl =  'https://routing.openstreetmap.de/routed-foot/route/v1/';
+    L.Routing.control({
+      waypoints: waypoints,
+      routeWhileDragging: false,
+      show: false,
+      draggableWaypoints: false,
+      router: L.Routing.osrmv1({
+        serviceUrl: osrmUrl,
+      }),
+    }).addTo(map);
+  }
+
 }
