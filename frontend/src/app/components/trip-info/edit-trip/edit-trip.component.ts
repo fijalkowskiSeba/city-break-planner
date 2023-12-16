@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component} from '@angular/core';
+import {Component} from '@angular/core';
 import {Trip} from "../../../models/db models/Trip";
 import {TripService} from "../../../services/trip.service";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -7,7 +7,6 @@ import {ErrorModalComponent} from "../../modals/error-modal/error-modal.componen
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 import {TripPoint} from "../../../models/db models/TripPoint";
 import {EditTripPointModalComponent} from "../../modals/edit-trip-point-modal/edit-trip-point-modal.component";
-import * as Leaflet from "leaflet";
 import {latLng, tileLayer} from "leaflet";
 import {MarkerService} from "../../../services/marker.service";
 
@@ -123,7 +122,7 @@ export class EditTripComponent{
   onMapReady(map: L.Map) {
     this.map = map;
     if (this.trip?.tripPoints[0]){
-        this.showLocation(this.trip.tripPoints[0].latitude,this.trip.tripPoints[0].longitude);
+      this.markerService.drawMapRoute(this.map, this.trip.tripPoints);
     }
   }
 
@@ -133,6 +132,6 @@ export class EditTripComponent{
   }
 
   onLocationClicked(location: TripPoint) {
-    this.showLocation(location.latitude,location.longitude);
+    this.map.setView([location.latitude,location.longitude],15);
   }
 }
