@@ -13,6 +13,9 @@ import {GeocodingAPIService} from "../../../services/geocoding-api.service";
 import {GeocodingResponse} from "../../../models/geocoding-response";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {ConfirmationModalComponent} from "../../modals/confirmation-modal/confirmation-modal.component";
+import {
+    FirstLastLocationModalComponent
+} from "../../modals/first-last-location-modal/first-last-location-modal.component";
 
 @Component({
   selector: 'app-edit-trip',
@@ -67,8 +70,8 @@ export class EditTripComponent{
       data: {
         title: 'Error',
         message: errorMessage,
-        redirectPath: '/my-trips',
-        buttonLabel: 'Go back to my trips'
+        redirectPath: '',
+        buttonLabel: 'OK'
       }
     });
   }
@@ -220,5 +223,26 @@ export class EditTripComponent{
         this.newLocation = undefined;
         this.newPlaceInput = '';
         this.fetchedLocations = [];
+    }
+
+    onAutoRoute() {
+        const dialogRef = this.dialog.open(FirstLastLocationModalComponent, {
+            width: '400px',
+            data: { locations: this.trip!.tripPoints },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.tripService.autoRoute(this.trip!.tripPoints, result.location1, result.location2).subscribe({
+                    next: response => this.handleAutoRouteResponse(response),
+                    error: error => this.openErrorModal(error.error.error)
+                });
+            }
+        });
+    }
+
+    private handleAutoRouteResponse(response: TripPoint[]) {
+        this.trip!.tripPoints = response;
+        this.markerService.drawMapRoute(this.map, this.trip!.tripPoints);
     }
 }

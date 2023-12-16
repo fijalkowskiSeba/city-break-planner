@@ -40,6 +40,8 @@ import { TripHistoryComponent } from './components/trip-info/trip-history/trip-h
 import { EditTripComponent } from './components/trip-info/edit-trip/edit-trip.component';
 import { EditTripPointModalComponent } from './components/modals/edit-trip-point-modal/edit-trip-point-modal.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import { FirstLastLocationModalComponent } from './components/modals/first-last-location-modal/first-last-location-modal.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
@@ -58,7 +60,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     ConfirmationModalComponent,
     TripHistoryComponent,
     EditTripComponent,
-    EditTripPointModalComponent
+    EditTripPointModalComponent,
+    FirstLastLocationModalComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +86,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     CdkDrag,
     MatCheckboxModule,
     LeafletModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

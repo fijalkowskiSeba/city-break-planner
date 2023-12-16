@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {TripPointDto} from "../models/trip-point-dto";
 import {TripCreationDto} from "../models/trip-creation-dto";
 import {Trip} from "../models/db models/Trip";
+import {TripPoint} from "../models/db models/TripPoint";
+import {AutoRouteBody} from "../models/auto-route-body";
 
 @Injectable({
   providedIn: 'root'
@@ -66,8 +68,19 @@ export class TripService {
     return this.http.delete(this.apiPath + "/" + id);
   }
 
-  //TODO: implement backend
   updateTrip(trip: Trip) {
     return this.http.put(this.apiPath + "/" + trip.id, trip);
+  }
+
+  autoRoute(tripPoints: TripPoint[], firstLocation: TripPoint | undefined, lastLocation: TripPoint | undefined) {
+
+    const url = this.apiPath + "/autoRoute";
+    const bodyToSend = {
+      tripPoints: tripPoints,
+      firstLocation: firstLocation,
+      lastLocation: lastLocation
+    } as AutoRouteBody;
+
+    return this.http.post<TripPoint[]>(url, bodyToSend);
   }
 }
