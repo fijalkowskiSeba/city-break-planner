@@ -12,6 +12,7 @@ import {MarkerService} from "../../../services/marker.service";
 import {GeocodingAPIService} from "../../../services/geocoding-api.service";
 import {GeocodingResponse} from "../../../models/geocoding-response";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
+import {ConfirmationModalComponent} from "../../modals/confirmation-modal/confirmation-modal.component";
 
 @Component({
   selector: 'app-edit-trip',
@@ -96,10 +97,26 @@ export class EditTripComponent{
     });
   }
 
-  onLocationRemove(location: TripPoint) {
-    this.trip?.tripPoints?.splice(this.trip.tripPoints.indexOf(location), 1);
-    this.markerService.drawMapRoute(this.map, this.trip!.tripPoints);
-  }
+    onLocationRemove(location: TripPoint) {
+        if (location.id === undefined) {
+            this.trip?.tripPoints?.splice(this.trip.tripPoints.indexOf(location), 1);
+            this.markerService.drawMapRoute(this.map, this.trip!.tripPoints);
+        } else {
+            const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+                width: '400px',
+                data: {
+                    title: 'Are you sure you want to delete this location?',
+                    message: 'All photos, comments and bills will be deleted after you save changes.'
+                },
+            });
+            dialogRef.afterClosed().subscribe((result) => {
+                if (result) {
+                    this.trip?.tripPoints?.splice(this.trip.tripPoints.indexOf(location), 1);
+                    this.markerService.drawMapRoute(this.map, this.trip!.tripPoints);
+                }
+            });
+        }
+    }
 
   onSaveChanges() {
     if(this.trip === undefined || this.originalTrip === undefined) return;
