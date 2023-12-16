@@ -120,10 +120,18 @@ export class EditTripComponent{
 
   onSaveChanges() {
     if(this.trip === undefined || this.originalTrip === undefined) return;
+
+    this.tripPointOrderAsIndex();
+
     this.tripService.updateTrip(this.trip).subscribe({
       next: () => this.onCancel(),
       error: error => this.openErrorModal(error.error.error)
     });
+  }
+
+  private tripPointOrderAsIndex(){
+      if(this.trip === undefined || this.trip.tripPoints === undefined) return;
+      this.trip.tripPoints.map((tripPoint, index) => tripPoint.orderInTrip = index);
   }
 
   onCancel() {
