@@ -39,6 +39,7 @@ import { LeafletModule } from "@asymmetrik/ngx-leaflet";
 import { TripHistoryComponent } from './components/trip-info/trip-history/trip-history.component';
 import { EditTripComponent } from './components/trip-info/edit-trip/edit-trip.component';
 import { EditTripPointModalComponent } from './components/modals/edit-trip-point-modal/edit-trip-point-modal.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { EditTripPointModalComponent } from './components/modals/edit-trip-point
     CdkDropList,
     CdkDrag,
     MatCheckboxModule,
-    LeafletModule
+    LeafletModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

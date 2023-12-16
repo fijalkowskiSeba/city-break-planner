@@ -34,16 +34,26 @@
         <div class="search-row">
             <mat-form-field style="flex-grow: 5">
                 <mat-label>Search for more location</mat-label>
-                <input matInput/>
+                <input matInput [(ngModel)]="newPlaceInput" (keydown.enter)="fetchPointsFromApi()"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayLocationName">
+                    <mat-option *ngFor="let location of fetchedLocations" [value]="location"  >
+                        {{ location.name }}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
-            <button mat-raised-button color="primary" style="flex-grow: 1; margin: 0 6px; height: 56px">Search</button>
         </div>
+
         <div class="map-frame" >
             <div id="edit-map"
                  leaflet
                  [leafletOptions]="options"
                  (leafletMapReady)="onMapReady($event)"
             ></div>
+            <div class="map-buttons" *ngIf="newLocation">
+                <button mat-raised-button color="primary" (click)="onAddLocation()" >Add location</button>
+                <button mat-raised-button (click)="onClearMap()">Clear map</button>
+            </div>
         </div>
     </div>
 </div>

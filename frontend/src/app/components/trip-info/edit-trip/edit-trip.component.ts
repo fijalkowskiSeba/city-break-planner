@@ -9,6 +9,9 @@ import {TripPoint} from "../../../models/db models/TripPoint";
 import {EditTripPointModalComponent} from "../../modals/edit-trip-point-modal/edit-trip-point-modal.component";
 import {latLng, tileLayer} from "leaflet";
 import {MarkerService} from "../../../services/marker.service";
+import {GeocodingAPIService} from "../../../services/geocoding-api.service";
+import {GeocodingResponse} from "../../../models/geocoding-response";
+import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 
 @Component({
   selector: 'app-edit-trip',
@@ -19,12 +22,14 @@ export class EditTripComponent{
   waitingForData: boolean = true;
   trip?: Trip;
   private originalTrip?: Trip;
+  newPlaceInput: string = '';
 
   constructor(private tripService: TripService,
               private route: ActivatedRoute,
               private dialog: MatDialog,
               private router: Router,
-              private markerService: MarkerService){}
+              private markerService: MarkerService,
+              private geocodingApiService: GeocodingAPIService){}
 
   ngOnInit() {
     const id = String(this.route.snapshot.paramMap.get('id'));
@@ -92,6 +97,7 @@ export class EditTripComponent{
 
   onLocationRemove(location: TripPoint) {
     this.trip?.tripPoints?.splice(this.trip.tripPoints.indexOf(location), 1);
+    this.markerService.drawMapRoute(this.map, this.trip!.tripPoints);
   }
 
   onSaveChanges() {
@@ -134,4 +140,59 @@ export class EditTripComponent{
   onLocationClicked(location: TripPoint) {
     this.map.setView([location.latitude,location.longitude],15);
   }
+
+    fetchPointsFromApi() {
+        this.geocodingApiService.getLocations(this.newPlaceInput).subscribe({
+            next: locations => this.onLocationsFetched(locations)
+        });
+    }
+
+    fetchedLocations: TripPoint[] = [];
+    private onLocationsFetched(locations: GeocodingResponse[]) {
+        if(locations.length === 0) {return;}
+        this.fetchedLocations = [];
+        locations.map(location => {
+            const newTripPoint = {
+                name: location.display_name,
+                latitude: location.lat,
+                longitude: location.lon
+            } as TripPoint;
+            this.fetchedLocations.push(newTripPoint);
+        })
+    }
+
+    newLocation: TripPoint | undefined;
+    onOptionSelected(event: MatAutocompleteSelectedEvent) {
+        const selectedLocation = event.option.value as TripPoint;
+        this.markerService.addMarkerToMapAndRemoveOthers(this.map, selectedLocation.latitude, selectedLocation.longitude);
+        this.showLocation(selectedLocation.latitude, selectedLocation.longitude);
+        this.newLocation = selectedLocation;
+    }
+
+    displayLocationName(location: any): string {
+        return location ? location.name : '';
+    }
+
+    onClearMap() {
+        this.newLocation = undefined;
+        this.markerService.removeMarkerFromMap(this.map);
+    }
+
+    onAddLocation() {
+        let newLocation =
+            {
+                name: this.newLocation?.name,
+                latitude: this.newLocation?.latitude,
+                longitude: this.newLocation?.longitude,
+                orderInTrip: this.trip?.tripPoints.length
+            } as TripPoint;
+
+        this.trip?.tripPoints.push(newLocation);
+        this.markerService.removeMarkerFromMap(this.map);
+        this.markerService.drawMapRoute(this.map, this.trip!.tripPoints);
+
+        this.newLocation = undefined;
+        this.newPlaceInput = '';
+        this.fetchedLocations = [];
+    }
 }

@@ -26,6 +26,7 @@ Marker.prototype.options.icon = iconDefault;
 })
 export class MarkerService {
   marker = Leaflet.marker([0, 0]);
+  private route: any;
   constructor() { }
 
   addMarkerToMapAndRemoveOthers(map: Leaflet.Map, lat :number, lon: number) {
@@ -40,14 +41,22 @@ export class MarkerService {
     map.addLayer(this.marker);
   }
 
+  removeMarkerFromMap(map: Leaflet.Map) {
+    map.removeLayer(this.marker);
+  }
+
   getCurrentLatLng(){
     return this.marker.getLatLng();
   }
 
+
   drawMapRoute(map: any, tripPoints: TripPoint[]) {
+    if (this.route){
+      map.removeControl(this.route);
+    }
     const waypoints = tripPoints.map(point => L.latLng(point.latitude, point.longitude));
     const osrmUrl =  'https://routing.openstreetmap.de/routed-foot/route/v1/';
-    L.Routing.control({
+    this.route = L.Routing.control({
       waypoints: waypoints,
       routeWhileDragging: false,
       show: false,

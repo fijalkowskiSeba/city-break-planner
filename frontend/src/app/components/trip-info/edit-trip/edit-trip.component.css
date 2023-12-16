@@ -94,8 +94,22 @@ trip-name-row {
     width: 99%;
     height: 99%;
     margin: 8px;
+    position: relative;
 }
 
 #edit-map {
     height: 100%;
+}
+
+.map-buttons {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    bottom: 20px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.map-buttons button {
+    margin: 4px;
 }
