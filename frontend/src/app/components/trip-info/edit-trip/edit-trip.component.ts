@@ -27,6 +27,7 @@ export class EditTripComponent{
   trip?: Trip;
   private originalTrip?: Trip;
   newPlaceInput: string = '';
+  newLocation: TripPoint | undefined;
 
   constructor(private tripService: TripService,
               private route: ActivatedRoute,
@@ -63,7 +64,6 @@ export class EditTripComponent{
   }
 
   openErrorModal(errorMessage: string): void {
-    console.log(errorMessage);
 
     this.dialog.open(ErrorModalComponent, {
       width: '400px',
@@ -190,7 +190,6 @@ export class EditTripComponent{
         })
     }
 
-    newLocation: TripPoint | undefined;
     onOptionSelected(event: MatAutocompleteSelectedEvent) {
         const selectedLocation = event.option.value as TripPoint;
         this.markerService.addMarkerToMapAndRemoveOthers(this.map, selectedLocation.latitude, selectedLocation.longitude);

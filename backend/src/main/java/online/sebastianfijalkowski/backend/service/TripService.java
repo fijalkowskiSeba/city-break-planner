@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import online.sebastianfijalkowski.backend.dto.AutoRouteBodyDTO;
 import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
+import online.sebastianfijalkowski.backend.dto.UpdateTripDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.model.TripPoint;
 import online.sebastianfijalkowski.backend.model.User;
@@ -194,5 +195,77 @@ public class TripService {
         }
 
         return new ResponseEntity<>(sortedTripPoints, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateTrip(OAuth2User user, String id, UpdateTripDTO body) {
+
+        if(!id.equals(body.getId())) {
+            return new ResponseEntity<>("Trip id in path and body are different", HttpStatus.NOT_FOUND);
+        }
+
+        UUID uuid = parseUUID(id);
+        if (uuid == null) {
+            return handleInvalidUUID(id);
+        }
+
+        Trip tripFromDB = tripRepository.findById(uuid).orElse(null);
+        if(tripFromDB == null) {
+            return handleTripNotFound();
+        }
+
+        if(!isTripBelongsToUser(tripFromDB, user)) {
+            return handleTripBelongsToOtherUser();
+        }
+
+        var tripPointsFromBody = body.getTripPoints();
+        for (var tripPoint : tripPointsFromBody) {
+            if(!tripPointService.isTripPointBelongsToUserOrNoOne(tripPoint, user)){
+                return handleTripPointBelongsToOtherUser();
+            }
+        }
+
+        ArrayList<TripPoint> updatedTripPoints = new ArrayList<>();
+
+        for (var tripPointFromBody: tripPointsFromBody){
+            if(tripPointFromBody.getId() == null) {
+               var newtripPoint = new TripPoint();
+                newtripPoint.setName(tripPointFromBody.getName());
+                newtripPoint.setLatitude(tripPointFromBody.getLatitude());
+                newtripPoint.setLongitude(tripPointFromBody.getLongitude());
+                newtripPoint.setOrderInTrip(tripPointFromBody.getOrderInTrip());
+                newtripPoint.setTrip(tripFromDB);
+                newtripPoint  = tripPointRepository.save(newtripPoint);
+                updatedTripPoints.add(newtripPoint);
+
+            } else {
+                var tripPointFromDB = tripPointRepository.findById(tripPointFromBody.getId()).orElse(null);
+                if(tripPointFromDB == null) {
+                    continue;
+                }
+                tripPointFromDB.setName(tripPointFromBody.getName());
+                tripPointFromDB.setLatitude(tripPointFromBody.getLatitude());
+                tripPointFromDB.setLongitude(tripPointFromBody.getLongitude());
+                tripPointFromDB.setOrderInTrip(tripPointFromBody.getOrderInTrip());
+                tripPointRepository.save(tripPointFromDB);
+                updatedTripPoints.add(tripPointFromDB);
+            }
+        }
+
+
+        Iterator<TripPoint> iterator = tripFromDB.getTripPoints().iterator();
+        while (iterator.hasNext()) {
+            var existingTripPoint = iterator.next();
+            if (!updatedTripPoints.contains(existingTripPoint)) {
+                iterator.remove();
+                tripPointRepository.delete(existingTripPoint);
+            }
+        }
+
+        tripFromDB.setName(body.getName());
+        tripFromDB.setIsCompleted(body.getIsCompleted());
+
+        return new ResponseEntity<>(tripRepository.save(tripFromDB), HttpStatus.OK);
+
     }
 }

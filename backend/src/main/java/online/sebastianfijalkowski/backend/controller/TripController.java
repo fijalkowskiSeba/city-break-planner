@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import online.sebastianfijalkowski.backend.dto.AutoRouteBodyDTO;
 import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
+import online.sebastianfijalkowski.backend.dto.UpdateTripDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.service.TripService;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +58,12 @@ public class TripController {
     @PostMapping("/autoRoute")
     public ResponseEntity<?> autoRoute(@AuthenticationPrincipal OAuth2User user, @RequestBody AutoRouteBodyDTO body) {
         return tripService.autoRoute(user, body);
+    }
+
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTrip(@AuthenticationPrincipal OAuth2User user, @PathVariable String id, @RequestBody UpdateTripDTO body) {
+        return tripService.updateTrip(user, id, body);
     }
 
 }
