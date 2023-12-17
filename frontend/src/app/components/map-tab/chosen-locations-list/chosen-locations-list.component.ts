@@ -63,8 +63,8 @@ export class ChosenLocationsListComponent {
         this.createTravelPlanService
           .newTrip(this.locations, this.tripName, this.firstLocation, this.lastLocation)
           .subscribe(
-            () => {
-              this.router.navigate(["/my-trips"]);
+            (newTrip) => {
+              this.router.navigate(["/my-trips", newTrip.id]);
             }
           );
       }

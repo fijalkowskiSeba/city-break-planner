@@ -45,7 +45,7 @@ export class TripService {
       locations: locationList
     }
 
-    return this.http.post<TripCreationDto>(url, bodyToSend)
+    return this.http.post<Trip>(url, bodyToSend)
   }
 
   getAllTrips() {
