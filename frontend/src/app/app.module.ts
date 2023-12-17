@@ -42,6 +42,7 @@ import { EditTripPointModalComponent } from './components/modals/edit-trip-point
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { FirstLastLocationModalComponent } from './components/modals/first-last-location-modal/first-last-location-modal.component';
 import {MatSelectModule} from "@angular/material/select";
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {MatSelectModule} from "@angular/material/select";
     TripHistoryComponent,
     EditTripComponent,
     EditTripPointModalComponent,
-    FirstLastLocationModalComponent
+    FirstLastLocationModalComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

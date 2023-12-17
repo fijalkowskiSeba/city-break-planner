@@ -1,0 +1,14 @@
+.container {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.text {
+    text-align: center;
+    font-size: 72px;
+    line-height: 100px;
+    margin: 0;
+}

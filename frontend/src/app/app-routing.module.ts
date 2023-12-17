@@ -7,8 +7,10 @@ import {AuthGuard} from "./auth/auth.guard";
 import {TripInfoComponent} from "./components/trip-info/trip-info.component";
 import {TripHistoryComponent} from "./components/trip-info/trip-history/trip-history.component";
 import {EditTripComponent} from "./components/trip-info/edit-trip/edit-trip.component";
+import {HomeComponent} from "./components/home/home.component";
 
 const routes: Routes = [
+  {path: "", component: HomeComponent},
   {path: "new-trip", component: MapTabComponent, canActivate: [AuthGuard]},
   {path: "my-trips", component: MyTripsComponent, canActivate: [AuthGuard]},
   {path: "my-trips/:id", component: TripInfoComponent, canActivate: [AuthGuard]},
