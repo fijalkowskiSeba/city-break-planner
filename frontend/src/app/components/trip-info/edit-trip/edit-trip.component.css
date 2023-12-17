@@ -90,10 +90,9 @@ trip-name-row {
 }
 
 .map-frame {
-    border: 2px solid black;
-    width: 99%;
-    height: 99%;
-    margin: 8px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    padding: 6px;
     position: relative;
 }
 
@@ -112,4 +111,30 @@ trip-name-row {
 
 .map-buttons button {
     margin: 4px;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        flex-direction: column;
+        width: 95%;
+    }
+
+    .action-buttons-container {
+        flex-direction: column;
+    }
+
+    .action-button {
+        margin: 8px 0;
+    }
+
+    .locations-list{
+        overflow-y: auto;
+    }
+
+    .column {
+        width: 100%;
+    }
+    .map-frame{
+        height: 50vh;
+    }
 }
