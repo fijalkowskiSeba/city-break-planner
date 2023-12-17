@@ -1,17 +1,16 @@
-<h3>Logged as:</h3>
-<div>
-  <img [src]="user.picture" alt="user profile picture">
-</div>
-<div>
-  <h1>
-<!--    <span>Name:</span>-->
-    <span>{{user.name}}</span>
-  </h1>
-</div>
-<div>
-  <h1>
-<!--    <span>Email:</span>-->
-    <span>{{user.email}}</span>
-  </h1>
-
+<div class="center-container">
+    <h2>You are signed in as:</h2>
+    <div class="profile-picture">
+        <img [src]="user.picture" alt="user profile picture">
+    </div>
+    <div class="profile-info">
+        <h1>
+            <span>Name:</span>
+            <span>{{user.name}}</span>
+        </h1>
+        <h1>
+            <span>Email:</span>
+            <span>{{user.email}}</span>
+        </h1>
+    </div>
 </div>
