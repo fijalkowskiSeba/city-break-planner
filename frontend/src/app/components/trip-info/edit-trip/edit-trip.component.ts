@@ -243,6 +243,7 @@ export class EditTripComponent{
 
     private handleAutoRouteResponse(response: TripPoint[]) {
         this.trip!.tripPoints = response;
+        this.trip?.tripPoints.sort((a, b) => a.orderInTrip - b.orderInTrip);
         this.markerService.drawMapRoute(this.map, this.trip!.tripPoints);
     }
 }

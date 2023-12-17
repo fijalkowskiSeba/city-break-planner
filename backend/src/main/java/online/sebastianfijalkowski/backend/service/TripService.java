@@ -2,6 +2,7 @@ package online.sebastianfijalkowski.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import online.sebastianfijalkowski.backend.dto.AutoRouteBodyDTO;
 import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.model.TripPoint;
@@ -13,10 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +35,10 @@ public class TripService {
 
     private ResponseEntity<?> handleTripBelongsToOtherUser() {
         return new ResponseEntity<>("Trip belongs to another user", HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<?> handleTripPointBelongsToOtherUser() {
+        return new ResponseEntity<>("Trip Point belongs to another user", HttpStatus.NOT_FOUND);
     }
 
     private UUID parseUUID(String id) {
@@ -154,5 +156,43 @@ public class TripService {
         } else {
             return handleTripNotFound();
         }
+    }
+
+    public ResponseEntity<?> autoRoute(OAuth2User user, AutoRouteBodyDTO body) {
+        var allTripPoints = body.getTripPoints();
+        var firstLocation = body.getFirstLocation();
+        var lastLocation = body.getLastLocation();
+
+        for(var tripPoint : allTripPoints) {
+            if(!tripPointService.isTripPointBelongsToUserOrNoOne(tripPoint, user)){
+                return handleTripPointBelongsToOtherUser();
+            }
+        }
+        if(firstLocation != null && !tripPointService.isTripPointBelongsToUserOrNoOne(firstLocation, user)){
+            return handleTripPointBelongsToOtherUser();
+        }
+        if(lastLocation != null && !tripPointService.isTripPointBelongsToUserOrNoOne(lastLocation, user)){
+            return handleTripPointBelongsToOtherUser();
+        }
+
+        var sortedTripPoints = new ArrayList<>();
+
+        var index = 0;
+        if(firstLocation != null) {
+            allTripPoints.remove(firstLocation);
+            firstLocation.setOrderInTrip(index++);
+            sortedTripPoints.add(firstLocation);
+        }
+        if (lastLocation != null) {
+            allTripPoints.remove(lastLocation);
+            lastLocation.setOrderInTrip(allTripPoints.size() + 1);
+            sortedTripPoints.add(lastLocation);
+        }
+        for (var tripPoint : allTripPoints) {
+            tripPoint.setOrderInTrip(index++);
+            sortedTripPoints.add(tripPoint);
+        }
+
+        return new ResponseEntity<>(sortedTripPoints, HttpStatus.OK);
     }
 }

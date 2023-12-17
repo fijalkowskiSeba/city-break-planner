@@ -2,6 +2,7 @@ package online.sebastianfijalkowski.backend.controller;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import online.sebastianfijalkowski.backend.dto.AutoRouteBodyDTO;
 import online.sebastianfijalkowski.backend.dto.TripCreationDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
 import online.sebastianfijalkowski.backend.service.TripService;
@@ -51,6 +52,11 @@ public class TripController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTrip(@AuthenticationPrincipal OAuth2User user, @PathVariable String id) {
         return tripService.deleteTrip(user, id);
+    }
+
+    @PostMapping("/autoRoute")
+    public ResponseEntity<?> autoRoute(@AuthenticationPrincipal OAuth2User user, @RequestBody AutoRouteBodyDTO body) {
+        return tripService.autoRoute(user, body);
     }
 
 }

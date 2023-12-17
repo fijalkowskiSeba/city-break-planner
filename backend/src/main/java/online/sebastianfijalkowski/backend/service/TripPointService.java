@@ -117,4 +117,20 @@ public class TripPointService {
     private ResponseEntity<?> handleInvalidUUID(String id) {
         return new ResponseEntity<>("Invalid UUID string: " + id, HttpStatus.NOT_FOUND);
     }
+
+    public boolean isTripPointBelongsToUserOrNoOne(TripPointDTO tripPoint, OAuth2User user) {
+        if(tripPoint.getId() == null){
+            return true;
+        }
+
+        User userFromDB = userService.getUserById(user.getAttribute("sub"));
+
+        var tripPointFromDB = findTripPointById(tripPoint.getId());
+        if (tripPointFromDB == null) {
+            return true;
+        }
+
+        return tripPointFromDB.getTrip().getUser().equals(userFromDB);
+
+    }
 }
