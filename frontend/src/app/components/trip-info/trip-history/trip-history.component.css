@@ -51,6 +51,10 @@ mat-card {
   gap: 8px;
 }
 
+.right-column-content {
+  overflow-y: scroll;
+}
+
 @media screen and (max-width: 800px) {
   .container {
     flex-direction: column;

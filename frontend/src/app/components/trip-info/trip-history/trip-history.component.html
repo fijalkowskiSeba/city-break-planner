@@ -32,13 +32,13 @@
       <mat-button-toggle value="comments">Comments</mat-button-toggle>
       <mat-button-toggle value="bills">Bills</mat-button-toggle>
     </mat-button-toggle-group>
-    <div *ngIf="rightColumnDisplay === 'photos'" class="photos-list">
+    <div *ngIf="rightColumnDisplay === 'photos'" class="photos-list right-column-content">
 
     </div>
-    <div *ngIf="rightColumnDisplay === 'comments'" class="comments-list">
+    <div *ngIf="rightColumnDisplay === 'comments'" class="comments-list right-column-content">
 
     </div>
-    <div *ngIf="rightColumnDisplay === 'bills'" class="bills-list">
+    <div *ngIf="rightColumnDisplay === 'bills'" class="bills-list right-column-content">
       <div *ngFor="let tripPoint of trip?.tripPoints">
         <div *ngIf="tripPoint.tripBills.length > 0">
           <div class="location-name">{{tripPoint.name | stringToXComma : 2}}</div>
