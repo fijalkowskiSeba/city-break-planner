@@ -1,1 +1,46 @@
-<p>trip-history works!</p>
+<div class="container">
+  <mat-spinner *ngIf="waitingForData"></mat-spinner>
+
+  <div class="left-column column">
+    <div *ngIf="trip">
+      <h1>{{trip.name}}</h1>
+    </div>
+
+    <div class="locations-list">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let location of trip?.tripPoints">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{location.name | stringToXComma : 2}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="action-buttons-container">
+            <button mat-raised-button color="primary" class="action-button" (click)="onAddPhoto()">Add photo</button>
+            <button mat-raised-button color="accent" class="action-button" (click)="onAddComment()">Add comment</button>
+            <button mat-raised-button class="action-button" (click)="onAddBill()">Add bill</button>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div style="margin: 16px 0;">
+      <button mat-raised-button color="primary" (click)="goBack()">Go back to trip</button>
+    </div>
+  </div>
+  <div class="right-column column">
+    <mat-button-toggle-group [(ngModel)]="rightColumnDisplay" aria-label="Font Style">
+      <mat-button-toggle value="photos">Photos</mat-button-toggle>
+      <mat-button-toggle value="comments">Comments</mat-button-toggle>
+      <mat-button-toggle value="bills">Bills</mat-button-toggle>
+    </mat-button-toggle-group>
+    <div *ngIf="rightColumnDisplay === 'photos'" class="photos-list">
+
+    </div>
+    <div *ngIf="rightColumnDisplay === 'comments'" class="comments-list">
+
+    </div>
+    <div *ngIf="rightColumnDisplay === 'bills'" class="bills-list">
+
+    </div>
+  </div>
+
+</div>
