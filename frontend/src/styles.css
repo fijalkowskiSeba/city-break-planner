@@ -28,3 +28,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .leaflet-routing-collapsible{
   display: none;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance:textfield;
+}

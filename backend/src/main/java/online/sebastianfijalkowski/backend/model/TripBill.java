@@ -17,9 +17,11 @@ public class TripBill {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    private String item;
+    private String name;
 
     private Double price;
+
+    private String currency;
 
     @JsonBackReference
     @JsonIgnore

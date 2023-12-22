@@ -17,7 +17,7 @@
           <div class="action-buttons-container">
             <button mat-raised-button color="primary" class="action-button" (click)="onAddPhoto()">Add photo</button>
             <button mat-raised-button color="accent" class="action-button" (click)="onAddComment()">Add comment</button>
-            <button mat-raised-button class="action-button" (click)="onAddBill()">Add bill</button>
+            <button mat-raised-button class="action-button" (click)="onAddBill(location)">Add bill</button>
           </div>
         </mat-expansion-panel>
       </mat-accordion>
@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="right-column column">
-    <mat-button-toggle-group [(ngModel)]="rightColumnDisplay" aria-label="Font Style">
+    <mat-button-toggle-group [(ngModel)]="rightColumnDisplay" aria-label="Font Style" (change)="onToggleChange()">
       <mat-button-toggle value="photos">Photos</mat-button-toggle>
       <mat-button-toggle value="comments">Comments</mat-button-toggle>
       <mat-button-toggle value="bills">Bills</mat-button-toggle>
@@ -39,8 +39,30 @@
 
     </div>
     <div *ngIf="rightColumnDisplay === 'bills'" class="bills-list">
-
+      <div *ngFor="let tripPoint of trip?.tripPoints">
+        <div *ngIf="tripPoint.tripBills.length > 0">
+          <div class="location-name">{{tripPoint.name | stringToXComma : 2}}</div>
+          <mat-card *ngFor="let bill of tripPoint.tripBills">
+            <div class="bill-card">
+              <div class="bill-details">
+                {{bill.price}} {{bill.currency}}&nbsp;&nbsp;
+                {{bill.name}}
+              </div>
+              <div class="bill-actions">
+                <button mat-raised-button color="primary" (click)="onEditBill(tripPoint,bill)">
+                  Edit
+                </button>
+                <button mat-raised-button (click)="onDeleteBill(tripPoint, bill)">
+                  X
+                </button>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>
+
+
+

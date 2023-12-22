@@ -1,10 +1,14 @@
 package online.sebastianfijalkowski.backend.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import online.sebastianfijalkowski.backend.dto.NewBillDTO;
 import online.sebastianfijalkowski.backend.dto.TripPointDTO;
 import online.sebastianfijalkowski.backend.model.Trip;
+import online.sebastianfijalkowski.backend.model.TripBill;
 import online.sebastianfijalkowski.backend.model.TripPoint;
 import online.sebastianfijalkowski.backend.model.User;
+import online.sebastianfijalkowski.backend.repository.TripBillIRepository;
 import online.sebastianfijalkowski.backend.repository.TripPointRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,7 @@ import java.util.UUID;
 public class TripPointService {
     private final TripPointRepository tripPointRepository;
     private final UserService userService;
+    private final TripBillIRepository tripBillRepository;
 
     public List<TripPoint> newTripPoints(TripPointDTO[] tripPoints, Trip trip) {
         List<TripPoint> tripPointList = new ArrayList<>();
@@ -132,5 +137,103 @@ public class TripPointService {
 
         return tripPointFromDB.getTrip().getUser().equals(userFromDB);
 
+    }
+
+    @Transactional
+    public ResponseEntity<?> addBill(OAuth2User user, String tripPointId, NewBillDTO bill) {
+        ResponseEntity<?> response = isTripPointBelongsToUser(tripPointId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(tripPointId);
+        if (uuid == null) {
+            return handleInvalidUUID(tripPointId);
+        }
+
+        TripPoint tripPointFromDB = findTripPointById(uuid);
+        if (tripPointFromDB == null) {
+            return new ResponseEntity<>("TripPoint not found", HttpStatus.NOT_FOUND);
+        }
+
+        TripBill tripBill = new TripBill();
+        tripBill.setName(bill.getName());
+        tripBill.setPrice(bill.getPrice());
+        tripBill.setCurrency(bill.getCurrency());
+        tripBill.setTripPoint(tripPointFromDB);
+        tripPointFromDB.getTripBills().add(tripBill);
+
+        var savedBill = tripBillRepository.save(tripBill);
+        tripPointRepository.save(tripPointFromDB);
+        return new ResponseEntity<>(savedBill, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteBill(OAuth2User user, String billId) {
+        ResponseEntity<?> response = isBillBelongsToUser(billId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(billId);
+        if (uuid == null) {
+            return handleInvalidUUID(billId);
+        }
+
+        TripBill tripBillFromDB = tripBillRepository.findById(uuid).orElse(null);
+        if (tripBillFromDB == null) {
+            return new ResponseEntity<>("TripBill not found", HttpStatus.NOT_FOUND);
+        }
+
+        tripBillRepository.delete(tripBillFromDB);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> isBillBelongsToUser(String billId, OAuth2User user) {
+        User userFromDB = userService.getUserById(user.getAttribute("sub"));
+
+        if (userFromDB == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        UUID uuid = parseUUID(billId);
+        if (uuid == null) {
+            return handleInvalidUUID(billId);
+        }
+
+        TripBill tripBillFromDB = tripBillRepository.findById(uuid).orElse(null);
+        if (tripBillFromDB == null) {
+            return new ResponseEntity<>("TripBill not found", HttpStatus.NOT_FOUND);
+        }
+
+        if (!tripBillFromDB.getTripPoint().getTrip().getUser().equals(userFromDB)) {
+            return new ResponseEntity<>("TripBill belongs to another user", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateBill(OAuth2User user, String billId, NewBillDTO bill) {
+        ResponseEntity<?> response = isBillBelongsToUser(billId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(billId);
+        if (uuid == null) {
+            return handleInvalidUUID(billId);
+        }
+
+        TripBill tripBillFromDB = tripBillRepository.findById(uuid).orElse(null);
+        if (tripBillFromDB == null) {
+            return new ResponseEntity<>("TripBill not found", HttpStatus.NOT_FOUND);
+        }
+
+        tripBillFromDB.setName(bill.getName());
+        tripBillFromDB.setPrice(bill.getPrice());
+        tripBillFromDB.setCurrency(bill.getCurrency());
+
+        var savedBill = tripBillRepository.save(tripBillFromDB);
+        return new ResponseEntity<>(savedBill, HttpStatus.OK);
     }
 }

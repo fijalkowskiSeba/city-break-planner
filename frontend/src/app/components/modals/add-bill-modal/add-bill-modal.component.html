@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{data.modalTitle}}<br>{{ data.tripPoint.name | stringToXComma : 2 }}</h2>
+  <mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="billForm.name" name="name" type="string" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput [(ngModel)]="billForm.price" name="price" type="number" min="0" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Currency</mat-label>
+      <input matInput [(ngModel)]="billForm.currency" name="currency" type="string">
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isConfirmDisabled()">Confirm</button>
+    <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+  </mat-dialog-actions>

@@ -43,6 +43,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import { FirstLastLocationModalComponent } from './components/modals/first-last-location-modal/first-last-location-modal.component';
 import {MatSelectModule} from "@angular/material/select";
 import { HomeComponent } from './components/home/home.component';
+import { AddBillModalComponent } from './components/modals/add-bill-modal/add-bill-modal.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { HomeComponent } from './components/home/home.component';
     EditTripComponent,
     EditTripPointModalComponent,
     FirstLastLocationModalComponent,
-    HomeComponent
+    HomeComponent,
+    AddBillModalComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {TripPoint} from "../models/db models/TripPoint";
+import {TripBill} from "../models/db models/TripBill";
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +18,20 @@ export class TripPointService {
   setVisited(location: TripPoint) {
     const url = this.apiPath + "/setVisited" + "/" + location.id + "/" + location.visited;
     return this.http.patch(url, location);
+  }
+
+  addBillToTripPoint(id: string, bill: any) {
+    const url = this.apiPath + "/addBill" + "/" + id;
+    return this.http.post<TripBill>(url, bill);
+  }
+
+  deleteBillFromTripPoint(uuid: string) {
+    const url = this.apiPath + "/deleteBill" + "/" + uuid;
+    return this.http.delete(url);
+  }
+
+  updateBill(id: string, bill: TripBill) {
+    const url = this.apiPath + "/updateBill" + "/" + id;
+    return this.http.put(url, bill);
   }
 }

@@ -1,5 +1,6 @@
 export interface TripBill {
   uuid: string;
-  item: string;
+  name: string;
   price: number;
+  currency: string;
 }

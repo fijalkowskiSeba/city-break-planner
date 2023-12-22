@@ -30,3 +30,46 @@ mat-button-toggle {
   flex-grow: 1;
   margin: 8px;
 }
+
+mat-card {
+  margin: 6px 0 6px 24px;
+}
+
+.bill-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bill-details {
+  display: flex;
+  align-items: center;
+}
+
+.bill-actions {
+  display: flex;
+  gap: 8px;
+}
+
+@media screen and (max-width: 800px) {
+  .container {
+    flex-direction: column;
+    width: 95%;
+  }
+
+  .action-buttons-container {
+    flex-direction: column;
+  }
+
+  .action-button {
+    margin: 8px 0;
+  }
+
+  .locations-list{
+    overflow-y: auto;
+  }
+
+  .column {
+    width: 100%;
+  }
+}
