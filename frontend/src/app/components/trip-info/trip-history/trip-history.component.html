@@ -72,22 +72,30 @@
     <div *ngIf="rightColumnDisplay === 'bills'" class="bills-list right-column-content">
       <div *ngFor="let tripPoint of trip?.tripPoints">
         <div *ngIf="tripPoint.tripBills.length > 0">
-          <div class="location-name">{{tripPoint.name | stringToXComma : 2}}</div>
-          <mat-card *ngFor="let bill of tripPoint.tripBills">
-            <div class="bill-card">
-              <div class="bill-details">
-                {{bill.price}} {{bill.currency}}&nbsp;&nbsp;
-                {{bill.name}}
-              </div>
-              <div class="bill-actions">
-                <button mat-raised-button color="primary" (click)="onEditBill(tripPoint,bill)">
-                  Edit
-                </button>
-                <button mat-raised-button (click)="onDeleteBill(tripPoint, bill)">
-                  X
-                </button>
-              </div>
-            </div>
+          <mat-card style="background-color: #4d4d4d">
+            <mat-card-header>
+              <mat-card-title>{{tripPoint.name | stringToXComma : 2}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-card *ngFor="let bill of tripPoint.tripBills">
+                <mat-card-header>
+                  <mat-card-title-group>
+                    <mat-card-title>{{bill.name}}</mat-card-title>
+                  </mat-card-title-group>
+                </mat-card-header>
+                <mat-card-content>
+                  {{bill.price}}&nbsp;&nbsp;{{bill.currency}}
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-raised-button color="primary" (click)="onEditBill(tripPoint,bill)">
+                    Edit
+                  </button>
+                  <button mat-raised-button (click)="onDeleteBill(tripPoint, bill)">
+                    Delete
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </mat-card-content>
           </mat-card>
         </div>
       </div>
