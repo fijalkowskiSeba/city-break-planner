@@ -44,6 +44,7 @@ import { FirstLastLocationModalComponent } from './components/modals/first-last-
 import {MatSelectModule} from "@angular/material/select";
 import { HomeComponent } from './components/home/home.component';
 import { AddBillModalComponent } from './components/modals/add-bill-modal/add-bill-modal.component';
+import { CommentModalComponent } from './components/modals/comment-modal/comment-modal.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { AddBillModalComponent } from './components/modals/add-bill-modal/add-bi
     EditTripPointModalComponent,
     FirstLastLocationModalComponent,
     HomeComponent,
-    AddBillModalComponent
+    AddBillModalComponent,
+    CommentModalComponent
   ],
   imports: [
     BrowserModule,

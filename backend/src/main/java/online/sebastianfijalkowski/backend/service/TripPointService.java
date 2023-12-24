@@ -3,12 +3,11 @@ package online.sebastianfijalkowski.backend.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import online.sebastianfijalkowski.backend.dto.NewBillDTO;
+import online.sebastianfijalkowski.backend.dto.NewCommentDTO;
 import online.sebastianfijalkowski.backend.dto.TripPointDTO;
-import online.sebastianfijalkowski.backend.model.Trip;
-import online.sebastianfijalkowski.backend.model.TripBill;
-import online.sebastianfijalkowski.backend.model.TripPoint;
-import online.sebastianfijalkowski.backend.model.User;
+import online.sebastianfijalkowski.backend.model.*;
 import online.sebastianfijalkowski.backend.repository.TripBillIRepository;
+import online.sebastianfijalkowski.backend.repository.TripCommentRepository;
 import online.sebastianfijalkowski.backend.repository.TripPointRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,9 @@ public class TripPointService {
     private final TripPointRepository tripPointRepository;
     private final UserService userService;
     private final TripBillIRepository tripBillRepository;
+    private final TripCommentRepository tripCommentRepository;
 
+    @Transactional
     public List<TripPoint> newTripPoints(TripPointDTO[] tripPoints, Trip trip) {
         List<TripPoint> tripPointList = new ArrayList<>();
 
@@ -63,6 +64,7 @@ public class TripPointService {
         return tripPointList;
     }
 
+    @Transactional
     public ResponseEntity<?> setTripPointVisited(OAuth2User user, String id, Boolean isVisited) {
 
         ResponseEntity<?> response = isTripPointBelongsToUser(id, user);
@@ -235,5 +237,101 @@ public class TripPointService {
 
         var savedBill = tripBillRepository.save(tripBillFromDB);
         return new ResponseEntity<>(savedBill, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> addComment(OAuth2User user, String tripPointId, NewCommentDTO comment) {
+        ResponseEntity<?> response = isTripPointBelongsToUser(tripPointId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(tripPointId);
+        if (uuid == null) {
+            return handleInvalidUUID(tripPointId);
+        }
+
+        TripPoint tripPointFromDB = findTripPointById(uuid);
+        if (tripPointFromDB == null) {
+            return new ResponseEntity<>("TripPoint not found", HttpStatus.NOT_FOUND);
+        }
+
+        TripComment tripComment = new TripComment();
+        tripComment.setTitle(comment.getTitle());
+        tripComment.setContent(comment.getContent());
+        tripComment.setTripPoint(tripPointFromDB);
+        tripPointFromDB.getTripComments().add(tripComment);
+
+        tripPointRepository.save(tripPointFromDB);
+
+        return new ResponseEntity<>(tripCommentRepository.save(tripComment), HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> deleteComment(OAuth2User user, String commentId) {
+        ResponseEntity<?> response = isCommentBelongsToUser(commentId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(commentId);
+        if (uuid == null) {
+            return handleInvalidUUID(commentId);
+        }
+
+        TripComment tripCommentFromDB = tripCommentRepository.findById(uuid).orElse(null);
+        if (tripCommentFromDB == null) {
+            return new ResponseEntity<>("TripComment not found", HttpStatus.NOT_FOUND);
+        }
+
+        tripCommentRepository.delete(tripCommentFromDB);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    private ResponseEntity<?> isCommentBelongsToUser(String commentId, OAuth2User user) {
+        User userFromDB = userService.getUserById(user.getAttribute("sub"));
+
+        if (userFromDB == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        UUID uuid = parseUUID(commentId);
+        if (uuid == null) {
+            return handleInvalidUUID(commentId);
+        }
+
+        TripComment tripCommentFromDB = tripCommentRepository.findById(uuid).orElse(null);
+        if (tripCommentFromDB == null) {
+            return new ResponseEntity<>("TripComment not found", HttpStatus.NOT_FOUND);
+        }
+
+        if (!tripCommentFromDB.getTripPoint().getTrip().getUser().equals(userFromDB)) {
+            return new ResponseEntity<>("TripComment belongs to another user", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateComment(OAuth2User user, String commentId, TripComment comment) {
+        ResponseEntity<?> response = isCommentBelongsToUser(commentId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(commentId);
+        if (uuid == null) {
+            return handleInvalidUUID(commentId);
+        }
+
+        TripComment tripCommentFromDB = tripCommentRepository.findById(uuid).orElse(null);
+        if (tripCommentFromDB == null) {
+            return new ResponseEntity<>("TripComment not found", HttpStatus.NOT_FOUND);
+        }
+
+        tripCommentFromDB.setTitle(comment.getTitle());
+        tripCommentFromDB.setContent(comment.getContent());
+
+        return new ResponseEntity<>(tripCommentRepository.save(tripCommentFromDB), HttpStatus.OK);
     }
 }

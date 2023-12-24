@@ -8,6 +8,8 @@ import {TripPoint} from "../../../models/db models/TripPoint";
 import {AddBillModalComponent} from "../../modals/add-bill-modal/add-bill-modal.component";
 import {TripPointService} from "../../../services/trip-point.service";
 import {TripBill} from "../../../models/db models/TripBill";
+import {TripComment} from "../../../models/db models/TripComment";
+import {CommentModalComponent} from "../../modals/comment-modal/comment-modal.component";
 
 @Component({
   selector: 'app-trip-history',
@@ -17,7 +19,7 @@ import {TripBill} from "../../../models/db models/TripBill";
 export class TripHistoryComponent {
   trip?: Trip;
   waitingForData: boolean = true;
-  rightColumnDisplay: string = 'bills';
+  rightColumnDisplay: string = 'comments';
 
 
   constructor(private tripService: TripService,
@@ -61,12 +63,31 @@ export class TripHistoryComponent {
     });
   }
 
-  onAddPhoto() {
+  onAddPhoto(tripPoint: TripPoint) {
 
   }
 
-  onAddComment() {
+  onAddComment(tripPoint: TripPoint) {
+    const dialogRef = this.dialog.open(CommentModalComponent, {
+      width: '400px',
+      data: {
+        modalTitle: 'Add comment to',
+        tripPoint: tripPoint,
+        commentForm: {
+          title: '',
+          content: ''
+        }
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tripPointService.addCommentToTripPoint(tripPoint.id, result).subscribe({
+          next: result => {tripPoint.tripComments.push(result as TripComment)},
+          error: error => this.handleApiError(error)
+        });
+      }
+    });
   }
 
   onAddBill(tripPoint: TripPoint) {
@@ -87,7 +108,7 @@ export class TripHistoryComponent {
       if (result) {
         this.tripPointService.addBillToTripPoint(tripPoint.id, result).subscribe({
           next: result => {tripPoint.tripBills.push(result as TripBill)},
-          error: error => this.handleAddBillError(error)
+          error: error => this.handleApiError(error)
         });
       }
     });
@@ -101,12 +122,12 @@ export class TripHistoryComponent {
     //console.log(this.rightColumnDisplay);
   }
 
-  private handleAddBillError(error: any) {
+  private handleApiError(error: any) {
     this.dialog.open(ErrorModalComponent, {
       width: '400px',
       data: {
         title: 'Error',
-        message: error.error.error, //TODO change after backend is done
+        message: error.error.error,
         redirectPath: '',
         buttonLabel: 'OK'
       }
@@ -136,9 +157,37 @@ export class TripHistoryComponent {
       if (updatedBill) {
         this.tripPointService.updateBill(bill.uuid,updatedBill).subscribe({
           next: result => {bill.name = updatedBill.name; bill.price = updatedBill.price; bill.currency = updatedBill.currency},
-          error: error => this.handleAddBillError(error)
+          error: error => this.handleApiError(error)
         });
       }
     });
+  }
+
+  onEditComment(tripPoint: TripPoint, comment: TripComment) {
+    const dialogRef = this.dialog.open(CommentModalComponent, {
+      width: '400px',
+      data: {
+        modalTitle: 'Edit comment',
+        tripPoint: tripPoint,
+        commentForm: {
+          title: comment.title,
+          content: comment.content
+        }
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(updatedComment => {
+      if (updatedComment) {
+        this.tripPointService.updateComment(comment.uuid,updatedComment).subscribe({
+          next: result => {comment.title = updatedComment.title; comment.content = updatedComment.content},
+          error: error => this.handleApiError(error)
+        });
+      }
+    });
+  }
+
+  onDeleteComment(tripPoint: TripPoint, comment: TripComment) {
+    tripPoint.tripComments = tripPoint.tripComments.filter(c => c !== comment);
+    this.tripPointService.deleteCommentFromTripPoint(comment.uuid).subscribe();
   }
 }

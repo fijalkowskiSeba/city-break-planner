@@ -2,6 +2,8 @@ package online.sebastianfijalkowski.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import online.sebastianfijalkowski.backend.dto.NewBillDTO;
+import online.sebastianfijalkowski.backend.dto.NewCommentDTO;
+import online.sebastianfijalkowski.backend.model.TripComment;
 import online.sebastianfijalkowski.backend.service.TripPointService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,5 +34,20 @@ public class TripPointController {
     @PutMapping("/updateBill/{billId}")
     ResponseEntity<?> updateBill(@AuthenticationPrincipal OAuth2User user,@PathVariable String billId, @RequestBody NewBillDTO bill) {
         return tripPointService.updateBill(user,billId, bill);
+    }
+
+    @PostMapping("/addComment/{tripPointId}")
+    ResponseEntity<?> addComment(@AuthenticationPrincipal OAuth2User user, @PathVariable String tripPointId, @RequestBody NewCommentDTO comment) {
+        return tripPointService.addComment(user, tripPointId, comment);
+    }
+
+    @DeleteMapping("/deleteComment/{commentId}")
+    ResponseEntity<?> deleteComment(@AuthenticationPrincipal OAuth2User user, @PathVariable String commentId) {
+        return tripPointService.deleteComment(user, commentId);
+    }
+
+    @PutMapping("/updateComment/{commentId}")
+    ResponseEntity<?> updateComment(@AuthenticationPrincipal OAuth2User user,@PathVariable String commentId, @RequestBody TripComment comment) {
+        return tripPointService.updateComment(user,commentId, comment);
     }
 }

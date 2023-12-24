@@ -1,0 +1,22 @@
+mat-dialog-actions {
+  justify-content: flex-end;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+h2 {
+  text-align: center;
+}
+
+.comment-content {
+  width: 100%;
+  min-height: 100px;
+}
+
+.comment-title {
+  width:50%
+}

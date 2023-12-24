@@ -15,8 +15,11 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="action-buttons-container">
-            <button mat-raised-button color="primary" class="action-button" (click)="onAddPhoto()">Add photo</button>
-            <button mat-raised-button color="accent" class="action-button" (click)="onAddComment()">Add comment</button>
+            <button mat-raised-button color="primary" class="action-button" (click)="onAddPhoto(location)">Add photo
+            </button>
+            <button mat-raised-button color="accent" class="action-button" (click)="onAddComment(location)">Add
+              comment
+            </button>
             <button mat-raised-button class="action-button" (click)="onAddBill(location)">Add bill</button>
           </div>
         </mat-expansion-panel>
@@ -36,7 +39,35 @@
 
     </div>
     <div *ngIf="rightColumnDisplay === 'comments'" class="comments-list right-column-content">
-
+      <div *ngFor="let tripPoint of trip?.tripPoints">
+        <div *ngIf="tripPoint.tripComments.length > 0">
+          <mat-card style="background-color: #4d4d4d">
+            <mat-card-header>
+              <mat-card-title>{{tripPoint.name | stringToXComma : 2}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-card *ngFor="let comment of tripPoint.tripComments">
+                <mat-card-header>
+                  <mat-card-title-group>
+                    <mat-card-title>{{comment.title}}</mat-card-title>
+                  </mat-card-title-group>
+                </mat-card-header>
+                <mat-card-content>
+                  {{comment.content}}
+                </mat-card-content>
+                <mat-card-actions>
+                  <button mat-raised-button color="primary" (click)="onEditComment(tripPoint,comment)">
+                    Edit
+                  </button>
+                  <button mat-raised-button (click)="onDeleteComment(tripPoint, comment)">
+                    Delete
+                  </button>
+                </mat-card-actions>
+              </mat-card>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
     </div>
     <div *ngIf="rightColumnDisplay === 'bills'" class="bills-list right-column-content">
       <div *ngFor="let tripPoint of trip?.tripPoints">
@@ -63,6 +94,4 @@
     </div>
   </div>
 </div>
-
-
 
