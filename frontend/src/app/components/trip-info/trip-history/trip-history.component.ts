@@ -10,6 +10,7 @@ import {TripPointService} from "../../../services/trip-point.service";
 import {TripBill} from "../../../models/db models/TripBill";
 import {TripComment} from "../../../models/db models/TripComment";
 import {CommentModalComponent} from "../../modals/comment-modal/comment-modal.component";
+import {AddPhotoModalComponent} from "../../modals/add-photo-modal/add-photo-modal.component";
 
 @Component({
   selector: 'app-trip-history',
@@ -19,7 +20,7 @@ import {CommentModalComponent} from "../../modals/comment-modal/comment-modal.co
 export class TripHistoryComponent {
   trip?: Trip;
   waitingForData: boolean = true;
-  rightColumnDisplay: string = 'comments';
+  rightColumnDisplay: string = 'photos';
 
 
   constructor(private tripService: TripService,
@@ -64,7 +65,14 @@ export class TripHistoryComponent {
   }
 
   onAddPhoto(tripPoint: TripPoint) {
-
+    const dialogRef = this.dialog.open(AddPhotoModalComponent, {
+      width: '400px',
+      data: {
+        modalTitle: 'Add photo to',
+        tripPoint: tripPoint,
+        photoName: ''
+      }
+    });
   }
 
   onAddComment(tripPoint: TripPoint) {
@@ -83,7 +91,7 @@ export class TripHistoryComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.tripPointService.addCommentToTripPoint(tripPoint.id, result).subscribe({
-          next: result => {tripPoint.tripComments.push(result as TripComment)},
+          next: result => {tripPoint.tripComments.push(result as TripComment); this.rightColumnDisplay = 'comments';},
           error: error => this.handleApiError(error)
         });
       }
@@ -107,7 +115,7 @@ export class TripHistoryComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.tripPointService.addBillToTripPoint(tripPoint.id, result).subscribe({
-          next: result => {tripPoint.tripBills.push(result as TripBill)},
+          next: result => {tripPoint.tripBills.push(result as TripBill); this.rightColumnDisplay = 'bills';},
           error: error => this.handleApiError(error)
         });
       }

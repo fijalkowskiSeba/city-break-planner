@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{data.modalTitle}}<br>{{ data.tripPoint.name | stringToXComma : 2 }}</h2>
+<mat-dialog-content>
+  <div [hidden]="!isConfirmDisabled()">
+    <div (drop)="onFileDropped($event)" (dragover)="onDragOver($event)" class="drop-box">
+      Drop photo here
+    </div>
+    <div class="file-input-container">
+      <label class="file-input-label" for="fileInput">
+        Choose File
+      </label>
+      <input [hidden]="true" type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*"/>
+    </div>
+  </div>
+  <div *ngIf="selectedImage">
+    <mat-form-field>
+      <input matInput [(ngModel)]="photoName" name="name" placeholder="Photo name">
+    </mat-form-field>
+    <img [src]="selectedImage" alt="Selected Image" class="image-preview"/>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isConfirmDisabled()">Confirm</button>
+  <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+</mat-dialog-actions>

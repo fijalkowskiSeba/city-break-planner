@@ -45,6 +45,8 @@ import {MatSelectModule} from "@angular/material/select";
 import { HomeComponent } from './components/home/home.component';
 import { AddBillModalComponent } from './components/modals/add-bill-modal/add-bill-modal.component';
 import { CommentModalComponent } from './components/modals/comment-modal/comment-modal.component';
+import { AddPhotoModalComponent } from './components/modals/add-photo-modal/add-photo-modal.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -67,13 +69,15 @@ import { CommentModalComponent } from './components/modals/comment-modal/comment
     FirstLastLocationModalComponent,
     HomeComponent,
     AddBillModalComponent,
-    CommentModalComponent
+    CommentModalComponent,
+    AddPhotoModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
+    MatSnackBarModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
