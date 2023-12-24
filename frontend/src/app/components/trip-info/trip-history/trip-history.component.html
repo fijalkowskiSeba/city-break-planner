@@ -77,7 +77,7 @@
               <mat-card-title>{{tripPoint.name | stringToXComma : 2}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <mat-card *ngFor="let bill of tripPoint.tripBills">
+              <mat-card *ngFor="let bill of tripPoint.tripBills" style="width: 30% !important; display: inline-block !important;">
                 <mat-card-header>
                   <mat-card-title-group>
                     <mat-card-title>{{bill.name}}</mat-card-title>
