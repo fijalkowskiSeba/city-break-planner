@@ -32,7 +32,11 @@ mat-button-toggle {
 }
 
 mat-card {
-  margin: 6px 0 6px 24px;
+  margin: 6px;
+}
+
+mat-card-actions button {
+  margin: 0 4px;
 }
 
 .bill-card {
