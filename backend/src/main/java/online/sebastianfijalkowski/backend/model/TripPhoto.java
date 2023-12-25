@@ -19,8 +19,6 @@ public class TripPhoto {
 
     private String name;
 
-    private String pathToFile;
-
     @JsonBackReference
     @JsonIgnore
     @ManyToOne
