@@ -11,11 +11,11 @@
       <input [hidden]="true" type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*"/>
     </div>
   </div>
-  <div *ngIf="selectedImage">
+  <div *ngIf="photo">
     <mat-form-field>
-      <input matInput [(ngModel)]="photoName" name="name" placeholder="Photo name">
+      <input matInput [(ngModel)]="name" name="name" placeholder="Photo name">
     </mat-form-field>
-    <img [src]="selectedImage" alt="Selected Image" class="image-preview"/>
+    <img [src]="photo" alt="Selected Image" class="image-preview"/>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>

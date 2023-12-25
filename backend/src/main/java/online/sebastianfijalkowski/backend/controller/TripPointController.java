@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -49,5 +50,10 @@ public class TripPointController {
     @PutMapping("/updateComment/{commentId}")
     ResponseEntity<?> updateComment(@AuthenticationPrincipal OAuth2User user,@PathVariable String commentId, @RequestBody TripComment comment) {
         return tripPointService.updateComment(user,commentId, comment);
+    }
+
+    @PostMapping("/addPhoto/{tripPointId}/{photoName}")
+    ResponseEntity<?> addPhoto(@AuthenticationPrincipal OAuth2User user, @PathVariable String tripPointId,@PathVariable String photoName, @RequestParam("image") MultipartFile file) {
+        return tripPointService.addPhoto(user, tripPointId, photoName, file);
     }
 }

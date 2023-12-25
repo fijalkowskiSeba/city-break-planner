@@ -11,6 +11,7 @@ import {TripBill} from "../../../models/db models/TripBill";
 import {TripComment} from "../../../models/db models/TripComment";
 import {CommentModalComponent} from "../../modals/comment-modal/comment-modal.component";
 import {AddPhotoModalComponent} from "../../modals/add-photo-modal/add-photo-modal.component";
+import {TripPhoto} from "../../../models/db models/TripPhoto";
 
 @Component({
   selector: 'app-trip-history',
@@ -71,6 +72,15 @@ export class TripHistoryComponent {
         modalTitle: 'Add photo to',
         tripPoint: tripPoint,
         photoName: ''
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tripPointService.addPhotoToTripPoint(tripPoint.id, result).subscribe({
+          next: result => {tripPoint.tripPhotos.push(result as TripPhoto); this.rightColumnDisplay = 'photos';},
+          error: error => this.handleApiError(error)
+        });
       }
     });
   }

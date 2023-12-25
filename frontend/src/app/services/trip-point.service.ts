@@ -50,4 +50,13 @@ export class TripPointService {
     const url = this.apiPath + "/updateComment" + "/" + tripPointId;
     return this.http.put(url, comment);
   }
+
+  addPhotoToTripPoint(tripId: string, newPhoto: any) {
+
+    const imageFormData = new FormData();
+    imageFormData.append('image', newPhoto.file, newPhoto.file.name);
+
+    const url = this.apiPath + "/addPhoto" + "/" + tripId + "/" + newPhoto.name;
+    return this.http.post(url, imageFormData);
+  }
 }

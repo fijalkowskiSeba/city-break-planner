@@ -8,14 +8,21 @@ import online.sebastianfijalkowski.backend.dto.TripPointDTO;
 import online.sebastianfijalkowski.backend.model.*;
 import online.sebastianfijalkowski.backend.repository.TripBillIRepository;
 import online.sebastianfijalkowski.backend.repository.TripCommentRepository;
+import online.sebastianfijalkowski.backend.repository.TripPhotoRepository;
 import online.sebastianfijalkowski.backend.repository.TripPointRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -25,6 +32,7 @@ public class TripPointService {
     private final UserService userService;
     private final TripBillIRepository tripBillRepository;
     private final TripCommentRepository tripCommentRepository;
+    private final TripPhotoRepository tripPhotoRepository;
 
     @Transactional
     public List<TripPoint> newTripPoints(TripPointDTO[] tripPoints, Trip trip) {
@@ -333,5 +341,54 @@ public class TripPointService {
         tripCommentFromDB.setContent(comment.getContent());
 
         return new ResponseEntity<>(tripCommentRepository.save(tripCommentFromDB), HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<?> addPhoto(OAuth2User user, String tripPointId, String photoName, MultipartFile file) {
+        ResponseEntity<?> response = isTripPointBelongsToUser(tripPointId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(tripPointId);
+        if (uuid == null) {
+            return handleInvalidUUID(tripPointId);
+        }
+
+        TripPoint tripPointFromDB = findTripPointById(uuid);
+        if (tripPointFromDB == null) {
+            return new ResponseEntity<>("TripPoint not found", HttpStatus.NOT_FOUND);
+        }
+
+        try {
+            TripPhoto tripPhoto = new TripPhoto();
+            tripPhoto.setName(photoName);
+            tripPhoto.setTripPoint(tripPointFromDB);
+            tripPointFromDB.getTripPhotos().add(tripPhoto);
+            tripPointRepository.save(tripPointFromDB);
+            var savedPhoto = tripPhotoRepository.save(tripPhoto);
+
+            String username = System.getProperty("user.name");
+            String userUploadDir = "/home/" + username + "/images/";
+            Path userDirectory = Path.of(userUploadDir);
+
+            if (!Files.exists(userDirectory)) {
+                Files.createDirectories(userDirectory);
+            }
+
+            String fileExtension = Objects.requireNonNull(file.getContentType())
+                    .substring(Objects.requireNonNull(file.getContentType()).lastIndexOf('/') + 1);
+            String filename = savedPhoto.getUuid() + "." + fileExtension.toLowerCase();
+
+            Path filePath = userDirectory.resolve(filename);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+            tripPhotoRepository.save(tripPhoto);
+
+            return new ResponseEntity<>(tripPhoto, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error saving the photo", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

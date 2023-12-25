@@ -9,15 +9,16 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class AddPhotoModalComponent {
 
-  photoName = '';
-  selectedImage?: string | ArrayBuffer | null = null;
+  name = '';
+  photo?: string | ArrayBuffer | null = null;
+  file?: File;
 
   constructor(
     public dialogRef: MatDialogRef<AddPhotoModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
   ) {
-    this.photoName = data.photoName;
+    this.name = data.photoName;
   }
 
   private showSnackBar(message: string): void {
@@ -35,13 +36,13 @@ export class AddPhotoModalComponent {
   onSubmit(): void {
     this.dialogRef.close(
       {
-        name: this.photoName,
-        photo: this.selectedImage
+        name: this.name,
+        file: this.file
       });
   }
 
   isConfirmDisabled() {
-    return this.selectedImage === null || this.selectedImage === undefined;
+    return this.photo === null || this.photo === undefined;
   }
 
   onFileSelected(event: any): void {
@@ -82,9 +83,10 @@ export class AddPhotoModalComponent {
   }
 
   private processImage(file: File): void {
+    this.file = file;
     const reader = new FileReader();
     reader.onload = (e) => {
-      this.selectedImage = e.target?.result;
+      this.photo = e.target?.result;
     };
     reader.readAsDataURL(file);
   }
