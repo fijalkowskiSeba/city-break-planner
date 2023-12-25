@@ -22,7 +22,7 @@ export class AddPhotoModalComponent {
 
   private showSnackBar(message: string): void {
     this.snackBar.open(message, 'Close', {
-      duration: 5000, // Adjust the duration as needed
+      duration: 5000,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     });
@@ -46,7 +46,7 @@ export class AddPhotoModalComponent {
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
-    this.processImage(file);
+    this.validateAndProcessFile(file);
   }
 
   onFileDropped(event: any): void {
@@ -54,15 +54,28 @@ export class AddPhotoModalComponent {
 
     if (event.dataTransfer.files.length > 0) {
       const file: File = event.dataTransfer.files[0];
+      this.validateAndProcessFile(file);
+    }
+  }
 
+  private validateAndProcessFile(file: File): void {
+    if (file) {
       if (file.type.startsWith('image/')) {
-        this.processImage(file);
+        if (this.isFileSizeValid(file.size)) {
+          this.processImage(file);
+        } else {
+          this.showSnackBar('File size exceeds the maximum allowed size (10MB).');
+        }
       } else {
-        this.showSnackBar('Unsupported file type. Please drop an image file.');
+        this.showSnackBar('Unsupported file type. Please choose an image file.');
       }
     }
   }
 
+  private isFileSizeValid(fileSize: number = 0): boolean {
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    return fileSize <= maxSize;
+  }
 
   onDragOver(event: any): void {
     event.preventDefault();
