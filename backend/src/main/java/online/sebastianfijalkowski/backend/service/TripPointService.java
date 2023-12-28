@@ -368,8 +368,7 @@ public class TripPointService {
             tripPointRepository.save(tripPointFromDB);
             var savedPhoto = tripPhotoRepository.save(tripPhoto);
 
-            String username = System.getProperty("user.name");
-            String userUploadDir = "/home/" + username + "/images/";
+           String userUploadDir = "/images/";
             Path userDirectory = Path.of(userUploadDir);
 
             if (!Files.exists(userDirectory)) {
@@ -402,8 +401,8 @@ public class TripPointService {
         List<PhotoFileDTO> photos = new ArrayList<>();
         for (var tripPoint : trip.getTripPoints()) {
             for (var tripPhoto : tripPoint.getTripPhotos()) {
-                String username = System.getProperty("user.name");
-                String userUploadDir = "/home/" + username + "/images/";
+
+                String userUploadDir = "/images/";
                 Path userDirectory = Path.of(userUploadDir);
 
                 if (!Files.exists(userDirectory)) {
@@ -440,8 +439,7 @@ public class TripPointService {
             return new ResponseEntity<>("TripPhoto not found", HttpStatus.NOT_FOUND);
         }
 
-        String username = System.getProperty("user.name");
-        String userUploadDir = "/home/" + username + "/images/";
+        String userUploadDir = "/images/";
         Path userDirectory = Path.of(userUploadDir);
 
         if (!Files.exists(userDirectory)) {
