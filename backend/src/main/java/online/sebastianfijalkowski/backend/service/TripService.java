@@ -268,4 +268,22 @@ public class TripService {
         return new ResponseEntity<>(tripRepository.save(tripFromDB), HttpStatus.OK);
 
     }
+
+    public ResponseEntity<?> getAllPhotos(OAuth2User user, String tripId) {
+        UUID uuid = parseUUID(tripId);
+        if (uuid == null) {
+            return handleInvalidUUID(tripId);
+        }
+
+        Optional<Trip> optionalTrip = getTripById(uuid);
+        if (optionalTrip.isPresent()) {
+            Trip trip = optionalTrip.get();
+            if (!isTripBelongsToUser(trip, user)) {
+                return handleTripBelongsToOtherUser();
+            }
+            return new ResponseEntity<>(tripPointService.getAllPhotos(trip), HttpStatus.OK);
+        } else {
+            return handleTripNotFound();
+        }
+    }
 }

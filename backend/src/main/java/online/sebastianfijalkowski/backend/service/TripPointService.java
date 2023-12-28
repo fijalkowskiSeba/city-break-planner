@@ -2,14 +2,13 @@ package online.sebastianfijalkowski.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import online.sebastianfijalkowski.backend.dto.NewBillDTO;
-import online.sebastianfijalkowski.backend.dto.NewCommentDTO;
-import online.sebastianfijalkowski.backend.dto.TripPointDTO;
+import online.sebastianfijalkowski.backend.dto.*;
 import online.sebastianfijalkowski.backend.model.*;
 import online.sebastianfijalkowski.backend.repository.TripBillIRepository;
 import online.sebastianfijalkowski.backend.repository.TripCommentRepository;
 import online.sebastianfijalkowski.backend.repository.TripPhotoRepository;
 import online.sebastianfijalkowski.backend.repository.TripPointRepository;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -383,12 +382,43 @@ public class TripPointService {
             Path filePath = userDirectory.resolve(filename);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             tripPhoto.setFileName(filename);
-            tripPhotoRepository.save(tripPhoto);
+            savedPhoto = tripPhotoRepository.save(tripPhoto);
 
-            return new ResponseEntity<>(tripPhoto, HttpStatus.OK);
+            byte[] imageBytes = Files.readAllBytes(filePath);
+            String base64Image = Base64.encodeBase64String(imageBytes);
+            PhotoFileDTO photoFileDTO = new PhotoFileDTO(savedPhoto.getUuid(), base64Image, fileExtension);
+
+            PhotoFileAndObjectDTO  photoFileAndObjectDTO = new PhotoFileAndObjectDTO(savedPhoto, photoFileDTO);
+
+            return new ResponseEntity<>(photoFileAndObjectDTO, HttpStatus.OK);
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error saving the photo", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public List<PhotoFileDTO> getAllPhotos(Trip trip) {
+        List<PhotoFileDTO> photos = new ArrayList<>();
+        for (var tripPoint : trip.getTripPoints()) {
+            for (var tripPhoto : tripPoint.getTripPhotos()) {
+                String username = System.getProperty("user.name");
+                String userUploadDir = "/home/" + username + "/images/";
+                Path userDirectory = Path.of(userUploadDir);
+
+                if (!Files.exists(userDirectory)) {
+                    continue;
+                }
+
+                Path filePath = userDirectory.resolve(tripPhoto.getFileName());
+                try {
+                    byte[] imageBytes = Files.readAllBytes(filePath);
+                    String base64Image = Base64.encodeBase64String(imageBytes);
+                    photos.add(new PhotoFileDTO(tripPhoto.getUuid(), base64Image, tripPhoto.getFileName().substring(tripPhoto.getFileName().lastIndexOf('.') + 1)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return photos;
     }
 }

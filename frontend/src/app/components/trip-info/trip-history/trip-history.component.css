@@ -45,6 +45,27 @@ mat-card-actions button {
   display: inline-block !important;
 }
 
+.photo-card {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-card img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+
 .bill-details {
   display: flex;
   align-items: center;

@@ -36,7 +36,26 @@
       <mat-button-toggle value="bills">Bills</mat-button-toggle>
     </mat-button-toggle-group>
     <div *ngIf="rightColumnDisplay === 'photos'" class="photos-list right-column-content">
-
+      <div *ngFor="let tripPoint of trip?.tripPoints">
+        <div *ngIf="tripPoint.tripPhotos.length > 0">
+          <mat-card style="background-color: #4d4d4d">
+            <mat-card-header>
+              <mat-card-title>{{tripPoint.name | stringToXComma : 2}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-card *ngFor="let photo of tripPoint.tripPhotos" class="photo-card" >
+                <mat-card-header>
+                </mat-card-header>
+                <mat-card-content >
+                          <img [src]="getPhoto(photo.uuid)" alt="Photo" >
+                </mat-card-content>
+                <mat-card-actions>
+                </mat-card-actions>
+              </mat-card>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
     </div>
     <div *ngIf="rightColumnDisplay === 'comments'" class="comments-list right-column-content">
       <div *ngFor="let tripPoint of trip?.tripPoints">

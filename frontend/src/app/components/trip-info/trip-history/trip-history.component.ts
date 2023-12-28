@@ -12,6 +12,8 @@ import {TripComment} from "../../../models/db models/TripComment";
 import {CommentModalComponent} from "../../modals/comment-modal/comment-modal.component";
 import {AddPhotoModalComponent} from "../../modals/add-photo-modal/add-photo-modal.component";
 import {TripPhoto} from "../../../models/db models/TripPhoto";
+import {PhotoFileAndObject} from "../../../models/photo-file-and-object";
+import {PhotoFileDto} from "../../../models/photo-file-dto";
 
 @Component({
   selector: 'app-trip-history',
@@ -22,6 +24,7 @@ export class TripHistoryComponent {
   trip?: Trip;
   waitingForData: boolean = true;
   rightColumnDisplay: string = 'photos';
+  photos: PhotoFileDto[] = [];
 
 
   constructor(private tripService: TripService,
@@ -42,7 +45,7 @@ export class TripHistoryComponent {
   private whenTripIsFetched(trip: Trip) {
     this.trip = trip;
     this.trip.tripPoints.sort((a, b) => a.orderInTrip - b.orderInTrip);
-    this.waitingForData = false;
+    this.fetchPhotos();
   }
 
   private handleFetchError(error: any) {
@@ -78,7 +81,13 @@ export class TripHistoryComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.tripPointService.addPhotoToTripPoint(tripPoint.id, result).subscribe({
-          next: result => {tripPoint.tripPhotos.push(result as TripPhoto); this.rightColumnDisplay = 'photos';},
+          next: (photoFileAndObject) =>
+          {
+            const pFAO = photoFileAndObject as PhotoFileAndObject;
+            tripPoint.tripPhotos.push(pFAO.tripPhoto as TripPhoto);
+            this.photos.push(pFAO.photoFileDTO as PhotoFileDto);
+            this.rightColumnDisplay = 'photos';
+            },
           error: error => this.handleApiError(error)
         });
       }
@@ -207,5 +216,22 @@ export class TripHistoryComponent {
   onDeleteComment(tripPoint: TripPoint, comment: TripComment) {
     tripPoint.tripComments = tripPoint.tripComments.filter(c => c !== comment);
     this.tripPointService.deleteCommentFromTripPoint(comment.uuid).subscribe();
+  }
+
+  private fetchPhotos() {
+    this.tripService.getTripPhotos(this.trip!.id).subscribe({
+      next: photos => {
+        //photos.map(photo => this.photos.push("data:image/" + photo.fileExtension + ";base64," + photo.base64String));
+        this.photos = photos;
+        this.waitingForData = false;
+        },
+      error: error => this.handleApiError(error)
+    });
+  }
+
+  getPhoto(uuid: string) {
+    const photo = this.photos.find(photo => photo.uuid === uuid);
+    if(photo === undefined) return;
+    return "data:image/" + photo!.fileExtension + ";base64," + photo!.base64String;
   }
 }

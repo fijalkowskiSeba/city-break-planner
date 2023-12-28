@@ -6,6 +6,7 @@ import {TripCreationDto} from "../models/trip-creation-dto";
 import {Trip} from "../models/db models/Trip";
 import {TripPoint} from "../models/db models/TripPoint";
 import {AutoRouteBody} from "../models/auto-route-body";
+import {PhotoFileDto} from "../models/photo-file-dto";
 
 @Injectable({
   providedIn: 'root'
@@ -82,5 +83,9 @@ export class TripService {
     } as AutoRouteBody;
 
     return this.http.post<TripPoint[]>(url, bodyToSend);
+  }
+
+  getTripPhotos(tripId: string) {
+    return this.http.get<PhotoFileDto[]>(this.apiPath + "/allPhotos/" + tripId);
   }
 }

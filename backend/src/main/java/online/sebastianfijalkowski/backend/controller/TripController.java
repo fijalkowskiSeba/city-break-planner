@@ -66,4 +66,9 @@ public class TripController {
         return tripService.updateTrip(user, id, body);
     }
 
+    @GetMapping("/allPhotos/{tripId}")
+    public ResponseEntity<?> getAllPhotos(@AuthenticationPrincipal OAuth2User user, @PathVariable String tripId) {
+        return tripService.getAllPhotos(user, tripId);
+    }
+
 }
