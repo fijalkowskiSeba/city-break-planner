@@ -55,6 +55,11 @@ mat-card-actions button {
   position: relative;
 }
 
+.photo-card:hover {
+  cursor: pointer;
+  border: 1px solid rgba(128, 128, 128, 1);
+}
+
 .photo-card img {
   object-fit: cover;
   width: 100%;

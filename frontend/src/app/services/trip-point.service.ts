@@ -59,4 +59,13 @@ export class TripPointService {
     const url = this.apiPath + "/addPhoto" + "/" + tripId + "/" + newPhoto.name;
     return this.http.post(url, imageFormData);
   }
+
+  deletePhotoFromTripPoint(tripId:string, photoId: string) {
+    return this.http.delete(this.apiPath + "/deletePhoto" + "/" + tripId + "/" + photoId);
+  }
+
+  updatePhoto(uuid: string, newName: string) {
+    const url = this.apiPath + "/updatePhoto" + "/" + uuid + "/" + newName;
+    return this.http.put(url, null);
+  }
 }

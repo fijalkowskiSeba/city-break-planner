@@ -1,0 +1,31 @@
+mat-dialog-actions {
+    justify-content: center;
+}
+
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+mat-dialog-content div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+mat-form-field, img {
+    max-width: 100%;
+}
+
+.image-preview {
+    max-width: 100%;
+    max-height: 300px;
+}
+
+h2 {
+    text-align: center;
+}

@@ -14,6 +14,7 @@ import {AddPhotoModalComponent} from "../../modals/add-photo-modal/add-photo-mod
 import {TripPhoto} from "../../../models/db models/TripPhoto";
 import {PhotoFileAndObject} from "../../../models/photo-file-and-object";
 import {PhotoFileDto} from "../../../models/photo-file-dto";
+import {ShowPhotoModalComponent} from "../../modals/show-photo-modal/show-photo-modal.component";
 
 @Component({
   selector: 'app-trip-history',
@@ -221,7 +222,6 @@ export class TripHistoryComponent {
   private fetchPhotos() {
     this.tripService.getTripPhotos(this.trip!.id).subscribe({
       next: photos => {
-        //photos.map(photo => this.photos.push("data:image/" + photo.fileExtension + ";base64," + photo.base64String));
         this.photos = photos;
         this.waitingForData = false;
         },
@@ -233,5 +233,39 @@ export class TripHistoryComponent {
     const photo = this.photos.find(photo => photo.uuid === uuid);
     if(photo === undefined) return;
     return "data:image/" + photo!.fileExtension + ";base64," + photo!.base64String;
+  }
+
+  photoClicked(tripPoint: TripPoint, photo: TripPhoto) {
+    const photoFile = this.photos.find(photoFile => photoFile.uuid === photo.uuid);
+    if(photoFile === undefined) return;
+
+    const dialogRef = this.dialog.open(ShowPhotoModalComponent, {
+      width: '400px',
+      data: {
+        modalTitle: 'Edit photo',
+        tripPoint: tripPoint,
+        photoFile: photoFile,
+        photo: photo
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if(result === 'delete') {
+          tripPoint.tripPhotos = tripPoint.tripPhotos.filter(p => p !== photo);
+          this.photos = this.photos.filter(p => p !== photoFile);
+          this.tripPointService.deletePhotoFromTripPoint(tripPoint.id, photo.uuid).subscribe();
+        } else {
+          this.tripPointService.updatePhoto(photo.uuid, result.name).subscribe({
+            next: photoFromApi =>
+            {
+              const updatedPhoto = photoFromApi as TripPhoto;
+              photo.name = updatedPhoto.name;
+              },
+            error: error => this.handleApiError(error)
+          });
+        }
+      }
+    });
   }
 }

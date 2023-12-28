@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{data.modalTitle}}</h2>
+<mat-dialog-content>
+    <div *ngIf="data.photoFile">
+        <mat-form-field>
+            <input matInput [(ngModel)]="photoName" name="name" placeholder="Photo name" style="text-align: center">
+        </mat-form-field>
+        <img [src]="getPhoto()" alt="Selected Image" class="image-preview"/>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="onSave()" [disabled]="isConfirmDisabled()">Save</button>
+    <button mat-raised-button color="warn" (click)="onDelete()" >Delete</button>
+    <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+</mat-dialog-actions>
