@@ -40,9 +40,10 @@ mat-card-actions button {
 }
 
 .bill-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: auto !important;
+  max-width: 90% !important;
+  overflow: hidden;
+  display: inline-block !important;
 }
 
 .bill-details {
