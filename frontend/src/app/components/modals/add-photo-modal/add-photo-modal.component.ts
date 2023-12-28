@@ -41,8 +41,8 @@ export class AddPhotoModalComponent {
       });
   }
 
-  isConfirmDisabled() {
-    return this.photo === null || this.photo === undefined;
+  isPhotoLoaded() {
+    return !(this.photo === null || this.photo === undefined);
   }
 
   onFileSelected(event: any): void {
