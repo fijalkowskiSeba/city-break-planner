@@ -382,7 +382,7 @@ public class TripPointService {
 
             Path filePath = userDirectory.resolve(filename);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
+            tripPhoto.setFileName(filename);
             tripPhotoRepository.save(tripPhoto);
 
             return new ResponseEntity<>(tripPhoto, HttpStatus.OK);
