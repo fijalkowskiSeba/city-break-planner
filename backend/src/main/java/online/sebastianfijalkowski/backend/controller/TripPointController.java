@@ -56,4 +56,14 @@ public class TripPointController {
     ResponseEntity<?> addPhoto(@AuthenticationPrincipal OAuth2User user, @PathVariable String tripPointId,@PathVariable String photoName, @RequestParam("image") MultipartFile file) {
         return tripPointService.addPhoto(user, tripPointId, photoName, file);
     }
+
+    @DeleteMapping("/deletePhoto/{tripPointId}/{photoId}")
+    ResponseEntity<?> deletePhoto(@AuthenticationPrincipal OAuth2User user,@PathVariable String tripPointId, @PathVariable String photoId) {
+        return tripPointService.deletePhoto(user,tripPointId, photoId);
+    }
+
+    @PutMapping("/updatePhoto/{photoId}/{newName}")
+    ResponseEntity<?> updatePhoto(@AuthenticationPrincipal OAuth2User user,@PathVariable String photoId, @PathVariable String newName) {
+        return tripPointService.updatePhoto(user,photoId, newName);
+    }
 }

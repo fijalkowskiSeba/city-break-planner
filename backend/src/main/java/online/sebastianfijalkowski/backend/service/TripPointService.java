@@ -343,6 +343,7 @@ public class TripPointService {
     }
 
 
+    @Transactional
     public ResponseEntity<?> addPhoto(OAuth2User user, String tripPointId, String photoName, MultipartFile file) {
         ResponseEntity<?> response = isTripPointBelongsToUser(tripPointId, user);
         if (response.getStatusCode() != HttpStatus.OK) {
@@ -420,5 +421,84 @@ public class TripPointService {
             }
         }
         return photos;
+    }
+
+    @Transactional
+    public ResponseEntity<?> deletePhoto(OAuth2User user,String tripPointId, String photoId) {
+        ResponseEntity<?> response = isPhotoBelongsToUser(photoId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(photoId);
+        if (uuid == null) {
+            return handleInvalidUUID(photoId);
+        }
+
+        TripPhoto tripPhotoFromDB = tripPhotoRepository.findById(uuid).orElse(null);
+        if (tripPhotoFromDB == null) {
+            return new ResponseEntity<>("TripPhoto not found", HttpStatus.NOT_FOUND);
+        }
+
+        String username = System.getProperty("user.name");
+        String userUploadDir = "/home/" + username + "/images/";
+        Path userDirectory = Path.of(userUploadDir);
+
+        if (!Files.exists(userDirectory)) {
+            return new ResponseEntity<>("User directory not found", HttpStatus.NOT_FOUND);
+        }
+
+        Path filePath = userDirectory.resolve(tripPhotoFromDB.getFileName());
+        try {
+            Files.delete(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Error deleting the photo", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        tripPhotoRepository.delete(tripPhotoFromDB);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private ResponseEntity<?> isPhotoBelongsToUser(String photoId, OAuth2User user) {
+        User userFromDB = userService.getUserById(user.getAttribute("sub"));
+
+        if (userFromDB == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        UUID uuid = parseUUID(photoId);
+        if (uuid == null) {
+            return handleInvalidUUID(photoId);
+        }
+
+        TripPhoto tripPhotoFromDB = tripPhotoRepository.findById(uuid).orElse(null);
+        if (tripPhotoFromDB == null) {
+            return new ResponseEntity<>("TripPhoto not found", HttpStatus.NOT_FOUND);
+        }
+
+        if (!tripPhotoFromDB.getTripPoint().getTrip().getUser().equals(userFromDB)) {
+            return new ResponseEntity<>("TripPhoto belongs to another user", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity<?> updatePhoto(OAuth2User user, String photoId, String newName) {
+        ResponseEntity<?> response = isPhotoBelongsToUser(photoId, user);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            return response;
+        }
+
+        UUID uuid = parseUUID(photoId);
+        if (uuid == null) {
+            return handleInvalidUUID(photoId);
+        }
+
+        TripPhoto tripPhotoFromDB = tripPhotoRepository.findById(uuid).orElse(null);
+        if (tripPhotoFromDB == null) {
+            return new ResponseEntity<>("TripPhoto not found", HttpStatus.NOT_FOUND);
+        }
+        tripPhotoFromDB.setName(newName);
+        return new ResponseEntity<>(tripPhotoRepository.save(tripPhotoFromDB), HttpStatus.OK);
     }
 }
