@@ -42,7 +42,6 @@ mat-card-actions button {
 .bill-card {
   width: auto !important;
   max-width: 90% !important;
-  overflow: hidden;
   display: inline-block !important;
 }
 
