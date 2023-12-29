@@ -207,9 +207,12 @@ export class EditTripComponent{
     }
 
     onAddLocation() {
-        let newLocation =
+      var parts = this.newLocation?.name?.split(',');
+      var newLocationName = parts![0] + ', ' + parts![1];
+
+      let newLocation =
             {
-                name: this.newLocation?.name,
+                name: newLocationName,
                 latitude: this.newLocation?.latitude,
                 longitude: this.newLocation?.longitude,
                 orderInTrip: this.trip?.tripPoints.length
