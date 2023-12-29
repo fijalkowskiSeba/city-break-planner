@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.UUID;
 
 @Data
@@ -26,4 +29,20 @@ public class TripPhoto {
     @ManyToOne
     private TripPoint tripPoint;
 
+    @PreRemove
+    private void removeFile() {
+        String userUploadDir = "/images/";
+        Path userDirectory = Path.of(userUploadDir);
+
+        if (!Files.exists(userDirectory)) {
+            return;
+        }
+
+        Path filePath = userDirectory.resolve(this.fileName);
+        try {
+            Files.delete(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
