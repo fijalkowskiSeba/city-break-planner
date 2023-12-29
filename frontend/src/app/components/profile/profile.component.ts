@@ -9,7 +9,7 @@ import {User} from "../../models/user";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
-  user!: User;
+  user?: User;
   constructor(public auth: AuthService) {
   }
 

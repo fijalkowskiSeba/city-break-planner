@@ -1,4 +1,4 @@
-<div class="center-container">
+<div class="center-container" *ngIf="user">
     <h2>You are signed in as:</h2>
     <div class="profile-picture">
         <img [src]="user.picture" alt="user profile picture">
