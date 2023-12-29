@@ -25,20 +25,15 @@ export class TripService {
     const url = this.apiPath + "/new"
 
     if (firstLocation && lastLocation && firstLocation === lastLocation) {
-      locations.push(
-        {
-          lat: lastLocation!.lat,
-          lon: lastLocation!.lon,
-          display_name: lastLocation!.display_name
-        }
-      )
+      locations.push(firstLocation)
     }
 
+    var firstLocationAdded = false;
     const locationList: TripPointDto[] = locations.map((location, index) => ({
       name: location.display_name,
       latitude: location.lat,
       longitude: location.lon,
-      orderInTrip: location === firstLocation ? -1 : location === lastLocation ? -2 : 0
+      orderInTrip: location === firstLocation ? (firstLocationAdded ? -1 : (firstLocationAdded = true, -2)) : 0
     }));
 
     const bodyToSend: TripCreationDto = {
