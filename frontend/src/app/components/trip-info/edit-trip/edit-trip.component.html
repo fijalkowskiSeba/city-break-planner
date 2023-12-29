@@ -4,7 +4,7 @@
         <div class="trip-name-row">
             <mat-form-field>
                 <mat-label>Trip name</mat-label>
-                <input matInput [(ngModel)]="trip.name"/>
+                <input matInput [(ngModel)]="trip.name" minlength="1" maxlength="32"/>
             </mat-form-field>
             <mat-checkbox [(ngModel)]="trip.isCompleted" style="margin-left: auto">Trip Completed</mat-checkbox>
         </div>

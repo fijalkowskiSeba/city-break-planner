@@ -2,15 +2,15 @@
   <mat-dialog-content>
     <mat-form-field>
       <mat-label>Name</mat-label>
-      <input matInput [(ngModel)]="billForm.name" name="name" type="string" required>
+      <input matInput [(ngModel)]="billForm.name" name="name" type="string" required maxlength="32">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Price</mat-label>
-      <input matInput [(ngModel)]="billForm.price" name="price" type="number" min="0" required>
+      <input matInput [(ngModel)]="billForm.price" name="price" type="number" min="0" required >
     </mat-form-field>
     <mat-form-field>
       <mat-label>Currency</mat-label>
-      <input matInput [(ngModel)]="billForm.currency" name="currency" type="string">
+      <input matInput [(ngModel)]="billForm.currency" name="currency" type="string" maxlength="32">
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions>

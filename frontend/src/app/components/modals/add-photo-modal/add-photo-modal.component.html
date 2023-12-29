@@ -13,7 +13,7 @@
   </div>
   <div *ngIf="photo" style="display: flex; flex-direction: column;">
     <mat-form-field>
-      <input matInput [(ngModel)]="name" name="name" placeholder="Photo name" style="text-align: center">
+      <input matInput [(ngModel)]="name" name="name" placeholder="Photo name" style="text-align: center" maxlength="32">
     </mat-form-field>
     <img [src]="photo" alt="Selected Image" class="image-preview"/>
   </div>
