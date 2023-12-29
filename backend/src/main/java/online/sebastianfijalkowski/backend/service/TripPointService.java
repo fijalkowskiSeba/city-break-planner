@@ -19,10 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +29,7 @@ public class TripPointService {
     private final TripBillIRepository tripBillRepository;
     private final TripCommentRepository tripCommentRepository;
     private final TripPhotoRepository tripPhotoRepository;
+    private final AutoRoute autoRoute;
 
     @Transactional
     public List<TripPoint> newTripPoints(TripPointDTO[] tripPoints, Trip trip) {
@@ -52,14 +50,22 @@ public class TripPointService {
             }
         }
 
-        int orderInTrip = firstLocation == null ? 0 : 1;
-
+        TripPointDTO lastLocation = null;
         for (var tripPoint : tripPoints) {
+            if (tripPoint.getOrderInTrip() == -2) {
+                lastLocation = tripPoint;
+                break;
+            }
+        }
+
+        List<TripPointDTO> orderedTripPoints = autoRoute.optimizeTrip(Arrays.asList(tripPoints), firstLocation, lastLocation);
+
+        for (var tripPoint : orderedTripPoints) {
             TripPoint tripPointEntity = new TripPoint();
             tripPointEntity.setName(tripPoint.getName());
             tripPointEntity.setLatitude(tripPoint.getLatitude());
             tripPointEntity.setLongitude(tripPoint.getLongitude());
-            tripPointEntity.setOrderInTrip(tripPoint == firstLocation ? 0 : tripPoint.getOrderInTrip() == -2 ? tripPoints.length -1 : orderInTrip++);
+            tripPointEntity.setOrderInTrip(tripPoint.getOrderInTrip());
             tripPointEntity.setVisited(false);
             tripPointEntity.setTrip(trip);
             tripPointEntity.setTripBills(new ArrayList<>());

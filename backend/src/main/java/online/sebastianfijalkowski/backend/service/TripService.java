@@ -24,6 +24,7 @@ public class TripService {
     private final TripPointRepository tripPointRepository;
     private final UserService userService;
     private final TripPointService tripPointService;
+    private final AutoRoute autoRoute;
 
 
     private ResponseEntity<?> handleInvalidUUID(String id) {
@@ -169,30 +170,8 @@ public class TripService {
                 return handleTripPointBelongsToOtherUser();
             }
         }
-        if(firstLocation != null && !tripPointService.isTripPointBelongsToUserOrNoOne(firstLocation, user)){
-            return handleTripPointBelongsToOtherUser();
-        }
-        if(lastLocation != null && !tripPointService.isTripPointBelongsToUserOrNoOne(lastLocation, user)){
-            return handleTripPointBelongsToOtherUser();
-        }
 
-        var sortedTripPoints = new ArrayList<>();
-
-        var index = 0;
-        if(firstLocation != null) {
-            allTripPoints.remove(firstLocation);
-            firstLocation.setOrderInTrip(index++);
-            sortedTripPoints.add(firstLocation);
-        }
-        if (lastLocation != null) {
-            allTripPoints.remove(lastLocation);
-            lastLocation.setOrderInTrip(allTripPoints.size() + 1);
-            sortedTripPoints.add(lastLocation);
-        }
-        for (var tripPoint : allTripPoints) {
-            tripPoint.setOrderInTrip(index++);
-            sortedTripPoints.add(tripPoint);
-        }
+        var sortedTripPoints = autoRoute.optimizeTrip(allTripPoints, firstLocation, lastLocation);
 
         return new ResponseEntity<>(sortedTripPoints, HttpStatus.OK);
     }
