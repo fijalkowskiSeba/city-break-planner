@@ -62,7 +62,7 @@ services:
     depends_on:
       - db
     volumes:
-      - /home/sebastian/images:/images # change username
+      - /home/opc/images:/images # change username
     networks:
       - backend
 
