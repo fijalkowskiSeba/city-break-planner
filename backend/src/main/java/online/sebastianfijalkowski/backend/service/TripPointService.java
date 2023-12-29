@@ -58,7 +58,8 @@ public class TripPointService {
             }
         }
 
-        List<TripPointDTO> orderedTripPoints = autoRoute.optimizeTrip(Arrays.asList(tripPoints), firstLocation, lastLocation);
+        List<TripPointDTO> tripPointsList = Arrays.asList(tripPoints);
+        List<TripPointDTO> orderedTripPoints = autoRoute.optimizeTrip(new ArrayList<>(tripPointsList), firstLocation, lastLocation);
 
         for (var tripPoint : orderedTripPoints) {
             TripPoint tripPointEntity = new TripPoint();

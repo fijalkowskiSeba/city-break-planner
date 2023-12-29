@@ -207,6 +207,14 @@ public class TripService {
         ArrayList<TripPoint> updatedTripPoints = new ArrayList<>();
 
         for (var tripPointFromBody: tripPointsFromBody){
+            for (var tripPointFromBody2: tripPointsFromBody){
+                if(tripPointFromBody.getId() != null && tripPointFromBody2.getId() != null && tripPointFromBody.getId() != tripPointFromBody2.getId() && tripPointFromBody.getId().equals(tripPointFromBody2.getId())){
+                    tripPointFromBody2.setId(null);
+                }
+            }
+        }
+
+        for (var tripPointFromBody: tripPointsFromBody){
             if(tripPointFromBody.getId() == null) {
                var newtripPoint = new TripPoint();
                 newtripPoint.setName(tripPointFromBody.getName());

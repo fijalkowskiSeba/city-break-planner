@@ -9,18 +9,18 @@ import java.util.*;
 public class AutoRoute {
 
     public List<TripPointDTO> optimizeTrip(List<TripPointDTO> tripPoints, TripPointDTO startPoint, TripPointDTO endPoint) {
-        List<TripPointDTO> list = new ArrayList<>(tripPoints);
+        tripPoints.remove(startPoint);
+        tripPoints.remove(endPoint);
+
         if (startPoint == null && endPoint == null) {
-            return optimizedTripNoStartNoEnd(list);
+            return optimizedTripNoStartNoEnd(tripPoints);
         } else if (startPoint == null) {
-            return optimizedTripNoStart(list, endPoint);
+            return optimizedTripNoStart(tripPoints, endPoint);
         } else if (endPoint == null) {
-            return optimizedTripNoEnd(list, startPoint);
+            return optimizedTripNoEnd(tripPoints, startPoint);
         }
 
-        list.remove(endPoint);
-
-        List<TripPointDTO> optimizedTrip = optimizedTripNoEnd(list, startPoint);
+        List<TripPointDTO> optimizedTrip = optimizedTripNoEnd(tripPoints, startPoint);
 
         endPoint.setOrderInTrip(optimizedTrip.size());
         optimizedTrip.add(endPoint);
@@ -28,14 +28,13 @@ public class AutoRoute {
         return optimizedTrip;
     }
 
-    private List<TripPointDTO> optimizedTripNoEnd(List<TripPointDTO> tripPoints, TripPointDTO startPoint) {
+    private List<TripPointDTO> optimizedTripNoEnd(List<TripPointDTO> originalList, TripPointDTO startPoint) {
+        List<TripPointDTO> tripPoints = new ArrayList<>(originalList);
         List<TripPointDTO> optimizedTrip = new ArrayList<>();
 
         startPoint.setOrderInTrip(0);
 
         optimizedTrip.add(startPoint);
-
-        tripPoints.remove(startPoint);
 
         int order = 1;
         while (!tripPoints.isEmpty()) {
@@ -80,6 +79,7 @@ public class AutoRoute {
         List<TripPointDTO> optimizedTrip = new ArrayList<>();
 
         TripPointDTO firstPoint = findFurthestPoint(tripPoints);
+        tripPoints.remove(firstPoint);
 
         if (firstPoint == null) {
             return optimizedTrip;

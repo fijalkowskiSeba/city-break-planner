@@ -28,12 +28,15 @@ export class TripService {
       locations.push(firstLocation)
     }
 
-    var firstLocationAdded = false;
+    // -1 is first location, -2 is last location, 0 is every other location
+    var firstLocationAdded = firstLocation === undefined;
     const locationList: TripPointDto[] = locations.map((location, index) => ({
       name: location.display_name,
       latitude: location.lat,
       longitude: location.lon,
-      orderInTrip: location === firstLocation ? (firstLocationAdded ? -1 : (firstLocationAdded = true, -2)) : 0
+      orderInTrip: location === firstLocation ?
+        (firstLocationAdded ? -2 : (firstLocationAdded = true, -1)) :
+        (location === lastLocation ? -2 : 0)
     }));
 
     const bodyToSend: TripCreationDto = {
