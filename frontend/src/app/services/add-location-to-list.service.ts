@@ -23,10 +23,12 @@ export class AddLocationToListService {
       });
     }else {
       this.geocodingAPIService.getLocationByLatLon(lat,lng).subscribe((l) => {
+        var parts = l.display_name.split(',');
+        var newLocationName = parts[0] + ', ' + parts[1];
         this.newLocation.next({
-          display_name: l.display_name,
-          lat: l.lat,
-          lon: l.lon,
+          display_name: newLocationName,
+          lat: lat,
+          lon: lng,
         });
       })
     }
