@@ -11,7 +11,7 @@
         <mat-expansion-panel *ngFor="let location of trip?.tripPoints">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              {{location.name | stringToXComma : 2}}
+              {{location.name}}
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="action-buttons-container">
@@ -40,7 +40,7 @@
         <div *ngIf="tripPoint.tripPhotos.length > 0">
           <mat-card style="background-color: #4d4d4d">
             <mat-card-header>
-              <mat-card-title>{{tripPoint.name | stringToXComma : 2}}</mat-card-title>
+              <mat-card-title>{{tripPoint.name}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <mat-card *ngFor="let photo of tripPoint.tripPhotos" class="photo-card" >
@@ -62,7 +62,7 @@
         <div *ngIf="tripPoint.tripComments.length > 0">
           <mat-card style="background-color: #4d4d4d">
             <mat-card-header>
-              <mat-card-title>{{tripPoint.name | stringToXComma : 2}}</mat-card-title>
+              <mat-card-title>{{tripPoint.name}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <mat-card *ngFor="let comment of tripPoint.tripComments">
@@ -93,7 +93,7 @@
         <div *ngIf="tripPoint.tripBills.length > 0">
           <mat-card style="background-color: #4d4d4d">
             <mat-card-header>
-              <mat-card-title>{{tripPoint.name | stringToXComma : 2}}</mat-card-title>
+              <mat-card-title>{{tripPoint.name}}</mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <mat-card *ngFor="let bill of tripPoint.tripBills" class="bill-card">

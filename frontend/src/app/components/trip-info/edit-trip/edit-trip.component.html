@@ -12,7 +12,7 @@
             <mat-list-item class=location-item *ngFor="let location of trip?.tripPoints"
                            cdkDrag (click)="onLocationClicked(location)">
                 <div class=location-item-content>
-                    <span style="width: 80%; overflow-x: hidden">{{location.orderInTrip + 1}}.&nbsp;{{location.name | stringToXComma : 2}}</span>
+                    <span style="width: 80%; overflow-x: hidden">{{location.orderInTrip + 1}}.&nbsp;{{location.name}}</span>
                     <div class="location-item-content-buttons">
                         <button mat-raised-button color="primary" class="location-item-content-button"
                                 (click)="onLocationEdit(location)">Edit

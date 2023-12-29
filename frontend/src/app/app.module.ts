@@ -20,7 +20,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatRadioModule} from "@angular/material/radio";
 import {ChosenLocationsListComponent} from './components/map-tab/chosen-locations-list/chosen-locations-list.component';
 import {MatCardModule} from "@angular/material/card";
-import {StringToXCommaPipe} from './pipes/string-to-x-comma.pipe';
 import {MyTripsComponent} from './components/my-trips/my-trips.component';
 import {
   AskForNameModalComponent
@@ -58,7 +57,6 @@ import { ShowPhotoModalComponent } from './components/modals/show-photo-modal/sh
     MapTabComponent,
     SearchPlaceColumnComponent,
     ChosenLocationsListComponent,
-    StringToXCommaPipe,
     MyTripsComponent,
     AskForNameModalComponent,
     TripInfoComponent,

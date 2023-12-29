@@ -16,8 +16,11 @@ export class AddLocationToListService {
       location.lat = lat;
       location.lon = lng;
 
+      var parts = location.display_name.split(',');
+      var newLocationName = parts[0] + ', ' + parts[1];
+
       this.newLocation.next({
-        display_name: location.display_name,
+        display_name: newLocationName,
         lat: location.lat,
         lon: location.lon,
       });

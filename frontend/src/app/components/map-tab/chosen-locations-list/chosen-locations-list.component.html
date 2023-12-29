@@ -5,7 +5,7 @@
     <mat-card *ngFor="let location of locations">
       <mat-card-content style="padding: 5px" (click)="locationClicked(location)">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="text-align: start">{{location.display_name | stringToXComma : 2}}</span>
+          <span style="text-align: start">{{location.display_name}}</span>
           <div style="display: flex; align-items: center;">
             <button mat-button matTooltip="Trip will start from this point"
                     (click)="setFirstLocation(location)"

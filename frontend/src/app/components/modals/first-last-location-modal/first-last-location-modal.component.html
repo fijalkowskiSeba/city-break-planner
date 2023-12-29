@@ -5,7 +5,7 @@
         <mat-select [(ngModel)]="selectedLocation1" placeholder="First location">
             <mat-option [value]="undefined">Doesn't Matter</mat-option>
             <mat-option *ngFor="let location of locations" [value]="location">
-                {{location.orderInTrip + 1}}. {{location.name | stringToXComma: 2}}
+                {{location.orderInTrip + 1}}. {{location.name}}
             </mat-option>
         </mat-select>
     </mat-form-field>
@@ -15,7 +15,7 @@
         <mat-select [(ngModel)]="selectedLocation2" placeholder="Last location">
             <mat-option [value]="undefined">Doesn't Matter</mat-option>
             <mat-option *ngFor="let location of locations" [value]="location">
-                {{location.orderInTrip + 1}}. {{location.name | stringToXComma: 2}}
+                {{location.orderInTrip + 1}}. {{location.name}}
             </mat-option>
         </mat-select>
     </mat-form-field>
