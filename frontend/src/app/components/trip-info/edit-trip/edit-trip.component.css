@@ -133,6 +133,7 @@ trip-name-row {
 
     .column {
         width: 100%;
+        height: auto;
     }
     .map-frame{
         height: 50vh;
