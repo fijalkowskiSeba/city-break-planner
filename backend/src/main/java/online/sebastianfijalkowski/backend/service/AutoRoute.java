@@ -72,8 +72,8 @@ public class AutoRoute {
     }
 
     private List<TripPointDTO> optimizedTripNoStartNoEnd(List<TripPointDTO> tripPoints) {
-        if (tripPoints == null || tripPoints.isEmpty()) {
-            return new ArrayList<>();
+        if (tripPoints == null || tripPoints.isEmpty() || tripPoints.size() == 1) {
+            return tripPoints;
         }
 
         List<TripPointDTO> optimizedTrip = new ArrayList<>();
