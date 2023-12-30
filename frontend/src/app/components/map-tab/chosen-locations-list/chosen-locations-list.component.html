@@ -8,12 +8,12 @@
           <span style="text-align: start">{{location.display_name}}</span>
           <div style="display: flex; align-items: center;">
             <button mat-button matTooltip="Trip will start from this point"
-                    (click)="setFirstLocation(location)"
+                    (click)="setFirstLocation($event, location)"
                     [ngStyle]="{'background-color': location === firstLocation ? 'gray' : ''}">
               First
             </button>
             <button mat-button matTooltip="Trip will finish at this point"
-              (click)="setLastLocation(location)"
+              (click)="setLastLocation($event, location)"
               [ngStyle]="{'background-color': location === lastLocation ? 'grey' : ''}">
               Last
             </button>
