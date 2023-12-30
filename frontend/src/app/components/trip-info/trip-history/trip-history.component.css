@@ -111,8 +111,4 @@ mat-card-content {
     width: 100%;
     height: auto;
   }
-
-  .right-column {
-    min-height: 100px;
-  }
 }
