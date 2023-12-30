@@ -71,11 +71,12 @@ export class ChosenLocationsListComponent {
     });
   }
 
-  setFirstLocation(location: GeocodingResponse) {
-    this.firstLocation === location ? this.firstLocation = undefined : this.firstLocation = location;
+  setFirstLocation(e: Event, location: GeocodingResponse) {
+   e.stopPropagation();
+   this.firstLocation === location ? this.firstLocation = undefined : this.firstLocation = location;
   }
 
-  setLastLocation(location: GeocodingResponse) {
+  setLastLocation(e: Event, location: GeocodingResponse) {
     this.lastLocation === location ? this.lastLocation = undefined : this.lastLocation = location;
   }
 }
