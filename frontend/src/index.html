@@ -10,7 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body class="mat-typography">
+<script>
+  function handleUnsupportedBrowsers() {
+    var appRoot = document.getElementsByTagName('app-root')[0];
+    if (appRoot && appRoot.innerHTML === '') {
+      appRoot.innerHTML = '<h1>Unsupported Browser</h1>' + 
+        '<p>Please use a modern browser!</p>';
+    }
+  }
+</script>
+<body class="mat-typography" onload="handleUnsupportedBrowsers()">
   <app-root></app-root>
 </body>
 </html>

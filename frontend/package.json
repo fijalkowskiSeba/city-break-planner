@@ -41,5 +41,14 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.1.3"
+  },
+  "optimization": {
+    "scripts": false,
+    "styles": {
+      "minify": true,
+      "inlineCritical": true
+      },
+     "fonts": true
   }
+  
 }
