@@ -1,5 +1,7 @@
-<mat-spinner *ngIf="waitingForData"></mat-spinner>
-<div class="container" *ngIf="!waitingForData"> 
+<div class="spinner-container" *ngIf="waitingForData">
+  <mat-spinner></mat-spinner>
+</div>
+<div class="container" *ngIf="!waitingForData">
   <div class="left-column column">
     <div *ngIf="trip">
       <h1>{{trip.name}}</h1>

@@ -10,11 +10,12 @@ import {User} from "../../models/user";
 })
 export class ProfileComponent {
   user?: User;
+  waitingForData = true;
   constructor(public auth: AuthService) {
   }
 
   async ngOnInit() {
-    this.auth.getUser().subscribe(data => this.user = data);
+    this.auth.getUser().subscribe(data => {this.user = data; this.waitingForData = false});
   }
 
 }
