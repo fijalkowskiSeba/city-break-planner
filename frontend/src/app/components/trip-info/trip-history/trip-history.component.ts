@@ -81,15 +81,17 @@ export class TripHistoryComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.waitingForData = true;
         this.tripPointService.addPhotoToTripPoint(tripPoint.id, result).subscribe({
           next: (photoFileAndObject) =>
           {
+            this.waitingForData = false;
             const pFAO = photoFileAndObject as PhotoFileAndObject;
             tripPoint.tripPhotos.push(pFAO.tripPhoto as TripPhoto);
             this.photos.push(pFAO.photoFileDTO as PhotoFileDto);
             this.rightColumnDisplay = 'photos';
-            },
-          error: error => this.handleApiError(error)
+          },
+          error: error => {this.handleApiError(error); this.waitingForData = false;}
         });
       }
     });
