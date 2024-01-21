@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Choose first and last location</h2>
 <mat-dialog-content>
     <mat-form-field>
-        <mat-label>Location 1</mat-label>
+        <mat-label>First location</mat-label>
         <mat-select [(ngModel)]="selectedLocation1" placeholder="First location">
             <mat-option [value]="undefined">Doesn't Matter</mat-option>
             <mat-option *ngFor="let location of locations" [value]="location">
@@ -11,7 +11,7 @@
     </mat-form-field>
 
     <mat-form-field>
-        <mat-label>Location 2</mat-label>
+        <mat-label>Last location</mat-label>
         <mat-select [(ngModel)]="selectedLocation2" placeholder="Last location">
             <mat-option [value]="undefined">Doesn't Matter</mat-option>
             <mat-option *ngFor="let location of locations" [value]="location">
