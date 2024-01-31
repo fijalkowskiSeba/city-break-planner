@@ -39,7 +39,7 @@
             <mat-form-field style="flex-grow: 5">
                 <mat-label>Search for more location</mat-label>
                 <input matInput [(ngModel)]="newPlaceInput" (keydown.enter)="fetchPointsFromApi()"
-                       [matAutocomplete]="auto">
+                       [matAutocomplete]="auto" maxlength="255">
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayLocationName">
                     <mat-option *ngFor="let location of fetchedLocations" [value]="location"  >
                         {{ location.name }}
