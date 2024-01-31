@@ -14,6 +14,8 @@ export class AddBillModalComponent {
     currency: ''
   }
 
+  maxPrice = 999999999;
+
   constructor(
     public dialogRef: MatDialogRef<AddBillModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -30,6 +32,6 @@ export class AddBillModalComponent {
   }
 
   isConfirmDisabled() {
-    return this.billForm.name === '' || this.billForm.price < 0
+    return this.billForm.name === '' || this.billForm.price < 0 || this.billForm.price > this.maxPrice;
   }
 }

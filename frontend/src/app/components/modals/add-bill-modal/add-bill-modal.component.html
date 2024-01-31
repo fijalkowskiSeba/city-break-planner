@@ -6,7 +6,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Price</mat-label>
-      <input matInput [(ngModel)]="billForm.price" name="price" type="number" min="0" required >
+      <input matInput [(ngModel)]="billForm.price" name="price" type="number" min="0" [max]="maxPrice" required >
     </mat-form-field>
     <mat-form-field>
       <mat-label>Currency</mat-label>
