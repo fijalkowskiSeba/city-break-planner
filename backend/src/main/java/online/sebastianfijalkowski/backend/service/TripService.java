@@ -24,7 +24,7 @@ public class TripService {
     private final TripPointRepository tripPointRepository;
     private final UserService userService;
     private final TripPointService tripPointService;
-    private final AutoRoute autoRoute;
+    private final AutoRouteService autoRouteService;
 
 
     private ResponseEntity<?> handleInvalidUUID(String id) {
@@ -171,7 +171,7 @@ public class TripService {
             }
         }
 
-        var sortedTripPoints = autoRoute.optimizeTrip(allTripPoints, firstLocation, lastLocation);
+        var sortedTripPoints = autoRouteService.optimizeTrip(allTripPoints, firstLocation, lastLocation);
 
         return new ResponseEntity<>(sortedTripPoints, HttpStatus.OK);
     }

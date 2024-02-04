@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class AutoRoute {
+public class AutoRouteService {
 
     public List<TripPointDTO> optimizeTrip(List<TripPointDTO> tripPoints, TripPointDTO startPoint, TripPointDTO endPoint) {
         tripPoints.remove(startPoint);

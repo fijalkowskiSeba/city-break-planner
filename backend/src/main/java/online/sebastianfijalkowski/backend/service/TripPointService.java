@@ -29,7 +29,7 @@ public class TripPointService {
     private final TripBillIRepository tripBillRepository;
     private final TripCommentRepository tripCommentRepository;
     private final TripPhotoRepository tripPhotoRepository;
-    private final AutoRoute autoRoute;
+    private final AutoRouteService autoRouteService;
 
     @Transactional
     public List<TripPoint> newTripPoints(TripPointDTO[] tripPoints, Trip trip) {
@@ -59,7 +59,7 @@ public class TripPointService {
         }
 
         List<TripPointDTO> tripPointsList = Arrays.asList(tripPoints);
-        List<TripPointDTO> orderedTripPoints = autoRoute.optimizeTrip(new ArrayList<>(tripPointsList), firstLocation, lastLocation);
+        List<TripPointDTO> orderedTripPoints = autoRouteService.optimizeTrip(new ArrayList<>(tripPointsList), firstLocation, lastLocation);
 
         for (var tripPoint : orderedTripPoints) {
             TripPoint tripPointEntity = new TripPoint();
