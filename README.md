@@ -7,10 +7,6 @@ Application allow users to:
 - create, edit and delete their trips
 - add photos, bills and comments to their trips
 
-## Check it out
-
-[City Break Planner](https://city-break-planner.sebastian-fijalkowski.online/)
-
 ## Technologies
 
 - Angular
